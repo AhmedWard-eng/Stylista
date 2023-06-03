@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.databinding.FragmentHomeBinding
+import com.denzcoskun.imageslider.models.SlideModel
 
 class HomeFragment : Fragment() {
 
@@ -28,6 +29,17 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val ads = ArrayList<SlideModel>()
+
+        ads.add(SlideModel("https://picsum.photos/seed/picsum/200/300"))
+        ads.add(SlideModel("https://picsum.photos/200/300"))
+        ads.add(SlideModel("https://picsum.photos/id/237/200/300"))
+        ads.add(SlideModel("https://picsum.photos/200"))
+        ads.add(SlideModel("https://picsum.photos/200/300/?blur"))
+        ads.add(SlideModel("https://picsum.photos/200/300.jpg"))
+
+        binding.imageSlider.setImageList(ads, ScaleTypes.FIT)
+        binding.imageSlider.startSliding(2000)
 
         return root
     }
