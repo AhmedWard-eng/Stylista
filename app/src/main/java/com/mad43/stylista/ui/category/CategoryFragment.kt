@@ -1,4 +1,4 @@
-package com.mad43.stylista.ui.dashboard
+package com.mad43.stylista.ui.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.mad43.stylista.databinding.FragmentDashboardBinding
+import com.mad43.stylista.databinding.FragmentCategoryBinding
 
-class DashboardFragment : Fragment() {
+class CategoryFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentCategoryBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,9 +23,9 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(CategoryViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard

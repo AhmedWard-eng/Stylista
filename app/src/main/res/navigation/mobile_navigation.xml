@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.mad43.stylista.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.mad43.stylista.ui.category.CategoryFragment"
+        android:label="@string/category"
+        tools:layout="@layout/fragment_category" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.mad43.stylista.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.mad43.stylista.ui.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
