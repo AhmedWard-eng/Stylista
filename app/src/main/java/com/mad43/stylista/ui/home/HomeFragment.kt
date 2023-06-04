@@ -28,16 +28,8 @@ class HomeFragment : Fragment() {
 
         binding.brandRecycle.visibility = View.GONE
         binding.shimmerFrameLayout.startShimmerAnimation()
-        val ads = ArrayList<SlideModel>()
 
-        ads.add(SlideModel("https://picsum.photos/seed/picsum/200/300"))
-        ads.add(SlideModel("https://picsum.photos/200/300"))
-        ads.add(SlideModel("https://picsum.photos/id/237/200/300"))
-        ads.add(SlideModel("https://picsum.photos/200"))
-        ads.add(SlideModel("https://picsum.photos/200/300/?blur"))
-        ads.add(SlideModel("https://picsum.photos/200/300.jpg"))
-
-        binding.imageSlider.setImageList(ads, ScaleTypes.FIT)
+        binding.imageSlider.setImageList(homeViewModel.ads, ScaleTypes.FIT)
         binding.imageSlider.startSliding(2000)
 
         return root
