@@ -83,36 +83,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="15dp"
-                app:layout_constraintTop_toBottomOf="@id/materialToolbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:iss_auto_cycle="true"
-                app:iss_period="1000"
-                app:iss_delay="0"
-                app:iss_text_align="CENTER"
                 app:iss_corner_radius="25"
+                app:iss_delay="0"
+                app:iss_error_image="@color/white"
+                app:iss_period="1000"
                 app:iss_placeholder="@color/white"
-                app:iss_error_image="@color/white" />
+                app:iss_text_align="CENTER"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialToolbar" />
 
             <TextView
                 android:id="@+id/categoryLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_slider"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/category"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textColor="@color/black"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_slider" />
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/categoryGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoryLabel">
@@ -120,7 +120,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="29dp"
+                    android:layout_marginStart="27dp"
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -132,22 +132,22 @@
                             android:layout_width="68dp"
                             android:layout_height="68dp"
                             android:layout_margin="5dp"
-                            android:src="@drawable/test"
+                            android:src="@drawable/shoesjpg"
                             app:civ_border_color="@color/white"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShoesImage"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_marginTop="5dp"
-                            android:text="SHOES"
+                            android:text="@string/shoes"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
-                            android:textColor="@color/black"/>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShoesImage" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -156,7 +156,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="29dp"
+                    android:layout_marginStart="27dp"
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -168,22 +168,22 @@
                             android:layout_width="68dp"
                             android:layout_height="68dp"
                             android:layout_margin="5dp"
-                            android:src="@drawable/test"
+                            android:src="@drawable/accessories"
                             app:civ_border_color="@color/white"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/mainCategoryAccessoriesImage"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_marginTop="5dp"
-                            android:text="ACCESSORIES"
+                            android:text="@string/accessories"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
-                            android:textColor="@color/black"/>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/mainCategoryAccessoriesImage" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -193,7 +193,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="29dp"
+                    android:layout_marginStart="27dp"
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,22 +205,22 @@
                             android:layout_width="68dp"
                             android:layout_height="68dp"
                             android:layout_margin="5dp"
-                            android:src="@drawable/test"
+                            android:src="@drawable/shirt"
                             app:civ_border_color="@color/white"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShirtImage"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_marginTop="5dp"
-                            android:text="SHIRT"
+                            android:text="@string/shirt"
+                            android:textColor="@color/black"
                             android:textSize="20sp"
-                            android:textColor="@color/black"/>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShirtImage" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -233,13 +233,50 @@
                 android:id="@+id/brandLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/categoryGroup"
-                android:layout_marginTop="15dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/brand"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textColor="@color/black"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/categoryGroup" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/brandLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/brandRecycle"
