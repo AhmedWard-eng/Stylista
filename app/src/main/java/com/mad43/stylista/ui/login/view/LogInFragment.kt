@@ -105,17 +105,17 @@ class LogInFragment : Fragment() {
             }
         }
 
-//        loginViewModel.checkUserIsLogin()
-//
-//        lifecycleScope.launch {
-//            loginViewModel.userExists.collect { userExists ->
-//                if (userExists) {
-//                    view.findNavController().navigate(R.id.action_logInFragment_to_navigation_home)
-//                } else {
-//                    dialog.showAlertDialog(getString(R.string.check_login), requireContext())
-//                }
-//            }
-//        }
+        loginViewModel.checkUserIsLogin()
+
+        lifecycleScope.launch {
+            loginViewModel.userExists.collect { userExists ->
+                if (userExists) {
+                    view.findNavController().navigate(R.id.action_logInFragment_to_navigation_home)
+                } else {
+                    dialog.showAlertDialog(getString(R.string.check_login), requireContext())
+                }
+            }
+        }
 
     }
 
