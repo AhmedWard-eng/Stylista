@@ -1,6 +1,6 @@
-package com.mad43.stylista.data.remote.entity
+package com.mad43.stylista.data.remote.entity.auth
 
-data class Addresse (
+data class DefaultAddress(
     val address1: String,
     val address2: Any,
     val city: String,
@@ -8,13 +8,14 @@ data class Addresse (
     val country: String,
     val country_code: String,
     val country_name: String,
-    val customer_id: Int,
+    val customer_id: Long,
     val default: Boolean,
     val first_name: String,
-    val id: Int,
+    val id: Long,
     val last_name: String,
     val name: String,
     val phone: String,
     val province: String,
     val province_code: String,
-    val zip: String)
+    val zip: String
+)

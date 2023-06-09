@@ -1,4 +1,4 @@
-package com.mad43.stylista.data.remote.entity
+package com.mad43.stylista.data.remote.entity.auth
 
 data class SmsMarketingConsent(
     val consent_collected_from: String,
