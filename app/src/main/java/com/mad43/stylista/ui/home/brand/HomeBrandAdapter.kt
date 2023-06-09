@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mad43.stylista.databinding.BrandItemBinding
 import com.mad43.stylista.domain.model.DisplayBrand
+import com.mad43.stylista.util.setImageFromUrl
 
 class HomeBrandAdapter(
 private val context: Context
@@ -26,19 +27,9 @@ private val context: Context
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(context)
-            .load(getItem(position).image)
-            .apply(
-                RequestOptions().override(
-                    holder.binding.imageBrand.width,
-                    holder.binding.imageBrand.height
-                )
-            )
-            .into(holder.binding.imageBrand)
-
+        holder.binding.imageBrand.setImageFromUrl(getItem(position).image)
         holder.binding.brandName.text = getItem(position).title
     }
-
 }
 
 class DiffUtilsHomeBrand() : DiffUtil.ItemCallback<DisplayBrand>(){
