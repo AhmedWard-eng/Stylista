@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "476531035649",
+    "project_id": "stylista-f1ed5",
+    "storage_bucket": "stylista-f1ed5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476531035649:android:64ae33a8fd8f8d5122fa00",
+        "android_client_info": {
+          "package_name": "com.mad43.stylista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476531035649-jfg5u4cf8e1sfq26l699v3o1fnvkfc55.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM5Ja2FzmrBuISsJpTmyT0uyPfuqsKIxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476531035649-jfg5u4cf8e1sfq26l699v3o1fnvkfc55.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
