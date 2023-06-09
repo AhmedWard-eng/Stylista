@@ -52,4 +52,9 @@
             android:id="@+id/action_logInFragment_self"
             app:destination="@id/logInFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/productInfoFragment"
+        android:name="com.mad43.stylista.ui.productInfo.view.ProductInfoFragment"
+        android:label="fragment_product_info"
+        tools:layout="@layout/fragment_product_info" />
 </navigation>

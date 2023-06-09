@@ -15,32 +15,38 @@
     /***Fatma***/
 
     /***Marina***/
-        <string name="email_address">Email address</string>
-        <string name="password">Password</string>
-        <string name="confirm_password">Confirm Password</string>
-        <string name="sign_up">Sign up</string>
-        <string name="sign_in">Sign in</string>
-        <string name="success">Sign up Successfully</string>
-        <string name="emailNameEmpty">Email field is empty</string>
-        <string name="passwordEmpty">password field is empty</string>
-        <string name="confirmPasswordEmpty">Confirm password field is empty</string>
-        <string name="matchPassword">Password and confirm password do not match</string>
-        <string name="validateEmail">Invalid email format</string>
-        <string name="validatePassword">Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one digit</string>
-        <string name="email_verified">Email is verified</string>
-        <string name="email_not_verified">Email is not verified,please verified your email</string>
-        <string name="email_verification_failed">Email verification is failed</string>
-        <string name="signup_failed">Sign up is failed</string>
-        <string name="login_success">Sign in Successfully</string>
-        <string name="login_faild"> Login failed</string>
-        <string name="login_empty_email">please,enter email</string>
-        <string name="login_empty_password">please,enter password</string>
-        <string name="login_valid_password">password is not match</string>
-        <string name="login_valid_email">email is not found, can you register First. </string>
-        <string name="email_isExist">Email is already exist</string>
-        <string name="verfid">please, verfid mail</string>
-        <string name="check_login">Please Login First</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="success">Sign up Successfully</string>
+    <string name="emailNameEmpty">Email field is empty</string>
+    <string name="passwordEmpty">password field is empty</string>
+    <string name="confirmPasswordEmpty">Confirm password field is empty</string>
+    <string name="matchPassword">Password and confirm password do not match</string>
+    <string name="validateEmail">Invalid email format</string>
+    <string name="validatePassword">Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one digit</string>
+    <string name="email_verified">Email is verified</string>
+    <string name="email_not_verified">Email is not verified,please verified your email</string>
+    <string name="email_verification_failed">Email verification is failed</string>
+    <string name="signup_failed">Sign up is failed</string>
+    <string name="login_success">Sign in Successfully</string>
+    <string name="login_faild"> Login failed</string>
+    <string name="login_empty_email">please,enter email</string>
+    <string name="login_empty_password">please,enter password</string>
+    <string name="login_valid_password">password is not match</string>
+    <string name="login_valid_email">email is not found, can you register First. </string>
+    <string name="email_isExist">Email is already exist</string>
+    <string name="verfid">please, verfid mail</string>
+    <string name="check_login">Please Login First</string>
     <string name="skip">Skip</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reviews">Reviews</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="description">"Description "</string>
+    <string name="more_than">more..</string>
     /***Marina***/
 
     /***Ahmed***/
