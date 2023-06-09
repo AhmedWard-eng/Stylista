@@ -9,5 +9,6 @@ class Constants {
         const val CUSTOMER_ID = "CUSTOMER_ID"
         const val CUSTOMER_EMAIL = "CUSTOMER_EMAIL"
         const val CUSTOMER_STATE = "CUSTOMER_STATE"
+        const val USER_IDFIRBASE = "USER_IDFIRBASE"
     }
 }

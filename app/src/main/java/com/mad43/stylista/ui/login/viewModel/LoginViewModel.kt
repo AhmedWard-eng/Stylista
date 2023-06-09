@@ -31,7 +31,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
                     if (data != null) {
                         if(data.customers[0].tags == password){
                             _loginState.value = LoginState.Success(data)
-                            loginUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true))
+                            loginUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
                         }else{
                             _loginState.value = LoginState.Failed(R.string.login_valid_password)
                         }
