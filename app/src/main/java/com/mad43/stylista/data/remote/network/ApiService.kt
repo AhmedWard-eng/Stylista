@@ -1,5 +1,7 @@
 package com.mad43.stylista.data.remote.network
 
+import com.mad43.stylista.data.remote.network.auth.retrofit.LogInAPIInterface
+import com.mad43.stylista.data.remote.network.auth.retrofit.SignUpAPIInterface
 import com.mad43.stylista.util.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
