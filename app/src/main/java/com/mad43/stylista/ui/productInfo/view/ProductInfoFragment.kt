@@ -42,6 +42,11 @@ class ProductInfoFragment : Fragment() {
         binding.imageSlider.startSliding(3000)
 
         binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
+
+        binding.textViewReviews.setOnClickListener {
+            val fragment = ReviewFragment()
+            fragment.show(requireFragmentManager(), "MyDialogReviewsFragment")
+        }
     }
 
 
