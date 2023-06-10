@@ -7,10 +7,11 @@
     <string name="category">Category</string>
     <string name="profile">Profile</string>
     <string name="searchForProduct">Search for product</string>
-    <string name="brand">Brand</string>
+    <string name="brand">Brands</string>
     <string name="shoes">SHOES</string>
     <string name="accessories">ACCESSORIES</string>
-    <string name="shirt">SHIRT</string>
+    <string name="shirt">T-SHIRTS</string>
+    <string name="price">Price</string>
 
     /***Fatma***/
 

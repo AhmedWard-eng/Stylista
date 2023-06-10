@@ -5,15 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mad43.stylista.R
-import com.mad43.stylista.databinding.FragmentLogInBinding
-import com.mad43.stylista.databinding.FragmentRegistrationBinding
+//import com.mad43.stylista.databinding.FragmentLogInBinding
 
 
 class LogInFragment : Fragment() {
 
-    private var _binding: FragmentLogInBinding? = null
-    private val binding get() = _binding!!
+//    private var _binding: FragmentLogInBinding? = null
+//    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +22,9 @@ class LogInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLogInBinding.inflate(inflater, container, false)
-        return binding.root
+//        _binding = FragmentLogInBinding.inflate(inflater, container, false)
+//        return binding.root
+        return null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +33,6 @@ class LogInFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 }

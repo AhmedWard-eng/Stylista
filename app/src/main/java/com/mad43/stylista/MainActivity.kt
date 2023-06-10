@@ -1,28 +1,52 @@
 package com.mad43.stylista
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mad43.stylista.databinding.ActivityMainBinding
-import com.zagori.bottomnavbar.BottomNavBar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var navController: NavController
+    private lateinit var navView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        supportActionBar?.customView = binding.materialToolbar
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navView = binding.navView
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
+
         navView.setupWithNavController(navController)
+
+        setBottomBarVisibility()
+
+        binding.searchView.setOnClickListener {
+            navController.navigate(R.id.searchFragment)
+        }
+
+    }
+
+    private fun setBottomBarVisibility() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications -> {
+                    navView.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    navView.visibility = View.GONE
+                }
+            }
+        }
     }
 }

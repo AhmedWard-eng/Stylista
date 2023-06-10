@@ -3,7 +3,7 @@ package com.mad43.stylista.data.remote.entity.brand
 import com.mad43.stylista.domain.model.DisplayBrand
 
 data class Brand(
-    val id: Int?,
+    val id: Long?,
     val handle: String?,
     val title: String?,
     val updated_at: String?,
@@ -15,7 +15,7 @@ data class Brand(
     val rules: List<Rules>?,
     val published_scope: String?,
     val admin_graphql_api_id: String?,
-    val image: Image?,
+    val image: Image?
 )
 
 fun Brand.mapRemoteBrandToDisplayBrand(): DisplayBrand {

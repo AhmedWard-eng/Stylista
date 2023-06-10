@@ -3,14 +3,16 @@ package com.mad43.stylista.data.remote.network
 import com.mad43.stylista.util.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-class ApiService {
+object ApiService {
+
+    val brandsApiService = AppRetrofit.retrofit.create(ProductsAPIInterface::class.java)
 
     object AppRetrofit {
-
         val retrofit: Retrofit =  Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
     }
 
     object APIClient{
