@@ -1,7 +1,5 @@
 package com.mad43.stylista.ui.login.viewModel
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.R
@@ -12,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SignInViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : ViewModel() {
+class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : ViewModel() {
 
     private  var _loginState: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Loading)
     var loginState: StateFlow<LoginState> = _loginState
