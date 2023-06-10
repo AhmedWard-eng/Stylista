@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         setBottomBarVisibility()
+        setActionBarVisibility()
 
         binding.searchView.setOnClickListener {
             navController.navigate(R.id.searchFragment)
@@ -44,6 +45,19 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {
                     navView.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setActionBarVisibility() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.registrationFragment, R.id.logInFragment -> {
+                    binding.materialToolbar.visibility = View.GONE
+                }
+                else -> {
+                    binding.materialToolbar.visibility = View.VISIBLE
                 }
             }
         }
