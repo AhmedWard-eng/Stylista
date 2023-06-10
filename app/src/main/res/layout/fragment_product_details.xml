@@ -1,6 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.details.ProductDetailsFragment"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.productInfo.view.ProductDetailsFragment">
+
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/image_slider"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        app:iss_auto_cycle="true"
+        app:iss_corner_radius="35"
+        app:iss_error_image="@color/white"
+        app:iss_placeholder="@color/white"
+        app:iss_text_align="CENTER"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <TextView
+        android:id="@+id/textViewProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="7"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#737373"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/image_slider" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contextClickable="true"
+        android:indeterminate="false"
+        android:numStars="5"
+        android:scrollbarSize="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewProductName"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/textViewProductName"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/reviews"
+        android:textColor="@color/primary_color"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textViewProductName" />
+
+    <ImageView
+        android:id="@+id/imageViewFavourite"
+        android:layout_width="46dp"
+        android:layout_height="41dp"
+        android:src="@drawable/baseline_favorite_border_24"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewReviews"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.966"
+        app:layout_constraintStart_toEndOf="@+id/textViewReviews"
+        app:layout_constraintTop_toTopOf="@+id/textViewReviews"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="#737373"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewFavourite" />
+
+    <TextView
+        android:id="@+id/textViewPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#737373"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/textViewAvaliableSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPrice"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/textViewPrice" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAddToCart"
+        android:layout_width="181dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/buton_style_details"
+        android:text="@string/add_to_cart"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPrice" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#737373"
+        android:textSize="20sp"
+        android:text="@string/description"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddToCart" />
+
+    <TextView
+        android:id="@+id/textViewDescriptionScroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxLines="7"
+        android:inputType="textMultiLine"
+        android:scrollbars = "vertical"
+        android:isScrollContainer="true"
+        android:enabled="true"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

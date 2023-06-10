@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.mad43.stylista.R
-import com.mad43.stylista.databinding.FragmentProductInfoBinding
+
 import com.mad43.stylista.databinding.FragmentReviewsDialogBinding
 import com.mad43.stylista.ui.productInfo.model.reviews
 
