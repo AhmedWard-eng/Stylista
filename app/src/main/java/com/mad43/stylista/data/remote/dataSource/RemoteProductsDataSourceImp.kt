@@ -16,6 +16,10 @@ class RemoteProductsDataSourceImp(private val productsAPIInterface: ProductsAPII
         return productsAPIInterface.getAllProducts()
     }
 
+    override suspend fun getAllProducts(): ProductResponse {
+        return productsAPIInterface.getAllProducts()
+    }
+
     override suspend fun getProductById(id: Long): Product {
         TODO("Not yet implemented")
     }

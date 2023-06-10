@@ -26,4 +26,8 @@ class ProductsRepo(private val remoteProductsDataSource: RemoteProductsDataSourc
         }.map { it.mapRemoteProductToDisplayProduct() })
     }
 
+    override suspend fun getAllProducts(): Flow<List<DisplayProduct>> {
+        return flowOf(remoteProductsDataSource.getAllProducts().products.map { it.mapRemoteProductToDisplayProduct() })
+    }
+
 }

@@ -6,4 +6,5 @@ data class DisplayProduct(
     val product_type: String,
     val title: String,
     val image: String,
+    val tag : String
 )

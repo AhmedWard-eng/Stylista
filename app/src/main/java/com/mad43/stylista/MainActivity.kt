@@ -1,5 +1,6 @@
 package com.mad43.stylista
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         setBottomBarVisibility()
         setActionBarVisibility()
+        setLabelInActionBar()
 
         binding.searchView.setOnClickListener {
             navController.navigate(R.id.searchFragment)
@@ -61,5 +63,34 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setLabelInActionBar(){
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home -> {
+                    binding.fragmentName.text = "Home"
+                }
+                R.id.navigation_dashboard -> {
+                    binding.fragmentName.text = "Category"
+                }
+                R.id.navigation_notifications -> {
+                    binding.fragmentName.text = "Profile"
+                }
+                R.id.brandFragment -> {
+                    binding.fragmentName.text = "Brand’s Products"
+                }
+                R.id.productDetailsFragment -> {
+                    binding.fragmentName.text = "Product’s Details"
+                }
+                R.id.searchFragment -> {
+                    binding.fragmentName.text = "Search"
+                }
+                else -> {
+                }
+            }
+        }
+
     }
 }

@@ -19,7 +19,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.mad43.stylista.ui.category.CategoryFragment"
         android:label="@string/category"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
