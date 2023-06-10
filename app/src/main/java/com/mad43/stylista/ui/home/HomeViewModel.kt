@@ -10,7 +10,6 @@ import com.mad43.stylista.data.repo.ProductsRepoInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import com.denzcoskun.imageslider.models.SlideModel
 
 class HomeViewModel(private val repoInterface : ProductsRepoInterface = ProductsRepo()) : ViewModel() {
     val ads = ArrayList<SlideModel>()

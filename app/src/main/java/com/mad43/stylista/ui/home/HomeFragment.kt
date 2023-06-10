@@ -15,9 +15,7 @@ import com.mad43.stylista.databinding.FragmentHomeBinding
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import com.denzcoskun.imageslider.constants.ScaleTypes
-import com.mad43.stylista.databinding.FragmentHomeBinding
-import com.denzcoskun.imageslider.models.SlideModel
+
 
 class HomeFragment : Fragment(), OnItemBrandClicked {
 
