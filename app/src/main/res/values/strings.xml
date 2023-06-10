@@ -50,6 +50,8 @@
     /***Marina***/
 
     /***Ahmed***/
-
+        <string name="checkout">Checkout</string>
+        <string name="subtotal">Subtotal</string>
+        <string name="delivery">Delivery</string>
     /***Ahmed***/
 </resources>
