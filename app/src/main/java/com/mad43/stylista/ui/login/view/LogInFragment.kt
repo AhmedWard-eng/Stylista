@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.mad43.stylista.databinding.FragmentLogInBinding
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,9 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mad43.stylista.R
 import com.mad43.stylista.data.remote.network.ApiService
 import com.mad43.stylista.data.repo.auth.LoginRepositoryImp
-import com.mad43.stylista.data.repo.auth.SignUpRepository
 import com.mad43.stylista.data.repo.auth.SignUpRepositoryImpl
-import com.mad43.stylista.databinding.FragmentLogInBinding
 import com.mad43.stylista.domain.remote.auth.LoginUseCase
 import com.mad43.stylista.ui.login.viewModel.LoginState
 import com.mad43.stylista.ui.login.viewModel.LoginViewModel
@@ -28,8 +27,8 @@ import kotlinx.coroutines.launch
 
 class LogInFragment : Fragment() {
 
-    private var _binding: FragmentLogInBinding? = null
-    private val binding get() = _binding!!
+   private var _binding: FragmentLogInBinding? = null
+   private val binding get() = _binding!!
 
 
     private lateinit var loginViewModel: LoginViewModel
