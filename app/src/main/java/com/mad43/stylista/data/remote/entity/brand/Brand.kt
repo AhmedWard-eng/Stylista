@@ -16,6 +16,7 @@ data class Brand(
     val published_scope: String?,
     val admin_graphql_api_id: String?,
     val image: Image?
+
 )
 
 fun Brand.mapRemoteBrandToDisplayBrand(): DisplayBrand {

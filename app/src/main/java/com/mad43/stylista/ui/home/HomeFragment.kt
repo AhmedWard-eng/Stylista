@@ -15,6 +15,9 @@ import com.mad43.stylista.databinding.FragmentHomeBinding
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.mad43.stylista.databinding.FragmentHomeBinding
+import com.denzcoskun.imageslider.models.SlideModel
 
 class HomeFragment : Fragment(), OnItemBrandClicked {
 
@@ -29,17 +32,16 @@ class HomeFragment : Fragment(), OnItemBrandClicked {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+      
+      homeViewModel =
+            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
 
         binding.imageSlider.setImageList(homeViewModel.ads, ScaleTypes.FIT)
         binding.imageSlider.startSliding(2000)

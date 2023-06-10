@@ -1,4 +1,4 @@
-package com.mad43.stylista.data.remote.entity
+package com.mad43.stylista.data.remote.entity.auth
 
 data class Customer(
     val email: String,
@@ -20,5 +20,7 @@ data class Customer(
     val tax_exemptions: List<Any>,
     val total_spent: String,
     val updated_at: String,
-    val verified_email: Boolean
+    val verified_email: Boolean,
+   // val password:String,
+   // val password_confirmation : String
 )

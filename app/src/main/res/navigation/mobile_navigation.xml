@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/logInFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -52,4 +52,38 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+        android:id="@+id/registrationFragment"
+        android:name="com.mad43.stylista.ui.registration.view.SignUpFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_registrationFragment_self"
+            app:destination="@id/registrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.mad43.stylista.ui.login.view.LogInFragment"
+        android:label="fragment_log_in"
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/action_logInFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_logInFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_logInFragment_self"
+            app:destination="@id/logInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productInfoFragment"
+        android:name="com.mad43.stylista.ui.productInfo.view.ProductInfoFragment"
+        android:label="fragment_product_info"
+        tools:layout="@layout/fragment_product_info" />
 </navigation>
