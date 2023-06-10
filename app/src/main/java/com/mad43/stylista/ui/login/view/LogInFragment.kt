@@ -15,9 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mad43.stylista.R
 import com.mad43.stylista.data.remote.network.ApiService
 import com.mad43.stylista.data.repo.auth.LoginRepositoryImp
-import com.mad43.stylista.data.repo.auth.SignUpRepository
 import com.mad43.stylista.data.repo.auth.SignUpRepositoryImpl
-import com.mad43.stylista.databinding.FragmentLogInBinding
 import com.mad43.stylista.domain.remote.auth.LoginUseCase
 import com.mad43.stylista.ui.login.viewModel.LoginState
 import com.mad43.stylista.ui.login.viewModel.LoginViewModel

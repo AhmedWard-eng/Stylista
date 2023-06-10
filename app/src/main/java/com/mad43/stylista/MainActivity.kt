@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications -> {
                     navView.visibility = View.VISIBLE
                 }
-
                 else -> {
                     navView.visibility = View.GONE
                 }
