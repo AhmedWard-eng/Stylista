@@ -12,7 +12,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.mad43.stylista.R
 import com.mad43.stylista.ui.login.viewModel.LoginState
-import com.mad43.stylista.ui.login.viewModel.SignInViewModel
+import com.mad43.stylista.ui.login.viewModel.LoginViewModel
+
 import com.mad43.stylista.util.MyDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class LogInFragment : Fragment() {
    private var _binding: FragmentLogInBinding? = null
    private val binding get() = _binding!!
 
-    lateinit var signInViewModel: SignInViewModel
+    lateinit var signInViewModel: LoginViewModel
 
     var dialog = MyDialog()
 
@@ -43,7 +44,7 @@ class LogInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        signInViewModel=ViewModelProvider(this)[SignInViewModel::class.java]
+        signInViewModel=ViewModelProvider(this)[LoginViewModel::class.java]
 
         binding.buttonSignIn.setOnClickListener {
             val email = binding.editTextEmailSignIn.text.toString()
