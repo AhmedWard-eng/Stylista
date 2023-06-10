@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.mad43.stylista.databinding.FragmentLogInBinding
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -28,8 +29,8 @@ import kotlinx.coroutines.launch
 
 class LogInFragment : Fragment() {
 
-    private var _binding: FragmentLogInBinding? = null
-    private val binding get() = _binding!!
+   private var _binding: FragmentLogInBinding? = null
+   private val binding get() = _binding!!
 
 
     private lateinit var loginViewModel: LoginViewModel

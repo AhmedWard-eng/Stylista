@@ -19,64 +19,63 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/materialToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primary_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+<!--            <com.google.android.material.appbar.MaterialToolbar-->
+<!--                android:id="@+id/materialToolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/primary_color"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
 
-                <androidx.appcompat.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+<!--                <androidx.appcompat.widget.Toolbar-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent">-->
 
-                    <EditText
-                        android:id="@+id/searchView"
-                        android:layout_width="250dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/search_view_rounded"
-                        android:clickable="true"
-                        android:drawableStart="@drawable/baseline_search_24"
-                        android:focusable="true"
-                        android:hint="@string/searchForProduct"
-                        android:imeOptions="actionSearch"
-                        android:padding="5dp"
-                        android:singleLine="true"
-                        app:layout_constraintEnd_toStartOf="@id/imageFavorite"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/searchView"-->
+<!--                        android:layout_width="250dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:layout_marginEnd="20dp"-->
+<!--                        android:layout_marginBottom="5dp"-->
+<!--                        android:background="@drawable/search_view_rounded"-->
+<!--                        android:drawableStart="@drawable/baseline_search_24"-->
+<!--                        android:focusable="false"-->
+<!--                        android:hint="@string/searchForProduct"-->
+<!--                        android:imeOptions="actionSearch"-->
+<!--                        android:padding="5dp"-->
+<!--                        android:singleLine="true"-->
+<!--                        app:layout_constraintEnd_toStartOf="@id/imageFavorite"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
-                    <ImageView
-                        android:id="@+id/imageFavorite"
-                        android:layout_width="30dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:src="@drawable/baseline_favorite_24"
-                        app:layout_constraintEnd_toStartOf="@+id/imageCart"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imageFavorite"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:layout_marginStart="20dp"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:layout_marginEnd="5dp"-->
+<!--                        android:layout_marginBottom="5dp"-->
+<!--                        android:src="@drawable/baseline_favorite_24"-->
+<!--                        app:layout_constraintEnd_toStartOf="@+id/imageCart"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
-                    <ImageView
-                        android:id="@+id/imageCart"
-                        android:layout_width="30dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/baseline_shopping_cart_24"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageFavorite"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/imageFavorite" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imageCart"-->
+<!--                        android:layout_width="30dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:layout_margin="5dp"-->
+<!--                        android:src="@drawable/baseline_shopping_cart_24"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/imageFavorite"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/imageFavorite" />-->
 
 
-                </androidx.appcompat.widget.Toolbar>
+<!--                </androidx.appcompat.widget.Toolbar>-->
 
-            </com.google.android.material.appbar.MaterialToolbar>
+<!--            </com.google.android.material.appbar.MaterialToolbar>-->
 
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/image_slider"
@@ -92,154 +91,153 @@
                 app:iss_text_align="CENTER"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/materialToolbar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/categoryLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/category"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_slider" />
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/categoryGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoryLabel">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="27dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/mainCategoryShoesImage"
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/shoesjpg"
-                            app:civ_border_color="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/shoes"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShoesImage" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="27dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/mainCategoryAccessoriesImage"
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/accessories"
-                            app:civ_border_color="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/accessories"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/mainCategoryAccessoriesImage" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/categoryLabel"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="@string/category"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20sp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/image_slider" />-->
 
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                android:id="@+id/categoryGroup"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/categoryLabel">-->
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="27dp"
-                    android:orientation="vertical">
+<!--                <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="27dp"-->
+<!--                    android:orientation="vertical">-->
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent">-->
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/mainCategoryShirtImage"
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/shirt"
-                            app:civ_border_color="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                            android:id="@+id/mainCategoryShoesImage"-->
+<!--                            android:layout_width="68dp"-->
+<!--                            android:layout_height="68dp"-->
+<!--                            android:layout_margin="5dp"-->
+<!--                            android:src="@drawable/shoesjpg"-->
+<!--                            app:civ_border_color="@color/white"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/shirt"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShirtImage" />
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:text="@string/shoes"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="20sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShoesImage" />-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+<!--                <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="27dp"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent">-->
+
+<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                            android:id="@+id/mainCategoryAccessoriesImage"-->
+<!--                            android:layout_width="68dp"-->
+<!--                            android:layout_height="68dp"-->
+<!--                            android:layout_margin="5dp"-->
+<!--                            android:src="@drawable/accessories"-->
+<!--                            app:civ_border_color="@color/white"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:text="@string/accessories"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="20sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/mainCategoryAccessoriesImage" />-->
+
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+<!--                </androidx.appcompat.widget.LinearLayoutCompat>-->
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+<!--                <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="27dp"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent">-->
+
+<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                            android:id="@+id/mainCategoryShirtImage"-->
+<!--                            android:layout_width="68dp"-->
+<!--                            android:layout_height="68dp"-->
+<!--                            android:layout_margin="5dp"-->
+<!--                            android:src="@drawable/shirt"-->
+<!--                            app:civ_border_color="@color/white"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="5dp"-->
+<!--                            android:text="@string/shirt"-->
+<!--                            android:textColor="@color/black"-->
+<!--                            android:textSize="20sp"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/mainCategoryShirtImage" />-->
+
+<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
 
             <TextView
                 android:id="@+id/brandLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/brand"
-                android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textColor="@color/primary_color"
+                android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/categoryGroup" />
+                app:layout_constraintTop_toBottomOf="@id/image_slider" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmerFrameLayout"
