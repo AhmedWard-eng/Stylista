@@ -7,7 +7,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 object ApiService {
 
-    val brandsApiService = AppRetrofit.retrofit.create(ProductsAPIInterface::class.java)
+    val brandsApiService: ProductsAPIInterface = AppRetrofit.retrofit.create(ProductsAPIInterface::class.java)
+
+//    val carAPI
 
     object AppRetrofit {
         val retrofit: Retrofit =  Retrofit.Builder()
