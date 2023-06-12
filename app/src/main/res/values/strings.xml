@@ -42,12 +42,11 @@
     <string name="verfid">please, verfid mail</string>
     <string name="check_login">Please Login First</string>
     <string name="skip">Skip</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="reviews">Reviews</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="description">"Description "</string>
     <string name="more_than">more..</string>
+    <string name="available_size">Available Size</string>
     /***Marina***/
 
     /***Ahmed***/

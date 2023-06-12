@@ -2,13 +2,15 @@ package com.mad43.stylista.ui.productInfo.view
 
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -26,6 +28,8 @@ class ProductDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     lateinit var productInfo : ProductInfoViewModel
+
+    var availableSizes = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +50,6 @@ class ProductDetailsFragment : Fragment() {
             val fragment = ReviewFragment()
             fragment.show(requireFragmentManager(), "MyDialogReviewsFragment")
         }
-
-        println("/*****////****")
         if (id != null) {
             productInfo.getProductDetails(id)
         }
@@ -55,15 +57,48 @@ class ProductDetailsFragment : Fragment() {
             productInfo.uiState.collectLatest {
                     uiState ->when (uiState) {
                 is ApiState.Success -> {
-                    binding.textViewProductName.text=uiState.data.product.title.toString()
-                    binding.textViewDescriptionScroll.text = uiState.data.product.body_html.toString()
+                    binding.progressBar.visibility=View.GONE
+                    binding.ratingBar.visibility=View.VISIBLE
+                    binding.buttonAvailableSize.visibility = View.VISIBLE
+                    binding.buttonAddToCart.visibility = View.VISIBLE
+                    binding.textViewReviews.visibility = View.VISIBLE
+                    binding.textViewDescriptionScroll.visibility = View.VISIBLE
+
+                    binding.textViewProductName.text=uiState.data.product.title
+                    binding.textViewDescriptionScroll.text = uiState.data.product.body_html
                     binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
                     binding.imageSlider.setImageList( productInfo.imagesArray, ScaleTypes.FIT)
                     binding.imageSlider.startSliding(2000)
                     binding.textViewPrice.text=uiState.data.product.variants.get(0).price
                     val randomFloat = Random.nextFloat() * 4.0f + 1.0f
                     binding.ratingBar.rating=randomFloat
-                    Log.d(ContentValues.TAG, "onViewCreated: ${uiState.data.product.title}")
+                    for (index in 0 .. uiState.data.product.variants.size-1){
+                        Log.d(TAG, "Size: ${uiState.data.product.variants.get(index).title} ")
+                        binding.buttonAvailableSize.text = uiState.data.product.variants.get(index).title
+                        var size = uiState.data.product.variants.get(index).title
+                        availableSizes.add(size)
+                    }
+
+                    val popupMenu = PopupMenu(requireContext(), binding.buttonAvailableSize)
+                    for (size in availableSizes) {
+                        popupMenu.menu.add(size)
+                    }
+
+                    binding.buttonAvailableSize.setOnClickListener(View.OnClickListener { popupMenu.show() })
+
+                    popupMenu.setOnMenuItemClickListener { item ->
+                        val selectedSize = item.title.toString()
+                        binding.buttonAvailableSize.text = selectedSize
+                        true
+                    }
+                }
+                is ApiState.Loading ->{
+                    binding.progressBar.visibility=View.VISIBLE
+                    binding.ratingBar.visibility=View.GONE
+                    binding.buttonAvailableSize.visibility = View.GONE
+                    binding.buttonAddToCart.visibility = View.GONE
+                    binding.textViewReviews.visibility = View.GONE
+                    binding.textViewDescriptionScroll.visibility = View.GONE
                 }
                 else -> {
                     Log.d(ContentValues.TAG, "onViewCreated: ${uiState}")
