@@ -10,4 +10,6 @@ interface RemoteProductsDataSource {
     suspend fun getAllProductInBrand(brand: String): ProductResponse
     suspend fun getProductById(id: Long): Product
 
+    suspend fun getAllProduct(): ProductResponse
+
 }

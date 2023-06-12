@@ -14,5 +14,8 @@ class Constants {
         const val CUSTOMER_EMAIL = "CUSTOMER_EMAIL"
         const val CUSTOMER_STATE = "CUSTOMER_STATE"
         const val USER_IDFIRBASE = "USER_IDFIRBASE"
+
+        const val TITE_FRAGMENT_BRAND = "Brand"
+        const val TITE_FRAGMENT_PRODUCT = "Product"
     }
 }
