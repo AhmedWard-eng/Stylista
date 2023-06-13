@@ -1,5 +1,7 @@
 package com.mad43.stylista.ui.login.viewModel
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.R
@@ -18,6 +20,9 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
 
+    var checkLogin = authUseCase.isUserLoggedIn()
+
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
@@ -29,9 +34,15 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
 
                         if(data.customers[0].tags == password){
 
-                            _loginState.value = LoginState.Success(data)
-                           // authUseCase.signUp(email,password)
-                            authUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
+                            authUseCase.signIn(email,password)
+                            var checkEmail = authUseCase.isEmailVerified(email)
+                           if (checkEmail){
+                               _loginState.value = LoginState.Success(data)
+                               authUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
+                           }else{
+                               _loginState.value = LoginState.Failed(R.string.login_valid_email)
+                           }
+
                         }else{
                             _loginState.value = LoginState.Failed(R.string.login_valid_password)
                         }
@@ -52,7 +63,6 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
         val customerData = authUseCase.getCustomerData()
         _userExists.value = customerData.isSuccess
     }
-
 
 
 }

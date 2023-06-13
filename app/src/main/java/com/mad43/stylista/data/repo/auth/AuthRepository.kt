@@ -17,4 +17,5 @@ interface AuthRepository {
     fun getCustomerData() : Result<LocalCustomer>
     suspend fun sendEmailVerification()
     suspend fun signIn(email: String, password: String): FirebaseCustumer?
+    fun isUserLoggedIn(): Boolean
 }

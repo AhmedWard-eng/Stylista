@@ -12,9 +12,9 @@ class AuthFirebaseImp(private val auth: FirebaseAuth = FirebaseAuth.getInstance(
         return auth.currentUser?.let { FirebaseCustumer(it.uid, it.email) }
     }
 
-   /* override fun isUserLoggedIn(): Boolean {
+    override fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
-    }*/
+    }
 
     override fun signOut() {
         auth.signOut()
@@ -29,13 +29,11 @@ class AuthFirebaseImp(private val auth: FirebaseAuth = FirebaseAuth.getInstance(
     }
 
     override suspend fun isEmailVerified(email: String): Boolean {
-        try {
-            val user = auth.fetchSignInMethodsForEmail(email).result
-            return user == null || auth.currentUser?.isEmailVerified == true
-        } catch (e: FirebaseAuthInvalidCredentialsException) {
-            throw e
+        return try {
+            val user = auth.currentUser
+            user != null && user.email == email && user.isEmailVerified
         } catch (e: Exception) {
-            throw e
+            false
         }
     }
     override suspend fun sendEmailVerification() {
@@ -54,5 +52,6 @@ class AuthFirebaseImp(private val auth: FirebaseAuth = FirebaseAuth.getInstance(
             throw e
         }
     }
+
 
 }

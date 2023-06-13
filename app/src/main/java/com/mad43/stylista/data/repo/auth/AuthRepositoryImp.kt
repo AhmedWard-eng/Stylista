@@ -53,6 +53,9 @@ class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRem
     override suspend fun signIn(email: String, password: String): FirebaseCustumer? {
         return authFirbase.signIn(email,password)
     }
+    override fun isUserLoggedIn(): Boolean{
+        return authFirbase.isUserLoggedIn()
+    }
 
 
 }

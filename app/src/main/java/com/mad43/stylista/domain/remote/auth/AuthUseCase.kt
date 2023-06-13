@@ -34,4 +34,7 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
     suspend fun signIn(email: String, password: String): FirebaseCustumer?{
         return authRepository.signIn(email,password)
     }
+    fun isUserLoggedIn(): Boolean{
+        return authRepository.isUserLoggedIn()
+    }
 }
