@@ -72,7 +72,8 @@ class SignUpFragment : Fragment() {
                     is SignUpState.onSuccess -> {
                         dialog.showAlertDialog(getString(it.message),requireContext())
                         Navigation.findNavController(requireView())
-                            .navigate(R.id.action_registrationFragment_to_logInFragment)
+                            .navigate(R.id.logInFragment)
+
                     }
                     is SignUpState.onError -> {
                         dialog.showAlertDialog(getString(it.message),requireContext())
