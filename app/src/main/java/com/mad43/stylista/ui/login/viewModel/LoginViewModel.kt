@@ -40,7 +40,7 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
                                _loginState.value = LoginState.Success(data)
                                authUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
                            }else{
-                               _loginState.value = LoginState.Failed(R.string.login_valid_email)
+                               _loginState.value = LoginState.Failed(R.string.verfid)
                            }
 
                         }else{
