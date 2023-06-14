@@ -177,7 +177,7 @@ class BrandFragment : Fragment(), OnItemProductClicked {
     }
 
     override fun productClicked(id: Long) {
-        val action = BrandFragmentDirections.actionBrandFragmentToProductDetailsFragment(id)
+        val action = BrandFragmentDirections.actionBrandFragmentToProductDetailsFragment32(id)
         binding.root.findNavController().navigate(action)
     }
 

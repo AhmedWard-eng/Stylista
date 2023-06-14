@@ -34,7 +34,6 @@
                     android:drawableStart="@drawable/baseline_search_24"
                     android:focusable="true"
                     android:clickable="true"
-                    android:hint="@string/searchForProduct"
                     android:imeOptions="actionSearch"
                     android:padding="5dp"
                     android:singleLine="true"

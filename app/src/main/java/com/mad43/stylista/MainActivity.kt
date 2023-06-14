@@ -1,6 +1,9 @@
 package com.mad43.stylista
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,11 +34,18 @@ class MainActivity : AppCompatActivity() {
         setBottomBarVisibility()
         setActionBarVisibility()
 
+        setActionHint()
         binding.searchView.setOnClickListener {
-            navController.navigate(R.id.searchFragment)
+            val currentDestination = navController.currentDestination?.id
+            if (currentDestination == R.id.navigation_home) {
+                navController.navigate(R.id.searchFragment)
+            } else {
+                navController.navigate(R.id.searchProductFragment)
+            }
         }
 
     }
+
 
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -62,4 +72,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun setActionHint() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home-> {
+                    binding.searchView.hint = getString(R.string.search_brand)
+                }
+                else -> {
+                    binding.searchView.hint = getString(R.string.search_product)
+                }
+            }
+        }
+    }
+
+
+
 }
