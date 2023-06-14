@@ -26,26 +26,25 @@
 
                 <EditText
                     android:id="@+id/searchView"
-                    android:layout_width="250dp"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
                     android:background="@drawable/search_view_rounded"
+                    android:clickable="true"
                     android:drawableStart="@drawable/baseline_search_24"
                     android:focusable="true"
-                    android:clickable="true"
                     android:imeOptions="actionSearch"
                     android:padding="5dp"
                     android:singleLine="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageFavorite"
                     app:layout_constraintEnd_toStartOf="@id/imageFavorite"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/imageFavorite" />
 
                 <ImageView
                     android:id="@+id/imageFavorite"
-                    android:layout_width="30dp"
-                    android:layout_height="50dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
@@ -57,8 +56,8 @@
 
                 <ImageView
                     android:id="@+id/imageCart"
-                    android:layout_width="30dp"
-                    android:layout_height="50dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_margin="10dp"
                     android:src="@drawable/baseline_shopping_cart_24"
                     app:layout_constraintBottom_toBottomOf="@+id/imageFavorite"

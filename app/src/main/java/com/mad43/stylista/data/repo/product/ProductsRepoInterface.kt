@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface ProductsRepoInterface {
     suspend fun getAllBrand() : Flow<List<DisplayBrand>>
     suspend fun getAllProductInBrand(brand: String) : Flow<List<DisplayProduct>>
-
     suspend fun getProductDetails(id: Long): Flow<ProductDetails>
     suspend fun getAllProduct() :  Flow<List<DisplayProduct>>
+
 }

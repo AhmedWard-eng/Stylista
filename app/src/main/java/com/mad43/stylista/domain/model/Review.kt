@@ -1,4 +1,4 @@
-package com.mad43.stylista.ui.productInfo.model
+package com.mad43.stylista.domain.model
 
 data class Review (val title: String, val rating: Float, val comment: String)
 

@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.databinding.FragmentProductDetailsBinding
+import com.mad43.stylista.domain.model.PuttingCartItem
+import com.mad43.stylista.domain.remote.cart.PutItemInCartUseCase
 import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -75,7 +77,7 @@ class ProductDetailsFragment : Fragment() {
                     for (index in 0 .. uiState.data.product.variants.size-1){
                         Log.d(TAG, "Size: ${uiState.data.product.variants.get(index).title} ")
                         binding.buttonAvailableSize.text = uiState.data.product.variants.get(index).title
-                        var size = uiState.data.product.variants.get(index).title
+                        val size = uiState.data.product.variants.get(index).title
                         availableSizes.add(size)
                     }
 
@@ -101,10 +103,20 @@ class ProductDetailsFragment : Fragment() {
                     binding.textViewDescriptionScroll.visibility = View.GONE
                 }
                 else -> {
-                    Log.d(ContentValues.TAG, "onViewCreated: ${uiState}")
+                    Log.d(TAG, "onViewCreated: ${uiState}")
                 }
+
+
             }
             }
+        }
+
+        addToCart(0L)
+    }
+
+    private fun addToCart(variantId: Long) {
+        binding.buttonAddToCart.setOnClickListener {
+            variantId
         }
     }
 

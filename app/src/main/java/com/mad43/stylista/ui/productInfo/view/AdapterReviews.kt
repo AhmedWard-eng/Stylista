@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mad43.stylista.databinding.RowReviewsBinding
-import com.mad43.stylista.ui.productInfo.model.Review
+import com.mad43.stylista.domain.model.Review
 
 class AdapterReviews (private var reviewList: List<Review>) :
     RecyclerView.Adapter<AdapterReviews.ViewHolder>() {

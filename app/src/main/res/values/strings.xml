@@ -12,6 +12,14 @@
     <string name="accessories">ACCESSORIES</string>
     <string name="shirt">T-SHIRTS</string>
     <string name="price">Price</string>
+    <string name="homePage">Home Page</string>
+    <string name="kid">Kid</string>
+    <string name="men">Men</string>
+    <string name="women">Women</string>
+    <string name="sale">Sale</string>
+    <string name="brand_Products">Brand’s Products</string>
+    <string name="product_Details">Product’s Details</string>
+    <string name="search">Search</string>
 
     /***Fatma***/
 
