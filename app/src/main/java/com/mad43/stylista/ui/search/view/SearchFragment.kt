@@ -41,7 +41,6 @@ class SearchFragment : Fragment() , OnItemBrandClicked {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    var checkFragment = "Brand"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,15 +60,6 @@ class SearchFragment : Fragment() , OnItemBrandClicked {
 
         searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
-
-        Log.d(TAG, "onTextChanged: ${Constants.TITE_FRAGMENT_BRAND}")
-
-//        val argumentValue = arguments?.getString("brand")
-//        println("argumentValue ${argumentValue}")
-//        Log.d(TAG, "argumentValue in Fragment..: ${argumentValue}")
-
-
-
         val activity = requireActivity() as AppCompatActivity
         val toolbar = activity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.materialToolbar)
         activity.setSupportActionBar(toolbar)
@@ -80,31 +70,22 @@ class SearchFragment : Fragment() , OnItemBrandClicked {
         binding.searchByNameRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         var searchView = toolbar.findViewById<android.widget.EditText>(R.id.searchView)
+        searchView.hint = getString(R.string.search_brand)
         searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 searchViewModel.getBrand()
-                if (checkFragment == Constants.TITE_FRAGMENT_BRAND){
-                    brandAdapter.submitList(searchViewModel.brands)
-                }
+                brandAdapter.submitList(searchViewModel.brands)
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if (checkFragment == Constants.TITE_FRAGMENT_BRAND){
-                    val searchTextContent = searchView.text.toString()
-                    val filteredBrands = searchViewModel.searchBrand(searchTextContent)
-                    brandAdapter.submitList(filteredBrands)
-                Log.d(TAG, "/////////**onTextChanged: ${Constants.TITE_FRAGMENT_BRAND} ")
-                }
-
+                val searchTextContent = searchView.text.toString()
+                val filteredBrands = searchViewModel.searchBrand(searchTextContent)
+                brandAdapter.submitList(filteredBrands)
 
             }
             override fun afterTextChanged(s: Editable?) {
                 val searchTextContent = searchView.text.toString()
-                if (checkFragment == Constants.TITE_FRAGMENT_BRAND){
                 val filteredBrands = searchViewModel.searchBrand(searchTextContent)
                 brandAdapter.submitList(filteredBrands)
-                }
-
             }
         })
     }

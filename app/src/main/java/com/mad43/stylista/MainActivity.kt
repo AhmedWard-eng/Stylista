@@ -13,19 +13,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mad43.stylista.databinding.ActivityMainBinding
-import com.mad43.stylista.ui.home.HomeFragmentDirections
-import com.mad43.stylista.ui.search.view.SearchFragmentDirections
-import com.mad43.stylista.util.Constants.Companion.TITE_FRAGMENT_BRAND
-import com.mad43.stylista.util.Constants.Companion.TITE_FRAGMENT_PRODUCT
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navView: BottomNavigationView
-    private var titeFragment: String = ""
-    val bundle = Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,22 +34,16 @@ class MainActivity : AppCompatActivity() {
 
         setBottomBarVisibility()
         setActionBarVisibility()
-        //  setActionBarFragment()
 
+        setActionHint()
         binding.searchView.setOnClickListener {
-            Log.d(TAG, "/////////////////////// navigation: ")
-            navController.addOnDestinationChangedListener { _, destination, _ ->
-                titeFragment = if (destination.id == R.id.navigation_home) {
-                    TITE_FRAGMENT_BRAND
-                } else {
-                    TITE_FRAGMENT_PRODUCT
-                }
-
+            val currentDestination = navController.currentDestination?.id
+            if (currentDestination == R.id.navigation_home) {
+                navController.navigate(R.id.searchFragment)
+            } else {
+                navController.navigate(R.id.searchProductFragment)
             }
-            navController.navigate(R.id.searchProductFragment)
-
         }
-
 
     }
 
@@ -87,20 +74,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun setActionBarFragment() {
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            when (destination.id) {
-//                R.id.navigation_home -> {
-//                    titeFragment = "Brand"
-//
-//                }
-//                else -> {
-//                    titeFragment = "Product"
-//                }
-//            }
-////            val action = SearchFragmentDirections.actionSearchFragmentToBrandFragment(titeFragment)
-////            binding.root.findNavController().navigate(action)
-//        }
-//    }
+    private fun setActionHint() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home-> {
+                    binding.searchView.hint = getString(R.string.search_brand)
+                }
+                else -> {
+                    binding.searchView.hint = getString(R.string.search_product)
+                }
+            }
+        }
+    }
+
+
 
 }

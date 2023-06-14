@@ -58,28 +58,21 @@ class SearchProductFragment : Fragment() , OnItemProductClicked {
         binding.searchByNameRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         var searchView = toolbar.findViewById<android.widget.EditText>(R.id.searchView)
+        searchView.hint = getString(R.string.search_product)
         searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 searchViewModel.getAllProduct()
-                if (brand != null) {
-                   // searchViewModel.getProduct(brand)
-                  //  searchViewModel.getAllProduct()
                     brandAdapter.submitList(searchViewModel.allPrpduct)
-                    Log.d(TAG, "searchViewModel.prpduct: ${searchViewModel.allPrpduct}")
-                }
-
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val searchTextContent = searchView.text.toString()
                 val filteredProducts = searchViewModel.searchAllProduct(searchTextContent)
                 brandAdapter.submitList(filteredProducts)
-                Log.d(TAG, "filteredProducts: ${filteredProducts},, ${brand}")
             }
             override fun afterTextChanged(s: Editable?) {
                 val searchTextContent = searchView.text.toString()
                 val filteredProducts = searchViewModel.searchAllProduct(searchTextContent)
-                Log.d(TAG, "filteredProducts: ${filteredProducts} ${brand}")
-                // brandAdapter.submitList(filteredProducts)
+                brandAdapter.submitList(filteredProducts)
             }
         })
     }
