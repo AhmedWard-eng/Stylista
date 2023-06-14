@@ -1,7 +1,7 @@
 package com.mad43.stylista.domain.remote.cart
 
 import com.mad43.stylista.data.remote.entity.draftOrders.Property
-import com.mad43.stylista.data.remote.entity.draftOrders.listOfOrderResponse.DraftOrder
+import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.DraftOrder
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPuttingRequestBody
@@ -14,15 +14,15 @@ import com.mad43.stylista.util.RemoteStatus
 
 class EditCartItemUseCase (private val cartRepo: CartRepo = CartRepoImp()) {
 
-    suspend operator fun invoke(variantId : Long, quantity : Int , email : String,cartId : Long): RemoteStatus<List<CartItem>> {
-        val remoteStatus = cartRepo.getCartWithEmail(email)
-        val draftOrder: DraftOrder
+    suspend operator fun invoke(variantId : Long, quantity : Int ,cartId : Long): RemoteStatus<List<CartItem>> {
+        val remoteStatus = cartRepo.getCartUsingId(cartId.toString())
+        val draftOrder: DraftOrder?
         if (remoteStatus is RemoteStatus.Success) {
-            draftOrder = remoteStatus.data
+            draftOrder = remoteStatus.data.draft_order
         } else {
             return remoteStatus as RemoteStatus.Failure
         }
-        val lineItems = draftOrder.line_items
+        val lineItems = draftOrder?.line_items
 
         val updatingList =
             updateQuantityOfItem(lineItems!!.toListOfPutLineItems(), variantId,quantity)
@@ -48,21 +48,11 @@ class EditCartItemUseCase (private val cartRepo: CartRepo = CartRepoImp()) {
     }
 
     private fun updateQuantityOfItem(putLineItems: MutableList<InsertingLineItem>, variantId: Long, quantity: Int): List<InsertingLineItem> {
-        val theUpdatingProduct = putLineItems.find { it.variant_id == variantId }
-
-    }
-
-    private fun updateThisListWithNewItem(
-        lineItems: MutableList<InsertingLineItem>,
-        puttingCartItem: PuttingCartItem
-    ): List<InsertingLineItem> {
-        lineItems.add(
-            InsertingLineItem(
-                properties = listOf(Property(value = puttingCartItem.imageUrl)),
-                variant_id = puttingCartItem.variantId,
-                quantity = puttingCartItem.quantity
-            )
-        )
-        return lineItems.toList()
+        val theUpdatingProduct = putLineItems.find {it.variant_id == variantId }
+        if (theUpdatingProduct != null) {
+            putLineItems.remove(theUpdatingProduct)
+            putLineItems.add(theUpdatingProduct.copy(quantity = quantity))
+        }
+        return putLineItems.toList()
     }
 }

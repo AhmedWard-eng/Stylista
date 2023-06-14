@@ -6,14 +6,7 @@ import com.mad43.stylista.util.RemoteStatus
 
 class CreateCartUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
 
-    suspend operator fun invoke(customerId : Long) : RemoteStatus<Boolean>{
-        val remoteStatus = cartRepo.createCartForCustomer(customerId)
-
-        return if (remoteStatus is RemoteStatus.Success){
-            RemoteStatus.Success(true)
-        }else{
-            remoteStatus as RemoteStatus.Failure
-        }
-
+    suspend operator fun invoke(customerId : Long) : RemoteStatus<Long>{
+        return cartRepo.createCartForCustomer(customerId)
     }
 }

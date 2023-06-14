@@ -10,10 +10,10 @@ import com.mad43.stylista.domain.model.toCartItemList
 import com.mad43.stylista.util.RemoteStatus
 
 class GetCartListUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
-    suspend operator fun invoke(email: String): RemoteStatus<List<CartItem>> {
-        val remoteStatus = cartRepo.getCartWithEmail(email)
+    suspend operator fun invoke(cartId: String): RemoteStatus<List<CartItem>> {
+        val remoteStatus = cartRepo.getCartUsingId(cartId)
         return if (remoteStatus is RemoteStatus.Success) {
-            val lineItem = remoteStatus.data.line_items
+            val lineItem = remoteStatus.data.draft_order?.line_items
             Log.d("TAG", "invoke: $lineItem")
             if (!lineItem.isNullOrEmpty())
                 RemoteStatus.Success(lineItem.toCartItemList())

@@ -5,15 +5,10 @@ import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mad43.stylista.databinding.ActivityMainBinding
-import com.mad43.stylista.domain.remote.cart.GetCartListUseCase
-import com.mad43.stylista.util.RemoteStatus
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,10 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         setBottomBarVisibility()
         setActionBarVisibility()
-        val getCartListUseCase = GetCartListUseCase()
-        lifecycleScope.launch {
-            Log.d("TAG", "onCreate: ${(getCartListUseCase("egnition_sample_90@egnition.com") as RemoteStatus.Success).data}")
-        }
+
         binding.searchView.setOnClickListener {
             navController.navigate(R.id.searchFragment)
         }
