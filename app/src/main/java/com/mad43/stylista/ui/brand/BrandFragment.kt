@@ -173,7 +173,6 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                 }
             }
         }
-
     }
 
     override fun productClicked(id: Long) {

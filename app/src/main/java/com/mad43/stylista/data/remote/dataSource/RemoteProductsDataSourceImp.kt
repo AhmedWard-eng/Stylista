@@ -17,12 +17,14 @@ class RemoteProductsDataSourceImp(private val productsAPIInterface: ProductsAPII
         return productsAPIInterface.getAllProducts()
     }
 
+
     override suspend fun getProductById(id: Long): ProductDetails {
         return productsAPIInterface.getProductDetails(id= id)
     }
 
     override suspend fun getAllProduct(): ProductResponse {
         return productsAPIInterface.getAllProducts()
+
     }
 
 
