@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/registrationFragment">
+    app:startDestination="@id/logInFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -16,17 +16,17 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_category"
         android:name="com.mad43.stylista.ui.category.CategoryFragment"
         android:label="@string/category"
         tools:layout="@layout/fragment_category" >
         <action
             android:id="@+id/action_navigation_dashboard_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment3" />
+            app:destination="@id/productDetailsFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_profile"
         android:name="com.mad43.stylista.ui.profile.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" />
@@ -52,7 +52,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_brandFragment_to_productDetailsFragment32"
-            app:destination="@id/productDetailsFragment3" />
+            app:destination="@id/productDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -85,7 +85,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_searchProductFragment_to_productDetailsFragment3"
-            app:destination="@id/productDetailsFragment3" />
+            app:destination="@id/productDetailsFragment" />
     </fragment>
     
 
@@ -96,7 +96,7 @@
         tools:layout="@layout/fragment_cart" />
 
   <fragment
-        android:id="@+id/productDetailsFragment3"
+        android:id="@+id/productDetailsFragment"
         android:name="com.mad43.stylista.ui.productInfo.view.ProductDetailsFragment"
         android:label="ProductDetailsFragment" >
         <argument

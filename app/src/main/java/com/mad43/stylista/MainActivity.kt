@@ -1,12 +1,9 @@
 package com.mad43.stylista
 
-import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -41,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             val currentDestination = navController.currentDestination?.id
             if (currentDestination == R.id.navigation_home) {
                 navController.navigate(R.id.searchFragment)
-            } else {
+            } else if (currentDestination != R.id.searchFragment) {
                 navController.navigate(R.id.searchProductFragment)
             }
         }
@@ -52,9 +49,10 @@ class MainActivity : AppCompatActivity() {
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications -> {
+                R.id.navigation_home, R.id.navigation_category, R.id.navigation_profile -> {
                     navView.visibility = View.VISIBLE
                 }
+
                 else -> {
                     navView.visibility = View.GONE
                 }
@@ -68,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.registrationFragment, R.id.logInFragment -> {
                     binding.materialToolbar.visibility = View.GONE
                 }
+
                 else -> {
                     binding.materialToolbar.visibility = View.VISIBLE
                 }
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//
+    //
 //    @SuppressLint("SetTextI18n")
 //    private fun setLabelInActionBar(){
 //        navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -107,11 +106,32 @@ class MainActivity : AppCompatActivity() {
     private fun setActionHint() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_home-> {
+                R.id.navigation_home -> {
                     binding.searchView.hint = getString(R.string.search_brand)
+                    binding.searchView.isFocusable = false
+                    binding.searchView.text.clear()
                 }
-                else -> {
+
+                R.id.searchFragment -> {
+                    binding.searchView.hint = getString(R.string.search_brand)
+                    binding.searchView.isFocusableInTouchMode = true
+                    binding.searchView.requestFocus()
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showSoftInput(binding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                }
+
+                R.id.searchProductFragment -> {
                     binding.searchView.hint = getString(R.string.search_product)
+                    binding.searchView.isFocusableInTouchMode = true
+                    binding.searchView.requestFocus()
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showSoftInput(binding.searchView, InputMethodManager.SHOW_IMPLICIT)
+                }
+
+                else -> {
+                    binding.searchView.isFocusable = false
+                    binding.searchView.hint = getString(R.string.search_product)
+                    binding.searchView.text.clear()
                 }
             }
         }

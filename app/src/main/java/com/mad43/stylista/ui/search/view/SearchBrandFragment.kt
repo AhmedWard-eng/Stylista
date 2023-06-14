@@ -1,13 +1,15 @@
 package com.mad43.stylista.ui.search.view
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,6 +18,7 @@ import com.mad43.stylista.databinding.FragmentSearchBinding
 import com.mad43.stylista.ui.home.HomeBrandAdapter
 import com.mad43.stylista.ui.home.OnItemBrandClicked
 import com.mad43.stylista.ui.search.viewModel.SearchViewModel
+
 
 class SearchBrandFragment : Fragment() , OnItemBrandClicked {
 
@@ -52,7 +55,7 @@ class SearchBrandFragment : Fragment() , OnItemBrandClicked {
 
         binding.searchByNameRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        var searchView = toolbar.findViewById<android.widget.EditText>(R.id.searchView)
+        val searchView = toolbar.findViewById<android.widget.EditText>(R.id.searchView)
         searchView.hint = getString(R.string.search_brand)
         searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -63,7 +66,6 @@ class SearchBrandFragment : Fragment() , OnItemBrandClicked {
                 val searchTextContent = searchView.text.toString()
                 val filteredBrands = searchViewModel.searchBrand(searchTextContent)
                 brandAdapter.submitList(filteredBrands)
-
             }
             override fun afterTextChanged(s: Editable?) {
                 val searchTextContent = searchView.text.toString()
@@ -71,6 +73,9 @@ class SearchBrandFragment : Fragment() , OnItemBrandClicked {
                 brandAdapter.submitList(filteredBrands)
             }
         })
+
+
+
     }
     override fun brandClicked(brand: String) {
         val action = SearchBrandFragmentDirections.actionSearchFragmentToBrandFragment(brand)

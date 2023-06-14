@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mad43.stylista.databinding.FragmentReviewsDialogBinding
-import com.mad43.stylista.ui.productInfo.model.reviews
+import com.mad43.stylista.domain.model.reviews
 
 
 class ReviewFragment : DialogFragment() {
