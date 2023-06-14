@@ -83,7 +83,7 @@ class SearchProductFragment : Fragment() , OnItemProductClicked {
     }
 
     override fun productClicked(id: Long) {
-        val action = SearchProductFragmentDirections.actionSearchProductFragmentToProductDetailsFragment(id)
+        val action = SearchProductFragmentDirections.actionSearchProductFragmentToProductDetailsFragment3(id)
         binding.root.findNavController().navigate(action)
     }
 

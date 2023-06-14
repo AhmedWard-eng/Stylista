@@ -63,7 +63,7 @@ class LogInFragment : Fragment() {
         }
         binding?.tabSignIn?.setOnClickListener {
             Navigation.findNavController(requireView())
-                .navigate(R.id.action_logInFragment_self)
+                .navigate(R.id.logInFragment)
         }
         binding?.textViewSkip?.setOnClickListener {
             Navigation.findNavController(requireView())
