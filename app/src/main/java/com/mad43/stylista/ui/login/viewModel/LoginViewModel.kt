@@ -1,17 +1,18 @@
 package com.mad43.stylista.ui.login.viewModel
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.play.core.integrity.e
 import com.mad43.stylista.R
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
-import com.mad43.stylista.domain.remote.auth.LoginUseCase
+import com.mad43.stylista.domain.remote.auth.AuthUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : ViewModel() {
 
     private  var _loginState: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Loading)
     var loginState: StateFlow<LoginState> = _loginState
@@ -19,19 +20,29 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
 
+    var checkLogin = authUseCase.isUserLoggedIn()
 
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
-                val user = loginUseCase.loginCustomer(email)
+                val user = authUseCase.loginCustomer(email)
 
                 if (user.isSuccessful){
                     val data = user.body()
                     if (data != null) {
+
                         if(data.customers[0].tags == password){
-                            _loginState.value = LoginState.Success(data)
-                            loginUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
+
+                            authUseCase.signIn(email,password)
+                            var checkEmail = authUseCase.isEmailVerified(email)
+                           if (checkEmail){
+                               _loginState.value = LoginState.Success(data)
+                               authUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
+                           }else{
+                               _loginState.value = LoginState.Failed(R.string.verfid)
+                           }
+
                         }else{
                             _loginState.value = LoginState.Failed(R.string.login_valid_password)
                         }
@@ -41,6 +52,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
                 }else{
                     _loginState.value = LoginState.Failed(R.string.login_faild)
                 }
+
             } catch (e: Exception) {
                 _loginState.value = LoginState.Failed(R.string.login_valid_email)
             }
@@ -48,7 +60,9 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     }
 
     fun checkUserIsLogin(){
-        val customerData = loginUseCase.getCustomerData()
+        val customerData = authUseCase.getCustomerData()
         _userExists.value = customerData.isSuccess
     }
+
+
 }
