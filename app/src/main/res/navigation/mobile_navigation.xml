@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/logInFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.mad43.stylista.ui.search.view.SearchFragment"
+        android:name="com.mad43.stylista.ui.search.view.SearchBrandFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <argument
@@ -89,11 +89,6 @@
             android:id="@+id/action_logInFragment_self"
             app:destination="@id/logInFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/productInfoFragment"
-        android:name="com.mad43.stylista.ui.productInfo.view.ProductInfoFragment"
-        android:label="fragment_product_info"
-        tools:layout="@layout/fragment_product_info" />
     <fragment
         android:id="@+id/searchProductFragment"
         android:name="com.mad43.stylista.ui.search.view.SearchProductFragment"
