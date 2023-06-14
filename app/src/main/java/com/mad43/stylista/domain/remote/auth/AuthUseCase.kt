@@ -9,8 +9,8 @@ import retrofit2.Response
 
 
 class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
-    suspend fun signUp(email: String, password: String) {
-        authRepository.signUp(email, password)
+    suspend fun signUp(userName: String,email: String, password: String) {
+        authRepository.signUp(userName,email, password)
     }
     suspend fun loginCustomer(email:String): Response<LoginResponse> {
         return   authRepository.loginCustomer(email)

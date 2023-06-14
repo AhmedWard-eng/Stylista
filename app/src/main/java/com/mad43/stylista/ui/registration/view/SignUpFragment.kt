@@ -46,11 +46,11 @@ class SignUpFragment : Fragment() {
 
 
         binding?.buttonSignUp?.setOnClickListener {
-
+            val userName = binding?.editTextUserNameSignUp?.text.toString()
             val email = binding?.editTextEmailSignUp?.text.toString().trim()
             val password = binding?.textPasswordSignUp?.text.toString()
             var confirmPassword = binding?.editTextTextConfirmPasswordSignUp?.text.toString()
-                registerViewModel.validateInputs(email, password,confirmPassword)
+                registerViewModel.validateInputs(userName,email, password,confirmPassword)
                 observeData()
                 observeErrorMessage()
         }

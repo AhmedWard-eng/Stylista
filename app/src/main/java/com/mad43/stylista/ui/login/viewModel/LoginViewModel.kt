@@ -38,7 +38,7 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
                             var checkEmail = authUseCase.isEmailVerified(email)
                            if (checkEmail){
                                _loginState.value = LoginState.Success(data)
-                               authUseCase.saveLoggedInData(LocalCustomer(data.customers[0].id,email,true,data.customers[0].note))
+                               authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email, state = true, userName = data.customers[0].first_name))
                            }else{
                                _loginState.value = LoginState.Failed(R.string.verfid)
                            }

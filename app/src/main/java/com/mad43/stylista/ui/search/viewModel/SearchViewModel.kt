@@ -4,9 +4,8 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mad43.stylista.data.remote.entity.product.Product
-import com.mad43.stylista.data.repo.ProductsRepo
-import com.mad43.stylista.data.repo.ProductsRepoInterface
+import com.mad43.stylista.data.repo.product.ProductsRepo
+import com.mad43.stylista.data.repo.product.ProductsRepoInterface
 import com.mad43.stylista.domain.model.DisplayBrand
 import com.mad43.stylista.domain.model.DisplayProduct
 import kotlinx.coroutines.flow.*

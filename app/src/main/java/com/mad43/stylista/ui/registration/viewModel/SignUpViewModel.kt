@@ -19,10 +19,10 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
     private val errorMStateFow = MutableSharedFlow<Throwable>()
     val errorStateFlow: SharedFlow<Throwable?> = errorMStateFow
 
-    fun signUp(email: String, password: String) {
+    fun signUp(userName: String,email: String, password: String) {
         viewModelScope.launch {
             try {
-                authUseCase.signUp(email, password)
+                authUseCase.signUp(userName,email, password)
                 validationMutableStateFlow.value = SignUpState.onSuccess(R.string.success)
                 authUseCase.sendEmailVerification()
             }catch (e: FirebaseAuthUserCollisionException){
@@ -34,8 +34,11 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
         }
     }
 
-    fun validateInputs(email: String, password: String,confirmPassword : String) {
-        if (email.isEmpty()) {
+    fun validateInputs(userName: String ,email: String, password: String,confirmPassword : String) {
+        if (userName.isEmpty()){
+            validationMutableStateFlow.value = SignUpState.onError(R.string.userNameEmpty)
+        }
+        else if (email.isEmpty()) {
             validationMutableStateFlow.value = SignUpState.onError(R.string.emailNameEmpty)
         }else if(!email.matches(Validation.EMAIL_PATTERN.toRegex())){
             validationMutableStateFlow.value = SignUpState.onError(R.string.validateEmail)
@@ -52,7 +55,7 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
         }
         else {
 
-            signUp(email,password)
+            signUp(userName,email,password)
 
         }
     }

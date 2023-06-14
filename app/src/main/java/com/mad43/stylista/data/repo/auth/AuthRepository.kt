@@ -7,8 +7,8 @@ import retrofit2.Response
 
 interface AuthRepository {
     suspend fun loginCustomer(email:String): Response<LoginResponse>
-    suspend fun registerUserInApi(userId: String?, email: String, password: String)
-    suspend fun signUp(email: String, password: String)
+    suspend fun registerUserInApi(userName: String, email: String, password: String)
+    suspend fun signUp(userName: String,email: String, password: String)
     suspend fun isEmailVerified(email: String): Boolean
     fun getCurrentUser(): FirebaseCustumer?
 

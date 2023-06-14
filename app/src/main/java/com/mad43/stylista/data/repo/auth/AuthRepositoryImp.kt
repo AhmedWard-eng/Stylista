@@ -1,7 +1,5 @@
 package com.mad43.stylista.data.repo.auth
 
-import com.mad43.stylista.data.remote.dataSource.RemoteProductsDataSource
-import com.mad43.stylista.data.remote.dataSource.RemoteProductsDataSourceImp
 import com.mad43.stylista.data.remote.dataSource.auth.AuthFirbase
 import com.mad43.stylista.data.remote.dataSource.auth.AuthFirebaseImp
 import com.mad43.stylista.data.remote.dataSource.auth.AuthRemoteSource
@@ -18,14 +16,14 @@ class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRem
         return authRemoteSource.loginCustomer(email)
     }
 
-    override suspend fun registerUserInApi(userId: String?, email: String, password: String) {
-        authRemoteSource.registerUserInApi(userId,email,password)
+    override suspend fun registerUserInApi(userName: String, email: String, password: String) {
+        authRemoteSource.registerUserInApi(userName,email,password)
     }
 
-    override suspend fun signUp(email: String, password: String) {
+    override suspend fun signUp(userName: String,email: String, password: String) {
         authFirbase.signUp(email,password)
         var userId = authFirbase.getCurrentUser()?.uid
-        authRemoteSource.registerUserInApi(userId,email,password)
+        authRemoteSource.registerUserInApi(userName,email,password)
     }
 
     override suspend fun isEmailVerified(email: String): Boolean {
@@ -40,6 +38,7 @@ class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRem
     }
     override suspend fun logout() {
         userManager.removeCustomerData()
+        authFirbase.signOut()
     }
 
     override fun getCustomerData(): Result<LocalCustomer> {
