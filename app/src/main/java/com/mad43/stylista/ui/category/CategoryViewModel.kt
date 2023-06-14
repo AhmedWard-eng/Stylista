@@ -28,7 +28,7 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
 
     private fun getProducts() {
         viewModelScope.launch {
-            repoInterface.getAllProducts().catch { e ->
+            repoInterface.getAllProduct().catch { e ->
                 products.value = RemoteStatus.Failure(e)
             }.collect { data ->
                 products.value = RemoteStatus.Success(data)

@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_category" >
         <action
             android:id="@+id/action_navigation_dashboard_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment" />
+            app:destination="@id/productDetailsFragment3" />
     </fragment>
 
     <fragment

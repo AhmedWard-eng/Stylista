@@ -81,22 +81,22 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_home -> {
-                    binding.fragmentName.text = "Home"
+                    binding.fragmentName.text = resources.getString(R.string.title_home)
                 }
                 R.id.navigation_dashboard -> {
-                    binding.fragmentName.text = "Category"
+                    binding.fragmentName.text = resources.getString(R.string.category)
                 }
                 R.id.navigation_notifications -> {
-                    binding.fragmentName.text = "Profile"
+                    binding.fragmentName.text = resources.getString(R.string.profile)
                 }
                 R.id.brandFragment -> {
-                    binding.fragmentName.text = "Brand’s Products"
+                    binding.fragmentName.text = resources.getString(R.string.brand_Products)
                 }
-                R.id.productDetailsFragment -> {
-                    binding.fragmentName.text = "Product’s Details"
+                R.id.productDetailsFragment3 -> {
+                    binding.fragmentName.text = resources.getString(R.string.product_Details)
                 }
                 R.id.searchFragment -> {
-                    binding.fragmentName.text = "Search"
+                    binding.fragmentName.text = resources.getString(R.string.search)
                 }
                 else -> {
                 }
