@@ -73,7 +73,7 @@ class SearchBrandFragment : Fragment() , OnItemBrandClicked {
         })
     }
     override fun brandClicked(brand: String) {
-        val action = SearchFragmentDirections.actionSearchFragmentToBrandFragment(brand)
+        val action = SearchBrandFragmentDirections.actionSearchFragmentToBrandFragment(brand)
         binding.root.findNavController().navigate(action)
     }
 
