@@ -7,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import com.google.firebase.auth.FirebaseAuth
 import com.mad43.stylista.R
-import com.mad43.stylista.data.repo.auth.SignUpRepositoryImpl
 import com.mad43.stylista.databinding.FragmentRegistrationBinding
-import com.mad43.stylista.domain.remote.auth.SignUpUseCase
-import com.mad43.stylista.ui.registration.viewModel.SignUpState
 import com.mad43.stylista.ui.registration.viewModel.SignUpViewModel
-import com.mad43.stylista.ui.registration.viewModel.SignUpViewModelFactory
+import com.mad43.stylista.ui.registration.viewModel.SignUpState
 import com.mad43.stylista.util.MyDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,8 +22,7 @@ class SignUpFragment : Fragment() {
 
     private var binding: FragmentRegistrationBinding? = null
 
-    private lateinit var authViewModel: SignUpViewModel
-    lateinit var allFactory: SignUpViewModelFactory
+    lateinit var registerViewModel: SignUpViewModel
     var dialog =MyDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,8 +41,8 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        allFactory= SignUpViewModelFactory(SignUpUseCase(SignUpRepositoryImpl(FirebaseAuth.getInstance())))
-        authViewModel= ViewModelProvider(this,allFactory).get(SignUpViewModel::class.java)
+
+        registerViewModel=ViewModelProvider(this)[SignUpViewModel::class.java]
 
 
         binding?.buttonSignUp?.setOnClickListener {
@@ -54,14 +50,13 @@ class SignUpFragment : Fragment() {
             val email = binding?.editTextEmailSignUp?.text.toString().trim()
             val password = binding?.textPasswordSignUp?.text.toString()
             var confirmPassword = binding?.editTextTextConfirmPasswordSignUp?.text.toString()
-                authViewModel.validateInputs(email, password,confirmPassword)
-               // dialog.showAlertDialog("check your email to verified:)",requireContext())
+                registerViewModel.validateInputs(email, password,confirmPassword)
                 observeData()
                 observeErrorMessage()
         }
         binding?.tabSignUp?.setOnClickListener {
             Navigation.findNavController(requireView())
-                .navigate(R.id.action_registrationFragment_self)
+                .navigate(R.id.registrationFragment)
         }
         binding?.tabSignIn?.setOnClickListener {
             Navigation.findNavController(requireView())
@@ -72,12 +67,13 @@ class SignUpFragment : Fragment() {
 
     private fun observeData() {
         lifecycleScope.launch  {
-            authViewModel.validationStateFlow.collectLatest {
+            registerViewModel.validationStateFlow.collectLatest {
                 when (it) {
                     is SignUpState.onSuccess -> {
                         dialog.showAlertDialog(getString(it.message),requireContext())
                         Navigation.findNavController(requireView())
-                            .navigate(R.id.action_registrationFragment_to_logInFragment)
+                            .navigate(R.id.logInFragment)
+
                     }
                     is SignUpState.onError -> {
                         dialog.showAlertDialog(getString(it.message),requireContext())
@@ -93,7 +89,7 @@ class SignUpFragment : Fragment() {
 
     private fun observeErrorMessage() {
         lifecycleScope.launch  {
-            authViewModel.errorStateFlow.collectLatest { it ->
+            registerViewModel.errorStateFlow.collectLatest { it ->
                 dialog.showAlertDialog(it?.message ?: "",requireContext())
             }
         }

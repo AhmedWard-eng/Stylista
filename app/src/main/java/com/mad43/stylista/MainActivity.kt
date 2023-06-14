@@ -1,12 +1,15 @@
 package com.mad43.stylista
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mad43.stylista.databinding.ActivityMainBinding
@@ -33,11 +36,18 @@ class MainActivity : AppCompatActivity() {
         setActionBarVisibility()
         setLabelInActionBar()
 
+        setActionHint()
         binding.searchView.setOnClickListener {
-            navController.navigate(R.id.searchFragment)
+            val currentDestination = navController.currentDestination?.id
+            if (currentDestination == R.id.navigation_home) {
+                navController.navigate(R.id.searchFragment)
+            } else {
+                navController.navigate(R.id.searchProductFragment)
+            }
         }
 
     }
+
 
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -65,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    
     @SuppressLint("SetTextI18n")
     private fun setLabelInActionBar(){
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -93,4 +104,18 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    private fun setActionHint() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home-> {
+                    binding.searchView.hint = getString(R.string.search_brand)
+                }
+                else -> {
+                    binding.searchView.hint = getString(R.string.search_product)
+                }
+            }
+        }
+    }
+
+
 }
