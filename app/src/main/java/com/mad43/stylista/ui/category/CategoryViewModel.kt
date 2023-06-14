@@ -1,5 +1,6 @@
 package com.mad43.stylista.ui.category
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.data.repo.ProductsRepo
@@ -19,50 +20,55 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
     lateinit var allData: List<DisplayProduct>
     var filterMainCategory = false
     var filterSubCategory = false
-    var sub : String? = null
+    var sub: String? = null
 
     init {
         getProducts()
     }
+
     private fun getProducts() {
         viewModelScope.launch {
-            repoInterface.getAllProducts().catch {
-                    e -> products.value = RemoteStatus.Failure(e)
-            }.collect {
-                    data -> products.value = RemoteStatus.Success(data)
+            repoInterface.getAllProducts().catch { e ->
+                products.value = RemoteStatus.Failure(e)
+            }.collect { data ->
+                products.value = RemoteStatus.Success(data)
             }
         }
     }
 
-    fun filterByMainCategory(mainCategory: String){
-        if (filterMainCategory){
+    fun filterByMainCategory(mainCategory: String) {
+        if (filterMainCategory) {
             productMainCategory = allData.filter {
                 it.product_type == mainCategory
             }
             products.value = RemoteStatus.Success(productMainCategory)
-        }else{
+        } else {
             products.value = RemoteStatus.Success(allData)
         }
     }
 
-    fun filterBySubCategory(subCategory: String){
-        if (filterMainCategory){
-            if (filterSubCategory){
-                productSubCategory = productMainCategory.filter {
-                    val strs = it.tag.split(",").toTypedArray()
-                    strs.forEach {
-                        if (it == subCategory ){
-                            sub = it
+    fun filterBySubCategory(subCategory: String) {
+        if (filterMainCategory) {
+            if (filterSubCategory) {
+                productSubCategory = productMainCategory.filter { it ->
+                    val strings = it.tag.split(",")
+                    strings.forEach {
+                        sub = if (subCategory.trim().equals(it.trim(), true)) {
+                            Log.i("Sub", "ok $it")
+                            it
+                        } else {
+                            null
                         }
                     }
-                    sub == subCategory
+                    Log.i("Sub", sub.toString())
+                    Log.i("Sub", subCategory)
+                    sub?.trim() == subCategory.trim()
                 }
                 products.value = RemoteStatus.Success(productSubCategory)
-            }
-            else{
+            } else {
                 products.value = RemoteStatus.Success(productMainCategory)
             }
-        }else{
+        } else {
             products.value = RemoteStatus.Success(allData)
         }
     }

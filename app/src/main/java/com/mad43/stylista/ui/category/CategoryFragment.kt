@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.category
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
         savedInstanceState: Bundle?,
     ): View {
         categoryViewModel =
-            ViewModelProvider(this).get(CategoryViewModel::class.java)
+            ViewModelProvider(this)[CategoryViewModel::class.java]
 
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
@@ -48,7 +49,7 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
             binding.accessoriesMainCategoryText.setTextColor(resources.getColor(R.color.primary_color))
             binding.shirtMainCategoryText.setTextColor(resources.getColor(R.color.primary_color))
             categoryViewModel.filterMainCategory = true
-            categoryViewModel.filterByMainCategory(binding.shoesMainCategoryText.text.toString())
+            categoryViewModel.filterByMainCategory("SHOES")
 
         }
 
@@ -60,7 +61,7 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
             binding.accessoriesMainCategoryText.setTextColor(resources.getColor(R.color.white))
             binding.shirtMainCategoryText.setTextColor(resources.getColor(R.color.primary_color))
             categoryViewModel.filterMainCategory = true
-            categoryViewModel.filterByMainCategory(binding.accessoriesMainCategoryText.text.toString())
+            categoryViewModel.filterByMainCategory("ACCESSORIES")
         }
 
         binding.shirtCategory.setOnClickListener {
@@ -71,7 +72,60 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
             binding.accessoriesMainCategoryText.setTextColor(resources.getColor(R.color.primary_color))
             binding.shirtMainCategoryText.setTextColor(resources.getColor(R.color.white))
             categoryViewModel.filterMainCategory = true
-            categoryViewModel.filterByMainCategory(binding.shirtMainCategoryText.text.toString())
+            categoryViewModel.filterByMainCategory("T-SHIRTS")
+        }
+
+        binding.kid.setOnClickListener {
+            binding.kid.setBackgroundResource(R.color.primary_color)
+            binding.men.setBackgroundResource(R.color.white)
+            binding.women.setBackgroundResource(R.color.white)
+            binding.sale.setBackgroundResource(R.color.white)
+            binding.kid.setTextColor(resources.getColor(R.color.white))
+            binding.men.setTextColor(resources.getColor(R.color.primary_color))
+            binding.women.setTextColor(resources.getColor(R.color.primary_color))
+            binding.sale.setTextColor(resources.getColor(R.color.primary_color))
+            categoryViewModel.filterSubCategory = true
+            categoryViewModel.filterBySubCategory("kid")
+
+        }
+
+        binding.men.setOnClickListener {
+            binding.kid.setBackgroundResource(R.color.white)
+            binding.men.setBackgroundResource(R.color.primary_color)
+            binding.women.setBackgroundResource(R.color.white)
+            binding.sale.setBackgroundResource(R.color.white)
+            binding.kid.setTextColor(resources.getColor(R.color.primary_color))
+            binding.men.setTextColor(resources.getColor(R.color.white))
+            binding.women.setTextColor(resources.getColor(R.color.primary_color))
+            binding.sale.setTextColor(resources.getColor(R.color.primary_color))
+            categoryViewModel.filterSubCategory = true
+            categoryViewModel.filterBySubCategory("men")
+        }
+
+        binding.women.setOnClickListener {
+            binding.kid.setBackgroundResource(R.color.white)
+            binding.men.setBackgroundResource(R.color.white)
+            binding.women.setBackgroundResource(R.color.primary_color)
+            binding.sale.setBackgroundResource(R.color.white)
+            binding.kid.setTextColor(resources.getColor(R.color.primary_color))
+            binding.men.setTextColor(resources.getColor(R.color.primary_color))
+            binding.women.setTextColor(resources.getColor(R.color.white))
+            binding.sale.setTextColor(resources.getColor(R.color.primary_color))
+            categoryViewModel.filterSubCategory = true
+            categoryViewModel.filterBySubCategory("women")
+        }
+
+        binding.sale.setOnClickListener {
+            binding.kid.setBackgroundResource(R.color.white)
+            binding.men.setBackgroundResource(R.color.white)
+            binding.women.setBackgroundResource(R.color.white)
+            binding.sale.setBackgroundResource(R.color.primary_color)
+            binding.kid.setTextColor(resources.getColor(R.color.primary_color))
+            binding.men.setTextColor(resources.getColor(R.color.primary_color))
+            binding.women.setTextColor(resources.getColor(R.color.primary_color))
+            binding.sale.setTextColor(resources.getColor(R.color.white))
+            categoryViewModel.filterSubCategory = true
+            categoryViewModel.filterBySubCategory("sale")
         }
 
         lifecycleScope.launch {
@@ -86,9 +140,10 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
                         binding.recyclerView.visibility = View.VISIBLE
                         binding.shimmerFrameLayout.visibility = View.GONE
                         binding.shimmerFrameLayout.stopShimmerAnimation()
-                        if (!categoryViewModel.filterSubCategory || !categoryViewModel.filterMainCategory) {
+                        if (!categoryViewModel.filterMainCategory) {
                             categoryViewModel.allData = it.data
                         }
+
                         categoryAdapter = CategoryAdapter(requireContext(), this@CategoryFragment)
                         binding.recyclerView.apply {
                             adapter = categoryAdapter

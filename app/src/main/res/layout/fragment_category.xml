@@ -6,30 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.category.CategoryFragment">
 
-    <EditText
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/search_view_rounded"
-        android:clickable="true"
-        android:drawableStart="@drawable/baseline_search_black_24"
-        android:focusable="true"
-        android:hint="@string/searchForProduct"
-        android:imeOptions="actionSearch"
-        android:padding="5dp"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/mainCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -168,34 +149,20 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/homePage"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/homePage"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textColor="@color/primary_color"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/kid"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/kid"
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:gravity="center"
                 android:textColor="@color/primary_color"
-                app:layout_constraintStart_toEndOf="@id/homePage" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/men"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/men"
                 android:textSize="20sp"
@@ -208,7 +175,7 @@
 
             <TextView
                 android:id="@+id/women"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/women"
                 android:padding="10dp"
@@ -221,14 +188,15 @@
 
             <TextView
                 android:id="@+id/sale"
-                android:layout_width="wrap_content"
-                android:padding="10dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="@string/sale"
-                android:textSize="20sp"
                 android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/sale"
                 android:textColor="@color/primary_color"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/women"
                 app:layout_constraintTop_toTopOf="parent" />
 
