@@ -28,9 +28,16 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.mad43.stylista.ui.search.SearchFragment"
+        android:name="com.mad43.stylista.ui.search.view.SearchBrandFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <argument
+            android:name="brand"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchFragment_to_brandFragment"
+            app:destination="@id/brandFragment" />
+    </fragment>
     <fragment
         android:id="@+id/brandFragment"
         android:name="com.mad43.stylista.ui.brand.BrandFragment"
@@ -40,17 +47,8 @@
             android:name="brand"
             app:argType="string" />
         <action
-            android:id="@+id/action_brandFragment_to_productDetailsFragment"
-            app:destination="@id/productDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/productDetailsFragment"
-        android:name="com.mad43.stylista.ui.details.ProductDetailsFragment"
-        android:label="fragment_product_details"
-        tools:layout="@layout/fragment_product_details" >
-        <argument
-            android:name="id"
-            app:argType="long" />
+            android:id="@+id/action_brandFragment_to_productDetailsFragment32"
+            app:destination="@id/productDetailsFragment3" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
@@ -60,12 +58,6 @@
         <action
             android:id="@+id/action_registrationFragment_to_logInFragment"
             app:destination="@id/logInFragment" />
-        <action
-            android:id="@+id/action_registrationFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_registrationFragment_self"
-            app:destination="@id/registrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/logInFragment"
@@ -78,13 +70,25 @@
         <action
             android:id="@+id/action_logInFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
-        <action
-            android:id="@+id/action_logInFragment_self"
-            app:destination="@id/logInFragment" />
     </fragment>
     <fragment
-        android:id="@+id/productInfoFragment"
-        android:name="com.mad43.stylista.ui.productInfo.view.ProductInfoFragment"
-        android:label="fragment_product_info"
-        tools:layout="@layout/fragment_product_info" />
+        android:id="@+id/searchProductFragment"
+        android:name="com.mad43.stylista.ui.search.view.SearchProductFragment"
+        android:label="fragment_search_product"
+        tools:layout="@layout/fragment_search_product" >
+        <argument
+            android:name="brand"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchProductFragment_to_productDetailsFragment3"
+            app:destination="@id/productDetailsFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment3"
+        android:name="com.mad43.stylista.ui.productInfo.view.ProductDetailsFragment"
+        android:label="ProductDetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 </navigation>
