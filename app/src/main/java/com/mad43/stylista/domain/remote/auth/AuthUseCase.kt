@@ -49,14 +49,16 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
         return authRepository.registerUserInApi(userName,email,password)
     }
     suspend fun getCardID(customerId : Long):Long{
-        val remoteStatus = CreateCartUseCase().invoke(customerId)
+        var cardID = CreateCartUseCase()
+        val remoteStatus = cardID(customerId)
         return when (remoteStatus) {
             is RemoteStatus.Success -> remoteStatus.data.toLong()
             else -> 0
         }
     }
     suspend fun getFavouriteID(customerId: Long):Long{
-        val remoteStatus = CreateFavouriteUseCase().invoke(customerId)
+        var favID = CreateFavouriteUseCase()
+        val remoteStatus = favID(customerId)
         return when (remoteStatus) {
             is RemoteStatus.Success -> remoteStatus.data.toLong()
             else -> 0

@@ -46,13 +46,9 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
                             var checkEmail = authUseCase.isEmailVerified(email)
                            if (checkEmail){
                                _loginState.value = RemoteStatus.Success(data)
-                               var favId =authUseCase.getFavouriteID(data.customers[0].id).toString()
-                               var idCard = authUseCase.getCardID(data.customers[0].id).toString()
-                               authUseCase.updateDataCustumer(data.customers[0].id.toString(),
-                                   UpdateCustumer(UpdateCustumerModel(idCard,favId)))
                                authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email,
-                                   state = true, userName = data.customers[0].first_name, cardID = idCard,
-                                   favouriteID = favId))
+                                   state = true, userName = data.customers[0].first_name, cardID = data.customers[0].last_name,
+                                   favouriteID = data.customers[0].note))
 
                            }else{
                                _loginState.value = RemoteStatus.Valied(R.string.verfid)

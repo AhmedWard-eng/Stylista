@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.mad43.stylista.R
 import com.mad43.stylista.data.remote.entity.auth.SignupResponse
+import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
+import com.mad43.stylista.data.remote.entity.auth.UpdateCustumerModel
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
 import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.Validation
@@ -29,6 +31,11 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
                     if (idCustumer!=null){
                         authUseCase.getCardID(idCustumer)
                         authUseCase.getFavouriteID(idCustumer)
+                        var favId =authUseCase.getFavouriteID(idCustumer).toString()
+                        var idCard = authUseCase.getCardID(idCustumer).toString()
+                        authUseCase.updateDataCustumer(idCustumer.toString(),
+                            UpdateCustumer(UpdateCustumerModel(last_name = idCard, note = favId))
+                        )
                     }
                     _signUpState.value = RemoteStatus.Success(registerApi.body()!!)
                     authUseCase.sendEmailVerification()
