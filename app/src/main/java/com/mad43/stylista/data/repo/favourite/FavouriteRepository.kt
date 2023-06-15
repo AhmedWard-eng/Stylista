@@ -8,7 +8,5 @@ import com.mad43.stylista.util.RemoteStatus
 
 interface FavouriteRepository {
     suspend fun createFavouriteForCustomer(customerId : Long): RemoteStatus<Long>
-    suspend fun updateFavourite(id: Long, draftOrderPutBody: DraftOrderPutBody): RemoteStatus<DraftOrderResponse>
-    suspend fun getFavouritetUsingId(id: String): RemoteStatus<CustomDraftOrderResponse>
 
 }

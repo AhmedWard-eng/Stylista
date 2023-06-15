@@ -35,30 +35,5 @@ class FavouriteRepositoryImp (private val remoteDraftOrdersDataSource: RemoteDra
 
     }
 
-    override suspend fun updateFavourite(
-        id: Long,
-        draftOrderPutBody: DraftOrderPutBody
-    ): RemoteStatus<DraftOrderResponse> {
-        return try {
 
-            val draftOrderResponse = remoteDraftOrdersDataSource.putDraftOrder(
-                id,
-                draftOrderPutBody = draftOrderPutBody
-            )
-            RemoteStatus.Success(draftOrderResponse)
-        } catch (e: Exception) {
-            RemoteStatus.Failure(e)
-        }
-    }
-
-    override suspend fun getFavouritetUsingId(id: String): RemoteStatus<CustomDraftOrderResponse> {
-        return try {
-            val customDraftOrderResponse = remoteDraftOrdersDataSource.getDraftOrderById(
-                id
-            )
-            RemoteStatus.Success(customDraftOrderResponse)
-        } catch (e: Exception) {
-            RemoteStatus.Failure(e)
-        }
-    }
 }

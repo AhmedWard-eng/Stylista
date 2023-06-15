@@ -19,7 +19,6 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
     private var _signUpState: MutableStateFlow<RemoteStatus<SignupResponse>> = MutableStateFlow(RemoteStatus.Loading)
     var signUpState: StateFlow<RemoteStatus<SignupResponse>> = _signUpState
 
-
     fun signUp(userName: String,email: String, password: String){
         viewModelScope.launch {
             try {
