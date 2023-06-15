@@ -121,6 +121,8 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                 binding.categoryFilter.setBackgroundResource(R.color.primary_color)
                 binding.priceFilter.setTextColor(resources.getColor(R.color.primary_color))
                 binding.categoryFilter.setTextColor(resources.getColor(R.color.white))
+                binding.shoes.isChecked = true
+                brandViewModel.filterByCategory(binding.shoes.text.toString())
                 binding.filterValue.visibility = View.VISIBLE
                 binding.categoryGroup.visibility = View.VISIBLE
                 binding.seekBar.visibility = View.GONE
