@@ -23,7 +23,7 @@ interface AuthAPIInterface {
 
     @PUT("customers/{id}.json")
     suspend fun updateDataCustumer(
-        @Path("id") id: Long,
+        @Path("id") id: String,
         @Body customer: UpdateCustumer,
         @Header("X-Shopify-Access-Token") password: String = Constants.PASSWORD,
     ): Response<Customer>

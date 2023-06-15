@@ -6,7 +6,7 @@ import com.mad43.stylista.util.RemoteStatus
 
 class CreateFavouriteUseCase (private val favouriteRepo: FavouriteRepository = FavouriteRepositoryImp()) {
 
-    suspend operator fun invoke(customerId : String) : RemoteStatus<Long> {
-        return favouriteRepo.createFavouriteForCustomer(customerId as Long)
+    suspend operator fun invoke(customerId : Long) : RemoteStatus<Long> {
+        return favouriteRepo.createFavouriteForCustomer(customerId)
     }
 }

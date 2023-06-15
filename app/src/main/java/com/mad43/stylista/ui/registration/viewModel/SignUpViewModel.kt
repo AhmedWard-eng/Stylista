@@ -1,57 +1,65 @@
 package com.mad43.stylista.ui.registration.viewModel
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.mad43.stylista.R
+import com.mad43.stylista.data.remote.entity.auth.SignupResponse
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
+import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.Validation
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : ViewModel()  {
-    private val validationMutableStateFlow = MutableStateFlow<SignUpState>(SignUpState.BeforeValidation)
-    val validationStateFlow: StateFlow<SignUpState> = validationMutableStateFlow
 
-    private val errorMStateFow = MutableSharedFlow<Throwable>()
-    val errorStateFlow: SharedFlow<Throwable?> = errorMStateFow
+    private var _signUpState: MutableStateFlow<RemoteStatus<SignupResponse>> = MutableStateFlow(RemoteStatus.Loading)
+    var signUpState: StateFlow<RemoteStatus<SignupResponse>> = _signUpState
 
-    fun signUp(userName: String,email: String, password: String) {
+
+    fun signUp(userName: String,email: String, password: String){
         viewModelScope.launch {
             try {
-                authUseCase.signUp(userName,email, password)
-                validationMutableStateFlow.value = SignUpState.onSuccess(R.string.success)
-                authUseCase.sendEmailVerification()
+                var isSinupInFirbase = authUseCase.signUp(userName,email, password)
+                if (isSinupInFirbase){
+                    var registerApi = authUseCase.registerUserInApi(userName,email,password)
+                    var idCustumer = registerApi.body()?.customer?.id
+                    if (idCustumer!=null){
+                        authUseCase.getCardID(idCustumer)
+                        authUseCase.getFavouriteID(idCustumer)
+                    }
+                    _signUpState.value = RemoteStatus.Success(registerApi.body()!!)
+                    authUseCase.sendEmailVerification()
+
+                }
             }catch (e: FirebaseAuthUserCollisionException){
-                validationMutableStateFlow.value = SignUpState.onError(R.string.email_isExist)
-            }
-            catch (e: Exception) {
-                errorMStateFow.emit(e)
+                _signUpState.value = RemoteStatus.Valied(R.string.email_isExist)
+                Log.d(TAG, "Firbase signUp:::: ${e.message}")
             }
         }
     }
 
     fun validateInputs(userName: String ,email: String, password: String,confirmPassword : String) {
         if (userName.isEmpty()){
-            validationMutableStateFlow.value = SignUpState.onError(R.string.userNameEmpty)
+            _signUpState.value = RemoteStatus.Valied(R.string.userNameEmpty)
         }
         else if (email.isEmpty()) {
-            validationMutableStateFlow.value = SignUpState.onError(R.string.emailNameEmpty)
+            _signUpState.value = RemoteStatus.Valied(R.string.emailNameEmpty)
         }else if(!email.matches(Validation.EMAIL_PATTERN.toRegex())){
-            validationMutableStateFlow.value = SignUpState.onError(R.string.validateEmail)
+            _signUpState.value = RemoteStatus.Valied(R.string.validateEmail)
         }
         else if (password.isEmpty()) {
-            validationMutableStateFlow.value = SignUpState.onError(R.string.passwordEmpty)
+            _signUpState.value = RemoteStatus.Valied(R.string.passwordEmpty)
         } else if (confirmPassword.isEmpty()) {
-            validationMutableStateFlow.value = SignUpState.onError(R.string.confirmPasswordEmpty)
+            _signUpState.value = RemoteStatus.Valied(R.string.confirmPasswordEmpty)
         }else if(password != confirmPassword){
-            validationMutableStateFlow.value = SignUpState.onError(R.string.matchPassword)
+            _signUpState.value = RemoteStatus.Valied(R.string.matchPassword)
         }
         else if (!password.matches(Validation.PASSWORD_PATTERN.toRegex())) {
-            validationMutableStateFlow.value = SignUpState.onError(R.string.validatePassword)
+            _signUpState.value = RemoteStatus.Valied(R.string.validatePassword)
         }
         else {
 

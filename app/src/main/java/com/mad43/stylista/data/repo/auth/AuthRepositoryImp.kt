@@ -4,10 +4,7 @@ import com.mad43.stylista.data.remote.dataSource.auth.AuthFirbase
 import com.mad43.stylista.data.remote.dataSource.auth.AuthFirebaseImp
 import com.mad43.stylista.data.remote.dataSource.auth.AuthRemoteSource
 import com.mad43.stylista.data.remote.dataSource.auth.AuthRemoteSourceImp
-import com.mad43.stylista.data.remote.entity.auth.Customer
-import com.mad43.stylista.data.remote.entity.auth.FirebaseCustumer
-import com.mad43.stylista.data.remote.entity.auth.LoginResponse
-import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
+import com.mad43.stylista.data.remote.entity.auth.*
 import com.mad43.stylista.data.sharedPreferences.CustomerManager
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import com.mad43.stylista.data.sharedPreferences.PreferencesData
@@ -18,14 +15,12 @@ class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRem
         return authRemoteSource.loginCustomer(email)
     }
 
-    override suspend fun registerUserInApi(userName: String, email: String, password: String) {
-        authRemoteSource.registerUserInApi(userName,email,password)
+    override suspend fun registerUserInApi(userName: String, email: String, password: String) : Response<SignupResponse> {
+        return authRemoteSource.registerUserInApi(userName,email,password)
     }
 
-    override suspend fun signUp(userName: String,email: String, password: String) {
-        authFirbase.signUp(email,password)
-        var userId = authFirbase.getCurrentUser()?.uid
-        authRemoteSource.registerUserInApi(userName,email,password)
+    override suspend fun signUp(userName: String,email: String, password: String) : Boolean {
+        return authFirbase.signUp(email,password)
     }
 
     override suspend fun isEmailVerified(email: String): Boolean {
@@ -58,7 +53,7 @@ class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRem
         return authFirbase.isUserLoggedIn()
     }
 
-    override suspend fun updateDataCustumer(id: Long, customer: UpdateCustumer): Response<Customer> {
+    override suspend fun updateDataCustumer(id: String, customer: UpdateCustumer): Response<Customer> {
         return authRemoteSource.updateDataCustumer(id, customer)
     }
 

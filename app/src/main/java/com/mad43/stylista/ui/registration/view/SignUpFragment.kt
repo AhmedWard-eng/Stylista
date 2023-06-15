@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentRegistrationBinding
 import com.mad43.stylista.ui.registration.viewModel.SignUpViewModel
-import com.mad43.stylista.ui.registration.viewModel.SignUpState
 import com.mad43.stylista.util.MyDialog
+import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -51,8 +50,6 @@ class SignUpFragment : Fragment() {
             val password = binding?.textPasswordSignUp?.text.toString()
             var confirmPassword = binding?.editTextTextConfirmPasswordSignUp?.text.toString()
                 registerViewModel.validateInputs(userName,email, password,confirmPassword)
-                observeData()
-                observeErrorMessage()
         }
         binding?.tabSignUp?.setOnClickListener {
             Navigation.findNavController(requireView())
@@ -63,34 +60,22 @@ class SignUpFragment : Fragment() {
                 .navigate(R.id.action_registrationFragment_to_logInFragment)
         }
 
-    }
-
-    private fun observeData() {
-        lifecycleScope.launch  {
-            registerViewModel.validationStateFlow.collectLatest {
+        lifecycleScope.launch {
+            registerViewModel.signUpState.collectLatest {
                 when (it) {
-                    is SignUpState.onSuccess -> {
-                        dialog.showAlertDialog(getString(it.message),requireContext())
+                    is RemoteStatus.Success -> {
                         Navigation.findNavController(requireView())
                             .navigate(R.id.logInFragment)
+                        dialog.showAlertDialog(getString(R.string.success),requireContext())
 
                     }
-                    is SignUpState.onError -> {
-                        dialog.showAlertDialog(getString(it.message),requireContext())
+                    is RemoteStatus.Valied -> {
+                        dialog.showAlertDialog(getString(it.message), requireContext())
                     }
                     else -> {
-
+                        // Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
-        }
-    }
-
-
-    private fun observeErrorMessage() {
-        lifecycleScope.launch  {
-            registerViewModel.errorStateFlow.collectLatest { it ->
-                dialog.showAlertDialog(it?.message ?: "",requireContext())
             }
         }
 

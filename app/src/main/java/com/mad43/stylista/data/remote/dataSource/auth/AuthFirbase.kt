@@ -7,7 +7,7 @@ interface AuthFirbase {
     fun getCurrentUser(): FirebaseCustumer?
     fun isUserLoggedIn(): Boolean
     fun signOut()
-    suspend fun signUp(email: String, password: String)
+    suspend fun signUp(email: String, password: String) : Boolean
     suspend fun isEmailVerified(email: String): Boolean
     suspend fun sendEmailVerification()
     suspend fun signIn(email: String, password: String): FirebaseCustumer?

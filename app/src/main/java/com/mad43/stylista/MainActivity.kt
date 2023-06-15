@@ -19,6 +19,8 @@ import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
 import com.mad43.stylista.data.remote.entity.auth.UpdateCustumerModel
 import com.mad43.stylista.data.remote.network.ApiService.authApiService
 import com.mad43.stylista.databinding.ActivityMainBinding
+import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
+import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.searchProductFragment)
             }
         }
+
 
     }
 

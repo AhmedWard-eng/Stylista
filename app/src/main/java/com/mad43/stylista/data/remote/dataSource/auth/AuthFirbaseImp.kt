@@ -20,11 +20,13 @@ class AuthFirebaseImp(private val auth: FirebaseAuth = FirebaseAuth.getInstance(
         auth.signOut()
     }
 
-    override suspend fun signUp(email: String, password: String) {
+    override suspend fun signUp(email: String, password: String) : Boolean {
         try {
             auth.createUserWithEmailAndPassword(email, password).await()
+            return true
         } catch (e: Exception) {
             throw e
+            return false
         }
     }
 
