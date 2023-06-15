@@ -1,15 +1,27 @@
 package com.mad43.stylista
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.mad43.stylista.data.remote.entity.SignupModel
+import com.mad43.stylista.data.remote.entity.SignupRequest
+import com.mad43.stylista.data.remote.entity.auth.Customer
+import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
+import com.mad43.stylista.data.remote.entity.auth.UpdateCustumerModel
+import com.mad43.stylista.data.remote.network.ApiService.authApiService
 import com.mad43.stylista.databinding.ActivityMainBinding
+import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
+import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.searchProductFragment)
             }
         }
+
 
     }
 

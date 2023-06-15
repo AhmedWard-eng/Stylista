@@ -1,4 +1,4 @@
-package com.mad43.stylista.data.remote.dataSource
+package com.mad43.stylista.data.remote.dataSource.product
 
 import com.mad43.stylista.data.remote.entity.brand.BrandResponse
 import com.mad43.stylista.data.remote.entity.product.Product

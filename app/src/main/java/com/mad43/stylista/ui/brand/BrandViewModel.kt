@@ -2,10 +2,10 @@ package com.mad43.stylista.ui.brand
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mad43.stylista.data.repo.ProductsRepo
+import com.mad43.stylista.data.repo.product.ProductsRepo
 import com.mad43.stylista.domain.model.DisplayProduct
 import com.mad43.stylista.util.RemoteStatus
-import com.mad43.stylista.data.repo.ProductsRepoInterface
+import com.mad43.stylista.data.repo.product.ProductsRepoInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch

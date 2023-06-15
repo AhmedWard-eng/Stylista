@@ -1,16 +1,20 @@
 package com.mad43.stylista.domain.remote.auth
 
-import com.mad43.stylista.data.remote.entity.auth.FirebaseCustumer
-import com.mad43.stylista.data.remote.entity.auth.LoginResponse
+import com.mad43.stylista.data.remote.entity.auth.*
 import com.mad43.stylista.data.repo.auth.AuthRepository
 import com.mad43.stylista.data.repo.auth.AuthRepositoryImp
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
+import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
+import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
+import com.mad43.stylista.util.RemoteStatus
 import retrofit2.Response
+import kotlin.math.log
+import kotlin.time.Duration.Companion.days
 
 
 class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
-    suspend fun signUp(email: String, password: String) {
-        authRepository.signUp(email, password)
+    suspend fun signUp(userName: String,email: String, password: String) : Boolean {
+     return authRepository.signUp(userName,email,password)
     }
     suspend fun loginCustomer(email:String): Response<LoginResponse> {
         return   authRepository.loginCustomer(email)
@@ -36,5 +40,28 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
     }
     fun isUserLoggedIn(): Boolean{
         return authRepository.isUserLoggedIn()
+    }
+
+    suspend fun updateDataCustumer(id: String, custumer: UpdateCustumer): Response<Customer>{
+       return authRepository.updateDataCustumer(id,custumer)
+    }
+    suspend fun registerUserInApi(userName: String, email: String, password: String) : Response<SignupResponse>{
+        return authRepository.registerUserInApi(userName,email,password)
+    }
+    suspend fun getCardID(customerId : Long):Long{
+        var cardID = CreateCartUseCase()
+        val remoteStatus = cardID(customerId)
+        return when (remoteStatus) {
+            is RemoteStatus.Success -> remoteStatus.data.toLong()
+            else -> 0
+        }
+    }
+    suspend fun getFavouriteID(customerId: Long):Long{
+        var favID = CreateFavouriteUseCase()
+        val remoteStatus = favID(customerId)
+        return when (remoteStatus) {
+            is RemoteStatus.Success -> remoteStatus.data.toLong()
+            else -> 0
+        }
     }
 }

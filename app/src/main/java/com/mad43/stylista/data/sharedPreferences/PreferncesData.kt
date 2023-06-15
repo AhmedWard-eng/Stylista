@@ -1,10 +1,12 @@
 package com.mad43.stylista.data.sharedPreferences
 
 import android.content.SharedPreferences
+import com.mad43.stylista.util.Constants.Companion.CARD_ID
 import com.mad43.stylista.util.Constants.Companion.CUSTOMER_EMAIL
 import com.mad43.stylista.util.Constants.Companion.CUSTOMER_ID
 import com.mad43.stylista.util.Constants.Companion.CUSTOMER_STATE
-import com.mad43.stylista.util.Constants.Companion.USER_IDFIRBASE
+import com.mad43.stylista.util.Constants.Companion.FAVOURITE_ID
+import com.mad43.stylista.util.Constants.Companion.USER_NAME
 
 class PreferencesData(private val sharedPreferences: SharedPreferences = SharedPref.sharedPreferences) :
     CustomerManager {
@@ -13,7 +15,9 @@ class PreferencesData(private val sharedPreferences: SharedPreferences = SharedP
         editor?.putLong(CUSTOMER_ID, localCustomer.customerId)
         editor?.putBoolean(CUSTOMER_STATE, localCustomer.state)
         editor?.putString(CUSTOMER_EMAIL, localCustomer.email)
-        editor?.putString(USER_IDFIRBASE, localCustomer.userIdFirBase)
+        editor?.putString(USER_NAME, localCustomer.userName)
+        editor?.putString(CARD_ID, localCustomer.cardID)
+        editor?.putString(FAVOURITE_ID, localCustomer.favouriteID)
         editor?.apply()
     }
 
@@ -21,8 +25,10 @@ class PreferencesData(private val sharedPreferences: SharedPreferences = SharedP
         val customerId = sharedPreferences.getLong(CUSTOMER_ID, 0)
         val state = sharedPreferences.getBoolean(CUSTOMER_STATE, false)
         val email = sharedPreferences.getString(CUSTOMER_EMAIL, "")
-        val userIdFirBase = sharedPreferences.getString(USER_IDFIRBASE, "")
-        return if ((customerId == 0L) || state == false || email == null || userIdFirBase == null) {
+        val userName = sharedPreferences.getString(USER_NAME, "")
+        val cardID = sharedPreferences.getString(CARD_ID, "")
+        val favouriteID = sharedPreferences.getString(FAVOURITE_ID, "")
+        return if ((customerId == 0L) || state == false || email == null || userName == null || cardID == null || favouriteID == null) {
             Result.failure(Exception("User not Found"))
         } else {
             Result.success(
@@ -30,7 +36,9 @@ class PreferencesData(private val sharedPreferences: SharedPreferences = SharedP
                     customerId = customerId ,
                     state = state,
                     email = email,
-                    userIdFirBase = userIdFirBase.toString()
+                    userName = userName.toString(),
+                    cardID = cardID.toString(),
+                    favouriteID = favouriteID.toString()
                 )
             )
         }
@@ -40,7 +48,9 @@ class PreferencesData(private val sharedPreferences: SharedPreferences = SharedP
         editor?.putLong(CUSTOMER_ID, 0L)
         editor?.putBoolean(CUSTOMER_STATE, false)
         editor?.putString(CUSTOMER_EMAIL, null)
-        editor?.putString(USER_IDFIRBASE, null)
+        editor?.putString(USER_NAME, null)
+        editor?.putString(CARD_ID, null)
+        editor?.putString(FAVOURITE_ID, null)
         editor?.apply()
     }
 }

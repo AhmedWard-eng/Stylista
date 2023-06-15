@@ -33,11 +33,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="35dp" />
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="35dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline17"
@@ -54,16 +54,15 @@
         app:layout_constraintGuide_begin="356dp" />
 
     <EditText
-        android:id="@+id/editTextEmailSignUp"
+        android:id="@+id/editTextUserNameSignUp"
         android:layout_width="0dp"
         android:layout_height="51dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/edit_text_style"
-        android:drawableStart="@drawable/baseline_email"
+        android:drawableStart="@drawable/baseline_person_24"
         android:drawablePadding="5dp"
         android:ems="10"
-
-        android:hint="@string/email_address"
+        android:hint="@string/user_name"
         android:paddingStart="20dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintHorizontal_bias="0.0"
@@ -71,10 +70,26 @@
         app:layout_constraintTop_toBottomOf="@+id/tab_signUp" />
 
     <EditText
+        android:id="@+id/editTextEmailSignUp"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/edit_text_style"
+        android:drawableStart="@drawable/baseline_email"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:hint="@string/email_address"
+        android:paddingStart="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline17"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUserNameSignUp" />
+
+    <EditText
         android:id="@+id/textPasswordSignUp"
         android:layout_width="0dp"
         android:layout_height="51dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/edit_text_style"
         android:drawableStart="@drawable/baseline_lock_24"
         android:drawablePadding="5dp"
@@ -90,7 +105,7 @@
         android:id="@+id/editTextTextConfirmPasswordSignUp"
         android:layout_width="0dp"
         android:layout_height="51dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/edit_text_style"
         android:drawableStart="@drawable/baseline_lock_24"
         android:drawablePadding="5dp"
@@ -106,7 +121,7 @@
         android:id="@+id/buttonSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_style"
         android:backgroundTint="@color/white"
         android:fontFamily="sans-serif-medium"

@@ -1,4 +1,4 @@
-package com.mad43.stylista.data.repo
+package com.mad43.stylista.data.repo.product
 
 import com.mad43.stylista.data.remote.entity.product.Product
 import com.mad43.stylista.data.remote.entity.product.ProductDetails
