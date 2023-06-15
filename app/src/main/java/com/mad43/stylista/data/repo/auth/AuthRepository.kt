@@ -1,7 +1,9 @@
 package com.mad43.stylista.data.repo.auth
 
+import com.mad43.stylista.data.remote.entity.auth.Customer
 import com.mad43.stylista.data.remote.entity.auth.FirebaseCustumer
 import com.mad43.stylista.data.remote.entity.auth.LoginResponse
+import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import retrofit2.Response
 
@@ -18,4 +20,5 @@ interface AuthRepository {
     suspend fun sendEmailVerification()
     suspend fun signIn(email: String, password: String): FirebaseCustumer?
     fun isUserLoggedIn(): Boolean
+    suspend fun updateDataCustumer(id: Long, customer: UpdateCustumer): Response<Customer>
 }

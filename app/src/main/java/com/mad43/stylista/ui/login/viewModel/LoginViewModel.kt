@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.R
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
+import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
+import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +40,12 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : V
                             var checkEmail = authUseCase.isEmailVerified(email)
                            if (checkEmail){
                                _loginState.value = LoginState.Success(data)
-                               authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email, state = true, userName = data.customers[0].first_name))
+                               // CreateCartUseCase().invoke(data.customers[0].last_name as Long)
+                               // CreateFavouriteUseCase().invoke(data.customers[0].note )
+                               authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email,
+                                   state = true, userName = data.customers[0].first_name, cardID = data.customers[0].last_name,
+                                   favouriteID = data.customers[0].note))
+
                            }else{
                                _loginState.value = LoginState.Failed(R.string.verfid)
                            }

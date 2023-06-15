@@ -3,8 +3,9 @@ package com.mad43.stylista.ui.category
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mad43.stylista.data.repo.ProductsRepo
-import com.mad43.stylista.data.repo.ProductsRepoInterface
+import com.mad43.stylista.data.repo.product.ProductsRepo
+import com.mad43.stylista.data.repo.product.ProductsRepoInterface
+
 import com.mad43.stylista.domain.model.DisplayProduct
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
         binding.buttonLogOut.setOnClickListener {
             profileViewModel.logout()
             Navigation.findNavController(requireView())
-                .navigate(R.id.action_navigation_notifications_to_logInFragment)
+                .navigate(R.id.action_navigation_profile_to_logInFragment)
         }
     }
 

@@ -1,7 +1,9 @@
 package com.mad43.stylista.domain.remote.auth
 
+import com.mad43.stylista.data.remote.entity.auth.Customer
 import com.mad43.stylista.data.remote.entity.auth.FirebaseCustumer
 import com.mad43.stylista.data.remote.entity.auth.LoginResponse
+import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
 import com.mad43.stylista.data.repo.auth.AuthRepository
 import com.mad43.stylista.data.repo.auth.AuthRepositoryImp
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
@@ -36,5 +38,9 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
     }
     fun isUserLoggedIn(): Boolean{
         return authRepository.isUserLoggedIn()
+    }
+
+    suspend fun updateDataCustumer(id: Long, custumer: UpdateCustumer): Response<Customer>{
+       return authRepository.updateDataCustumer(id,custumer)
     }
 }
