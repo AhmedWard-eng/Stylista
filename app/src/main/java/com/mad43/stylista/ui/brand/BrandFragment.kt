@@ -63,12 +63,15 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                 binding.filterValue.visibility = View.VISIBLE
                 binding.seekBar.visibility = View.VISIBLE
                 binding.categoryGroup.visibility = View.GONE
+                binding.priceDisplay.visibility = View.VISIBLE
                 brandViewModel.filterByPrice(
                     String.format(
                         "%.2f",
                         binding.seekBar.progress.toFloat()
                     )
                 )
+                brandViewModel.seekMax()
+                binding.seekBar.max = brandViewModel.maxPrice
             } else {
                 priceClicked = false
                 categoryClicked = false
@@ -78,21 +81,25 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                 binding.priceFilter.setTextColor(resources.getColor(R.color.primary_color))
                 binding.categoryFilter.setTextColor(resources.getColor(R.color.primary_color))
                 binding.seekBar.visibility = View.GONE
-                brandViewModel.filterByPrice("0.00")
+                binding.priceDisplay.visibility = View.GONE
+                brandViewModel.displayAllProducts()
             }
         }
 
         binding.seekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(
                 seek: SeekBar,
-                progress: Int, fromUser: Boolean,
+                progress: Int,
+                fromUser: Boolean,
             ) {
+                binding.priceDisplay.text = "${getString(R.string.price)}: $progress"
                 if (progress != 0) {
                     val price = String.format("%.2f", progress.toFloat())
                     brandViewModel.filterByPrice(price)
                 } else {
-                    brandViewModel.filterByPrice("")
+                    brandViewModel.displayAllProducts()
                 }
             }
 
@@ -117,6 +124,8 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                 binding.filterValue.visibility = View.VISIBLE
                 binding.categoryGroup.visibility = View.VISIBLE
                 binding.seekBar.visibility = View.GONE
+                binding.priceDisplay.visibility = View.GONE
+
             } else {
                 categoryClicked = false
                 priceClicked = false
@@ -127,6 +136,7 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                 binding.priceFilter.setTextColor(resources.getColor(R.color.primary_color))
                 binding.categoryFilter.setTextColor(resources.getColor(R.color.primary_color))
                 binding.categoryGroup.visibility = View.GONE
+                brandViewModel.displayAllProducts()
             }
         }
 
@@ -176,7 +186,7 @@ class BrandFragment : Fragment(), OnItemProductClicked {
     }
 
     override fun productClicked(id: Long) {
-        val action = BrandFragmentDirections.actionBrandFragmentToProductDetailsFragment32(id)
+        val action = BrandFragmentDirections.actionBrandFragmentToProductDetailsFragment(id)
         binding.root.findNavController().navigate(action)
     }
 
