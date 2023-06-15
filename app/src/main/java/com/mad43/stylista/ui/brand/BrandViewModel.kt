@@ -17,6 +17,7 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
     lateinit var dataFiltered: List<DisplayProduct>
     lateinit var allData: List<DisplayProduct>
     var filter = false
+    var maxPrice = 0
 
     fun getProductInBrand(brand: String) {
         viewModelScope.launch {
@@ -28,10 +29,19 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
         }
     }
 
+    fun seekMax(){
+        allData.forEach {
+            if (maxPrice.toFloat() < it.price.toFloat() ){
+                maxPrice = it.price.toFloat().toInt() + 1
+            }
+        }
+    }
     fun filterByPrice(price: String) {
+
         if (filter) {
             dataFiltered = allData.filter {
-                it.price == price
+
+                (0.00 <= it.price.toFloat() && it.price.toFloat() <= price.toFloat())
             }
 
             if (price == "") {
@@ -43,6 +53,10 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
         } else {
             products.value = RemoteStatus.Success(allData)
         }
+    }
+
+    fun displayAllProducts(){
+        products.value = RemoteStatus.Success(allData)
     }
 
     fun filterByCategory(category: String) {

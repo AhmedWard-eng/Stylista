@@ -21,15 +21,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/priceFilter"
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/price"
+                android:layout_weight="1"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:textColor="@color/primary_color"
@@ -40,7 +43,8 @@
 
             <TextView
                 android:id="@+id/categoryFilter"
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="@string/category"
                 android:textSize="20sp"
@@ -49,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/priceFilter" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -64,39 +68,48 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="5">
+        <TextView
+            android:id="@+id/priceDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/price"
+            android:textColor="@color/primary_color"
+            android:textSize="20sp"/>
         <SeekBar
             android:id="@+id/seekBar"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_weight="4"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:max="500"
-            android:progress="3"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
-            app:layout_constraintTop_toBottomOf="@id/filter" />
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp" />
 
+        </LinearLayout>
         <RadioGroup
             android:id="@+id/categoryGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
+            android:weightSum="3"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
-            app:layout_constraintTop_toBottomOf="@id/filter">
+            android:layout_marginBottom="10dp">
 
             <RadioButton
                 android:id="@+id/shoes"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:buttonTint="@color/primary_color"
                 android:text="@string/shoes"
                 android:textColorLink="@color/primary_color"
@@ -104,8 +117,9 @@
 
             <RadioButton
                 android:id="@+id/accessories"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:buttonTint="@color/primary_color"
                 android:text="@string/accessories"
                 android:textColorLink="@color/primary_color"
@@ -113,8 +127,9 @@
 
             <RadioButton
                 android:id="@+id/shirt"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:buttonTint="@color/primary_color"
                 android:textColorLink="@color/primary_color"
                 android:text="@string/shirt"
