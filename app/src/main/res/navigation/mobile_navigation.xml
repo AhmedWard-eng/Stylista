@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/logInFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -97,7 +97,11 @@
         android:id="@+id/cartFragment2"
         android:name="com.mad43.stylista.ui.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <argument
+            android:name="idVarians"
+            app:argType="long" />
+    </fragment>
 
   <fragment
         android:id="@+id/productDetailsFragment"
@@ -106,6 +110,14 @@
         <argument
             android:name="id"
             app:argType="long" />
-    </fragment>
+      <action
+          android:id="@+id/action_productDetailsFragment_to_cartFragment2"
+          app:destination="@id/cartFragment2" />
+  </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.mad43.stylista.ui.productInfo.view.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" />
 
 </navigation>

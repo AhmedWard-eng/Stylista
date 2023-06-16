@@ -63,11 +63,16 @@
     <string name="logout">logout</string>
     <string name="user_name">User Name</string>
     <string name="userNameEmpty">User name field is empty</string>
+    <string name="add_favourite"> Add this product to favorites</string>
+    <string name="remove_favourite">remove this product to favorites</string>
+    <string name="is_add_favourite">Are you sure you want to add this product to favorites?</string>
+    <string name="is_remove_favourite">Are you sure you want to remove this product from favorites?</string>
+    <string name="select_size">Please, select your size in Avaliable Size Menu.</string>
     /***Marina***/
 
     /***Ahmed***/
-        <string name="checkout">Checkout</string>
-        <string name="subtotal">Subtotal</string>
-        <string name="delivery">Delivery</string>
+    <string name="checkout">Checkout</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="delivery">Delivery</string>
     /***Ahmed***/
 </resources>
