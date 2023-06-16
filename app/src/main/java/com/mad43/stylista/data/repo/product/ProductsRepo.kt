@@ -1,9 +1,8 @@
-package com.mad43.stylista.data.repo
+package com.mad43.stylista.data.repo.product
 
-import com.mad43.stylista.data.remote.dataSource.RemoteProductsDataSource
-import com.mad43.stylista.data.remote.dataSource.RemoteProductsDataSourceImp
+import com.mad43.stylista.data.remote.dataSource.product.RemoteProductsDataSource
+import com.mad43.stylista.data.remote.dataSource.product.RemoteProductsDataSourceImp
 import com.mad43.stylista.data.remote.entity.brand.mapRemoteBrandToDisplayBrand
-import com.mad43.stylista.data.remote.entity.product.Product
 import com.mad43.stylista.data.remote.entity.product.ProductDetails
 import com.mad43.stylista.data.remote.entity.product.mapRemoteProductToDisplayProduct
 import com.mad43.stylista.domain.model.DisplayBrand

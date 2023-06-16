@@ -11,10 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.mad43.stylista.R
-import com.mad43.stylista.ui.login.viewModel.LoginState
 import com.mad43.stylista.ui.login.viewModel.LoginViewModel
 
 import com.mad43.stylista.util.MyDialog
+import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -74,12 +74,12 @@ class LogInFragment : Fragment() {
         lifecycleScope.launch {
             signInViewModel.loginState.collectLatest {
                 when (it) {
-                    is LoginState.Success -> {
+                    is RemoteStatus.Success -> {
                         view.findNavController()
                             .navigate(R.id.action_logInFragment_to_navigation_home)
 
                     }
-                    is LoginState.Failed -> {
+                    is RemoteStatus.Valied -> {
                         dialog.showAlertDialog(getString(it.message), requireContext())
                     }
                     else -> {

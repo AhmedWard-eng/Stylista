@@ -3,7 +3,7 @@ package com.mad43.stylista.ui.productInfo.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denzcoskun.imageslider.models.SlideModel
-import com.mad43.stylista.domain.remote.auth.productDetails.ProductInfo
+import com.mad43.stylista.domain.remote.productDetails.ProductInfo
 import com.mad43.stylista.ui.productInfo.model.ApiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
