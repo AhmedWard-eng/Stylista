@@ -1,12 +1,19 @@
 package com.mad43.stylista.ui.cart
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mad43.stylista.R
 import com.mad43.stylista.databinding.CartItemBinding
+import com.mad43.stylista.domain.model.CartItem
+import com.mad43.stylista.util.setImageFromUrl
+import com.mad43.stylista.util.setPrice
 
-class CartAdapter : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
+class CartAdapter(private val clickListener: ClickListener) : ListAdapter<CartItem,CartAdapter.ViewHolder>(DiffUtils) {
 
     class ViewHolder(val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -15,8 +22,58 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = 5
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        if (item.quantity < 2){
+            holder.binding.buttonDecreaseQuantity.isEnabled = false
+            holder.binding.buttonDecreaseQuantity.background = AppCompatResources.getDrawable(
+                holder.binding.root.context,R.drawable.button_checkout_background_left_disabled)
+
+        }else{
+            holder.binding.buttonDecreaseQuantity.isEnabled = true
+            holder.binding.buttonDecreaseQuantity.background = AppCompatResources.getDrawable(
+                holder.binding.root.context,R.drawable.button_checkout_background_left)
+
+        }
+        holder.binding.cartProductImageView.setImageFromUrl(item.imageUrl)
+        holder.binding.textViewProductTitle.text = item.title
+        holder.binding.textViewProductPrice.setPrice(item.price)
+        holder.binding.textViewQuantity.text = item.quantity.toString()
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {}
+        holder.binding.buttonRemoveFromCart.setOnClickListener {
+            clickListener.delete(item.variant_id)
+        }
+
+        holder.binding.buttonIncreaseQuantity.setOnClickListener {
+            clickListener.setQuantity(item.variant_id,item.quantity + 1)
+        }
+
+        holder.binding.buttonDecreaseQuantity.setOnClickListener {
+
+            clickListener.setQuantity(item.variant_id,item.quantity - 1)
+        }
+    }
+
+
+    object DiffUtils : DiffUtil.ItemCallback<CartItem>(){
+        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            val b = (oldItem.variant_id == newItem.variant_id)
+           return b
+        }
+
+        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    class ClickListener(private val setQuantityListener : (Long,Int) -> Unit ,private val deleteListener : (Long) -> Unit){
+        fun setQuantity(variantId: Long , quantity: Int) = setQuantityListener(variantId,quantity)
+
+        fun delete(variantId: Long) = deleteListener(variantId)
+    }
+
+
 }
+
+

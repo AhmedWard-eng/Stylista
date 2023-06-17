@@ -19,6 +19,8 @@
     <color name="secondary_color">#a02d4a</color>
     <color name="text_color">#F3F3F3</color>
     <color name="colorGrey">#EBEAEA</color>
+    <color name="primary_color_with_opacity">#50a02d4a</color>
+
 
     /***Fatma***/
 

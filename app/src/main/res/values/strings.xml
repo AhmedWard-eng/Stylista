@@ -69,5 +69,9 @@
         <string name="checkout">Checkout</string>
         <string name="subtotal">Subtotal</string>
         <string name="delivery">Delivery</string>
+    <string name="currency">Currency</string>
+    <string name="addresses">Addresses</string>
+
+    <string name="changeCurrencyAssurance">Are you sure you want to choose %1$s as a main currency</string>
     /***Ahmed***/
 </resources>

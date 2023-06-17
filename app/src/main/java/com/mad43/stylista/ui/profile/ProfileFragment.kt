@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,12 +36,22 @@ class ProfileFragment : Fragment() {
         profileViewModel=ViewModelProvider(this)[ProfileViewModel::class.java]
 
         var userName = profileViewModel.getUserName()
-        binding.textViewHelloUserName.text = "Welcom ${userName}"
+        binding.textViewHelloUserName.text = "Welcome $userName"
 
         binding.buttonLogOut.setOnClickListener {
             profileViewModel.logout()
             Navigation.findNavController(requireView())
                 .navigate(R.id.action_navigation_profile_to_logInFragment)
+        }
+
+        binding.addressesView.setOnClickListener {
+            Log.d("TAG", "onViewCreated: addressesView")
+        }
+
+        binding.textViewCurrencyCode.text = profileViewModel.getCurrencyCode()
+        binding.currencyView.setOnClickListener {
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_navigation_profile_to_currencyFragment)
         }
     }
 
