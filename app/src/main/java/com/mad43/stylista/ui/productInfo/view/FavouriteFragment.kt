@@ -1,6 +1,9 @@
 package com.mad43.stylista.ui.productInfo.view
 
+import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,14 +63,63 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
         binding.RecyclerViewFavourite.adapter = brandAdapter
         binding.RecyclerViewFavourite.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        productInfo.getLocalFavourite()
+       // productInfo.getLocalFavourite()
+        var favID = productInfo.getIDForFavourite()
+        Log.d(ContentValues.TAG, "////////////////////////////favID: ${favID}")
+        productInfo.getFavouriteUsingId(favID.toString())
+//        lifecycleScope.launch {
+//
+//            productInfo.favouriteList.collectLatest { uiState ->when (uiState) {
+//                    is RemoteStatus.Success -> {
+//                        brandAdapter.setData(uiState.data)
+//                    }
+//                else -> {}
+//                }
+//            }
+//        }
         lifecycleScope.launch {
-
-            productInfo.favouriteList.collectLatest { uiState ->when (uiState) {
+            productInfo.uiStateNetwork.collectLatest {
+                    uiState ->when (uiState) {
                     is RemoteStatus.Success -> {
-                        brandAdapter.setData(uiState.data)
+                       // brandAdapter.setData(uiState.data)
+                        for (i in 1..((uiState.data.draft_order?.line_items?.size)?.minus(1!!) ?: 1)){
+//                            var title = uiState.data.draft_order?.line_items?.get(i)?.title
+//                            var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
+//                            var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
+//                            var image = uiState.data.draft_order?.line_items?.get(i)?.properties
+//                            val urlImage = image?.find { it.name == "url_image" }?.value
+//                            var price = uiState.data.draft_order?.line_items?.get(i)?.price
+//                            Log.d(TAG, "////////////title: ${title},, ${idProduct},${urlImage},${idVarians},,,${price}")
+//                            println("////::::::::::titleeeeee: ${title}")
+//                            if(idProduct!=null && title!=null && price !=null && urlImage!= null){
+//                                var favourite = Favourite(idProduct,title,price,urlImage)
+//                                var favouritesList = listOf(favourite)
+//                                brandAdapter.setData(favouritesList)
+//                            }
+
+                           // Log.d(TAG, "//////title: ${title}")
+                        }
+                        Log.d(TAG, "/////////////////////Sucesssssssssssssssssssssssss${uiState.data.draft_order?.line_items?.size}" +
+                                " ${uiState.data.draft_order?.line_items?.get(0)?.title}")
+                        var title = uiState.data.draft_order?.line_items?.get(0)?.title
+                        var idProduct = uiState.data.draft_order?.line_items?.get(0)?.product_id
+                        var idVarians = uiState.data.draft_order?.line_items?.get(0)?.variant_id
+                        var image = uiState.data.draft_order?.line_items?.get(0)?.properties
+                        val urlImage = image?.find { it.name == "url_image" }?.value
+                        var price = uiState.data.draft_order?.line_items?.get(0)?.price
+                        if(idProduct!=null && title!=null && price !=null && urlImage!= null){
+                                var favourite = Favourite(idProduct,title,price,urlImage)
+                                var favouritesList = listOf(favourite)
+                                brandAdapter.setData(favouritesList)
+                            }
+
                     }
-                else -> {}
+                is RemoteStatus.Failure ->{
+                    Log.d(TAG, "failllllllllllllll:::;: ")
+                }
+                else -> {
+                    Log.d(TAG, "elllllllllllse:::;: ")
+                }
                 }
             }
         }

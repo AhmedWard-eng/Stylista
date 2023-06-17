@@ -2,9 +2,12 @@ package com.mad43.stylista.data.repo.favourite
 
 import com.mad43.stylista.data.local.db.LocalSource
 import com.mad43.stylista.data.local.entity.Favourite
+import com.mad43.stylista.data.sharedPreferences.CustomerManager
+import com.mad43.stylista.data.sharedPreferences.LocalCustomer
+import com.mad43.stylista.data.sharedPreferences.PreferencesData
 import kotlinx.coroutines.flow.Flow
 
-class FavouriteLocalRepoImp (var localSource: LocalSource) : FavouriteLocalRepo {
+class FavouriteLocalRepoImp (var localSource: LocalSource , private val userManager: CustomerManager = PreferencesData()) : FavouriteLocalRepo {
     override suspend fun getStoredProduct(): Flow<List<Favourite>> {
         return localSource.getStoredProduct()
     }
@@ -21,5 +24,8 @@ class FavouriteLocalRepoImp (var localSource: LocalSource) : FavouriteLocalRepo 
     }
     override fun deleteAllProducts() {
         localSource.deleteAllProducts()
+    }
+    override fun getCustomerData(): Result<LocalCustomer> {
+        return userManager.getCustomerData()
     }
 }

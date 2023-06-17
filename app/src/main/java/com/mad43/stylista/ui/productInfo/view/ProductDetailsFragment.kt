@@ -18,11 +18,14 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
 import com.mad43.stylista.data.local.entity.Favourite
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
+import com.mad43.stylista.data.remote.entity.draftOrders.Property
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPuttingRequestBody
 import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
 import com.mad43.stylista.databinding.FragmentProductDetailsBinding
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.productDetails.ProductInfo
-import com.mad43.stylista.ui.brand.BrandFragmentDirections
 import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
@@ -105,12 +108,37 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
                     }
                     displayMenueAvaliableSize()
 
+
                     binding.imageViewFavourite.setOnClickListener {
                         var productTitle = uiState.data.product.title
                         var productID = uiState.data.product.id
                         var productPrice = uiState.data.product.variants.get(0).price
                         var productImage = uiState.data.product.images.get(0).src
                         var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage)
+
+
+                        var favID = productInfo.getIDForFavourite()
+                        Log.d(TAG, "////////////////////////////favID: ${favID}")
+
+                        val properties = listOf(
+                            Property(name = "url_image", value = uiState.data.product.images.get(0).src)
+                        )
+                        Log.d(TAG, "//////url_image: ${uiState.data.product.images.get(0).src}")
+                        Log.d(TAG, "/////variand id: ${ uiState.data.product.variants.get(0).id}")
+                        Log.d(TAG, "//////id product: ${id}")
+                        val lineItem = InsertingLineItem(
+                            properties = properties,
+                            variant_id = uiState.data.product.variants.get(0).id,
+                            quantity = 1,
+                            price = uiState.data.product.variants.get(0).price,
+                            title = uiState.data.product.variants.get(0).title
+                        )
+                        val requestBody = DraftOrderPuttingRequestBody(
+                            line_items = listOf(lineItem)
+                        )
+
+                        productInfo.insertFavouriteForCustumer(favID, DraftOrderPutBody(requestBody))
+
                         onClick(productFavourite)
 
                     }
@@ -127,7 +155,6 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
             }
         }
     }
-
     private fun addToCart(variantId: Long?) {
         binding.buttonAddToCart.setOnClickListener {
             if(variantId!= null){
@@ -152,6 +179,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
             binding.buttonAvailableSize.text = selectedSize
             idVariansSelect = sizeIdPairs.find { it.first == selectedSize }?.second
             idVariansSelect?.let { addToCart(it)
+                Log.d(TAG, "////////////idVariansSelect:::: ${idVariansSelect}")
             }
             true
         }

@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.searchProductFragment)
             }
         }
+        binding.imageFavorite.setOnClickListener {
+            navController.navigate(R.id.favouriteFragment)
+        }
 
 
     }

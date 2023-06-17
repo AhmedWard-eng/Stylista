@@ -1,6 +1,7 @@
 package com.mad43.stylista.data.repo.favourite
 
 import com.mad43.stylista.data.local.entity.Favourite
+import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import kotlinx.coroutines.flow.Flow
 
 interface FavouriteLocalRepo {
@@ -10,4 +11,6 @@ interface FavouriteLocalRepo {
     suspend fun deleteProduct(product: Favourite)
     fun isProductFavorite(productId: Long): Flow<Boolean>
     fun deleteAllProducts()
+
+    fun getCustomerData() : Result<LocalCustomer>
 }
