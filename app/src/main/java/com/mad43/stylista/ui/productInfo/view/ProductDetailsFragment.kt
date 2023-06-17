@@ -109,13 +109,14 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
                     binding.textViewPrice.text=uiState.data.product.variants.get(0).price
                     val randomFloat = Random.nextFloat() * 4.0f + 1.0f
                     binding.ratingBar.rating=randomFloat
-                    for (index in 0 .. uiState.data.product.variants.size-1){
-                        Log.d(TAG, "Size: ${uiState.data.product.variants.get(index).title} ")
-                        binding.buttonAvailableSize.text = uiState.data.product.variants.get(index).title
-                        var idVarians = uiState.data.product.variants.get(index).id
-                        val size = uiState.data.product.variants.get(index).title
+
+                    uiState.data.product.variants.forEachIndexed { variantIndex, variant ->
+                        Log.d(TAG, "Size: ${variant.title}, ${variant.id}")
+                        binding.buttonAvailableSize.text = variant.title
+                        val idVariants = variant.id
+                        val size = variant.title
                         availableSizesTitle.add(size)
-                        availableSizesID.add(idVarians)
+                        availableSizesID.add(idVariants)
                         sizeIdPairs = availableSizesTitle.zip(availableSizesID)
                     }
                     displayMenueAvaliableSize()
@@ -129,31 +130,11 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
                         var variantID = uiState.data.product.variants.get(0).id
                         var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
 
-                        productInfo.getFavouriteUsingId(favID)
-                        for (customDraftOrder in customDraftOrderList){
-                            for (lineItem in customDraftOrder.draft_order?.line_items.orEmpty()) {
-                                var titleOld = lineItem.title
-                                var priceOld = lineItem.price
-                                var varianceIDOld = lineItem.variant_id
-                                var imageOld = lineItem.properties
-                                Log.d(TAG, "////customDraftOrderList: ${customDraftOrderList.size}" +
-                                        " ${lineItem.title} ")
-                                var lineItem2 = InsertingLineItem(
-                                    properties= imageOld,
-                                    variant_id= varianceIDOld,
-                                    quantity = 1,
-                                    price = priceOld,
-                                    title = titleOld
-                                )
-                                lineItemsList.add(lineItem2)
-                            }
-                        }
-
+                        insertAllProductToList()
                         val properties = listOf(
                             Property(name = "url_image", value = uiState.data.product.images.get(0).src)
                         )
                         propertyList.add(Property(name = "url_image", value = uiState.data.product.images.get(0).src))
-
                         val lineItem1 =  InsertingLineItem(
                             properties = properties,
                             variant_id = uiState.data.product.variants.get(0).id,
@@ -180,6 +161,28 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
                 }
 
             }
+            }
+        }
+    }
+
+    private fun insertAllProductToList(){
+        productInfo.getFavouriteUsingId(favID)
+        for (customDraftOrder in customDraftOrderList){
+            for (lineItem in customDraftOrder.draft_order?.line_items.orEmpty()) {
+                var titleOld = lineItem.title
+                var priceOld = lineItem.price
+                var varianceIDOld = lineItem.variant_id
+                var imageOld = lineItem.properties
+                Log.d(TAG, "////customDraftOrderList: ${customDraftOrderList.size}" +
+                        " ${lineItem.title} ")
+                var lineItem2 = InsertingLineItem(
+                    properties= imageOld,
+                    variant_id= varianceIDOld,
+                    quantity = 1,
+                    price = priceOld,
+                    title = titleOld
+                )
+                lineItemsList.add(lineItem2)
             }
         }
     }
