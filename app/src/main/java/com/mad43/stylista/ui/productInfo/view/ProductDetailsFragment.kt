@@ -114,7 +114,8 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
                         var productID = uiState.data.product.id
                         var productPrice = uiState.data.product.variants.get(0).price
                         var productImage = uiState.data.product.images.get(0).src
-                        var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage)
+                        var variantID = uiState.data.product.variants.get(0).id
+                        var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
 
 
                         var favID = productInfo.getIDForFavourite()

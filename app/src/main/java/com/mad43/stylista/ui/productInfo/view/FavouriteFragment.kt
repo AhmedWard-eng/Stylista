@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
@@ -24,6 +25,7 @@ import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
+import com.mad43.stylista.ui.search.view.SearchBrandFragmentDirections
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -82,7 +84,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     uiState ->when (uiState) {
                     is RemoteStatus.Success -> {
                        // brandAdapter.setData(uiState.data)
-                        for (i in 1..((uiState.data.draft_order?.line_items?.size)?.minus(1!!) ?: 1)){
+//                        for (i in 1..((uiState.data.draft_order?.line_items?.size)?.minus(1!!) ?: 1)){
 //                            var title = uiState.data.draft_order?.line_items?.get(i)?.title
 //                            var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
 //                            var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
@@ -98,7 +100,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
 //                            }
 
                            // Log.d(TAG, "//////title: ${title}")
-                        }
+//                        }
                         Log.d(TAG, "/////////////////////Sucesssssssssssssssssssssssss${uiState.data.draft_order?.line_items?.size}" +
                                 " ${uiState.data.draft_order?.line_items?.get(0)?.title}")
                         var title = uiState.data.draft_order?.line_items?.get(0)?.title
@@ -107,10 +109,11 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                         var image = uiState.data.draft_order?.line_items?.get(0)?.properties
                         val urlImage = image?.find { it.name == "url_image" }?.value
                         var price = uiState.data.draft_order?.line_items?.get(0)?.price
-                        if(idProduct!=null && title!=null && price !=null && urlImage!= null){
-                                var favourite = Favourite(idProduct,title,price,urlImage)
+                        if(idProduct!=null && title!=null && price !=null && urlImage!= null &&idVarians!=null){
+                                var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
                                 var favouritesList = listOf(favourite)
                                 brandAdapter.setData(favouritesList)
+
                             }
 
                     }
@@ -126,7 +129,8 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
     }
 
     override fun productClicked(id: Long) {
-        //navigate
+        val action = FavouriteFragmentDirections.actionFavouriteFragmentToProductDetailsFragment(id)
+        binding.root.findNavController().navigate(action)
     }
 
 

@@ -17,50 +17,5 @@ data class Favourite(
     val title: String,
     val price : String,
     val image: String,
+    val variantID : Long
 )
-
-//class VariantTypeConverter {
-//    @TypeConverter
-//    fun fromStringVariant(value: String): List<Variant> {
-//        val listType = object : TypeToken<List<Variant>>() {}.type
-//        return Gson().fromJson(value, listType)
-//    }
-//
-//    @TypeConverter
-//    fun fromListVariant(list: List<Variant>): String {
-//        val gson = Gson()
-//        return gson.toJson(list)
-//    }
-//
-//    @TypeConverter
-//    fun fromStringOption(value: String): List<Option> {
-//        val listType = object : TypeToken<List<Option>>() {}.type
-//        return Gson().fromJson(value, listType)
-//    }
-//    @TypeConverter
-//    fun fromListOption(list: List<Option>): String {
-//        val gson = Gson()
-//        return gson.toJson(list)
-//    }
-//    @TypeConverter
-//    fun fromStringImages(value: String): List<Images> {
-//        val listType = object : TypeToken<List<Images>>() {}.type
-//        return Gson().fromJson(value, listType)
-//    }
-//
-//    @TypeConverter
-//    fun fromListImages(list: List<Images>): String {
-//        val gson = Gson()
-//        return gson.toJson(list)
-//    }
-//    @TypeConverter
-//    fun fromStringImage(value: String): Image {
-//        return Gson().fromJson(value, Image::class.java)
-//    }
-//
-//    @TypeConverter
-//    fun fromImage(image: Image): String {
-//        val gson = Gson()
-//        return gson.toJson(image)
-//    }
-//}

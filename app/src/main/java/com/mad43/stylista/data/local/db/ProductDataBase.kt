@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import com.mad43.stylista.data.local.entity.Favourite
 
 
-@Database(entities = arrayOf(Favourite::class), version = 1 )
+@Database(entities = arrayOf(Favourite::class), version = 2 )
 abstract class ProductDataBase : RoomDatabase() {
     abstract fun getProductDao(): ProductDao
     companion object{
