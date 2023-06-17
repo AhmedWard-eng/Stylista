@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.mad43.stylista.databinding.ProductItemBinding
 import com.mad43.stylista.domain.model.DisplayProduct
 import com.mad43.stylista.ui.brand.OnItemProductClicked
+import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.setImageFromUrl
+
 
 class CategoryAdapter(
     private val context: Context,
@@ -28,15 +30,14 @@ class CategoryAdapter(
         binding = ProductItemBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
-
-    @SuppressLint("SetTextI18n")
+ 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.imageProduct.setImageFromUrl(getItem(position).image)
 
         holder.binding.nameProduct.text = getItem(position).title
 
-        holder.binding.priceProduct.text = getItem(position).price + " EGP"
+        holder.binding.priceProduct.setPrice(getItem(position).price.toDouble())
 
         holder.binding.cardProduct.setOnClickListener {
             onItemProductClicked.productClicked(getItem(position).id)
