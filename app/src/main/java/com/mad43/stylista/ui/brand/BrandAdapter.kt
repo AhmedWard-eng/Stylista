@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mad43.stylista.databinding.ProductItemBinding
 import com.mad43.stylista.domain.model.DisplayProduct
+import com.mad43.stylista.util.setImageFromUrl
 
 class BrandAdapter(
     private val context: Context,
@@ -30,9 +31,7 @@ class BrandAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Glide.with(context.applicationContext).load(getItem(position).image)
-            .override(holder.binding.imageProduct.width, holder.binding.imageProduct.height)
-            .into(holder.binding.imageProduct)
+        holder.binding.imageProduct.setImageFromUrl(getItem(position).image)
 
         holder.binding.nameProduct.text = getItem(position).title
 

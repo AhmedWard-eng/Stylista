@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mad43.stylista.databinding.BrandItemBinding
 import com.mad43.stylista.domain.model.DisplayBrand
+import com.mad43.stylista.util.setImageFromUrl
 
 class HomeBrandAdapter(
 private val context: Context,
@@ -27,9 +28,7 @@ private val onItemBrandClicked : OnItemBrandClicked
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Glide.with(context.applicationContext).load(getItem(position).image)
-            .override(holder.binding.imageBrand.width, holder.binding.imageBrand.height)
-            .into(holder.binding.imageBrand)
+        holder.binding.imageBrand.setImageFromUrl(getItem(position).image)
 
         holder.binding.brandName.text = getItem(position).title
 

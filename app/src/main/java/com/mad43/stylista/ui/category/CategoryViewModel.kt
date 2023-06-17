@@ -3,6 +3,7 @@ package com.mad43.stylista.ui.category
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mad43.stylista.R
 import com.mad43.stylista.data.repo.product.ProductsRepo
 import com.mad43.stylista.data.repo.product.ProductsRepoInterface
 
@@ -17,13 +18,13 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
 
     var products = MutableStateFlow<RemoteStatus<List<DisplayProduct>>>(RemoteStatus.Loading)
     lateinit var productMainCategory: List<DisplayProduct>
-    lateinit var productSubCategory: List<DisplayProduct>
+    private var productSubCategory: MutableList<DisplayProduct> = mutableListOf()
     lateinit var allData: List<DisplayProduct>
     var filterMainCategory = false
     var filterSubCategory = false
-    var sub: String? = null
 
     init {
+
         getProducts()
     }
 
@@ -49,21 +50,17 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
     }
 
     fun filterBySubCategory(subCategory: String) {
+
         if (filterMainCategory) {
             if (filterSubCategory) {
-                productSubCategory = productMainCategory.filter { it ->
-                    val strings = it.tag.split(",")
+                productSubCategory.clear()
+                productMainCategory.forEach {product->
+                    val strings = product.tag.split(",")
                     strings.forEach {
-                        sub = if (subCategory.trim().equals(it.trim(), true)) {
-                            Log.i("Sub", "ok $it")
-                            it
-                        } else {
-                            null
+                        if (subCategory.trim().equals(it.trim(), true)) {
+                            productSubCategory.add(product)
                         }
                     }
-                    Log.i("Sub", sub.toString())
-                    Log.i("Sub", subCategory)
-                    sub?.trim() == subCategory.trim()
                 }
                 products.value = RemoteStatus.Success(productSubCategory)
             } else {
