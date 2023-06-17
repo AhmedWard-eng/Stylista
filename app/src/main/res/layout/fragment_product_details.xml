@@ -122,11 +122,11 @@
             android:background="@drawable/style_avaliable_size"
             android:text="Available Sizes"
             android:textColor="#737373"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewQuantity"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
             app:layout_constraintHorizontal_bias="0.809"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/textViewQuantity"
+            app:layout_constraintTop_toTopOf="@+id/textViewQuantity"
             app:layout_constraintVertical_bias="0.481" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -171,7 +171,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

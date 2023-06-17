@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_logInFragment"
             app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_currencyFragment"
+            app:destination="@id/currencyFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -107,5 +110,10 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/currencyFragment"
+        android:name="com.mad43.stylista.ui.currency.CurrencyFragment"
+        android:label="fragment_currency"
+        tools:layout="@layout/fragment_currency" />
 
 </navigation>

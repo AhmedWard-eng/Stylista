@@ -1,26 +1,19 @@
 package com.mad43.stylista
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.mad43.stylista.data.remote.entity.SignupModel
-import com.mad43.stylista.data.remote.entity.SignupRequest
-import com.mad43.stylista.data.remote.entity.auth.Customer
-import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
-import com.mad43.stylista.data.remote.entity.auth.UpdateCustumerModel
-import com.mad43.stylista.data.remote.network.ApiService.authApiService
+import com.mad43.stylista.data.remote.network.CurrencyRetrofitService
+import com.mad43.stylista.data.remote.network.currency.CurrencyApiInterface
 import com.mad43.stylista.databinding.ActivityMainBinding
-import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
-import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -28,11 +21,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navView: BottomNavigationView
+    private val viewModel : MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.updateCurrencyRate()
 
         supportActionBar?.customView = binding.materialToolbar
 
@@ -54,9 +50,15 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.searchProductFragment)
             }
         }
-
-
+        binding.imageCart.setOnClickListener {
+            navController.navigate(R.id.cartFragment2)
+        }
+        lifecycleScope.launch {
+            CurrencyRetrofitService.currencyApiInterface.getCurrenciesRate()
+        }
     }
+
+
 
 
     private fun setBottomBarVisibility() {
@@ -87,7 +89,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //
 //    @SuppressLint("SetTextI18n")
 //    private fun setLabelInActionBar(){
 //        navController.addOnDestinationChangedListener { _, destination, _ ->
