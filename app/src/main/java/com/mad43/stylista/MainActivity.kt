@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navView: BottomNavigationView
-    private val viewModel : MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,8 +56,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -86,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    @SuppressLint("SetTextI18n")
+    //    @SuppressLint("SetTextI18n")
 //    private fun setLabelInActionBar(){
 //        navController.addOnDestinationChangedListener { _, destination, _ ->
 //            when (destination.id) {

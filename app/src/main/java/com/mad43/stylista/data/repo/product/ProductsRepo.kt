@@ -1,5 +1,6 @@
 package com.mad43.stylista.data.repo.product
 
+import android.util.Log
 import com.mad43.stylista.data.remote.dataSource.product.RemoteProductsDataSource
 import com.mad43.stylista.data.remote.dataSource.product.RemoteProductsDataSourceImp
 import com.mad43.stylista.data.remote.entity.brand.mapRemoteBrandToDisplayBrand
@@ -14,24 +15,27 @@ class ProductsRepo(private val remoteProductsDataSource: RemoteProductsDataSourc
     ProductsRepoInterface {
 
     override suspend fun getAllBrand(): Flow<List<DisplayBrand>> {
-
         return flowOf(remoteProductsDataSource.getAllBrand().smart_collections?.map {
             it.mapRemoteBrandToDisplayBrand()
         }) as Flow<List<DisplayBrand>>
-
     }
 
     override suspend fun getAllProductInBrand(brand: String): Flow<List<DisplayProduct>> {
         return flowOf(remoteProductsDataSource.getAllProductInBrand(brand).products.filter {
             it.vendor == brand
-        }.map { it.mapRemoteProductToDisplayProduct() })
+        }.map {
+            it.mapRemoteProductToDisplayProduct()
+        })
     }
+
     override suspend fun getProductDetails(id: Long): Flow<ProductDetails> {
         return flowOf(remoteProductsDataSource.getProductById(id))
     }
 
     override suspend fun getAllProduct(): Flow<List<DisplayProduct>> {
+
         return flowOf(remoteProductsDataSource.getAllProduct().products.map { it.mapRemoteProductToDisplayProduct() })
+
     }
 
 }

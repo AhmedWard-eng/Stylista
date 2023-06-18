@@ -9,6 +9,7 @@ import com.mad43.stylista.data.repo.product.ProductsRepoInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class BrandViewModel(private val repoInterface: ProductsRepoInterface = ProductsRepo()) :
     ViewModel() {
@@ -21,41 +22,48 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
 
     fun getProductInBrand(brand: String) {
         viewModelScope.launch {
-            repoInterface.getAllProductInBrand(brand).catch { e ->
+            try {
+                repoInterface.getAllProductInBrand(brand).catch { e ->
+                    products.value = RemoteStatus.Failure(e)
+                }.collect { data ->
+                    products.value = RemoteStatus.Success(data)
+                }
+            } catch (e: Exception) {
                 products.value = RemoteStatus.Failure(e)
-            }.collect { data ->
-                products.value = RemoteStatus.Success(data)
             }
+
         }
     }
 
-    fun seekMax(){
+    fun seekMax() {
         allData.forEach {
-            if (maxPrice.toFloat() < it.price.toFloat() ){
+            if (maxPrice.toFloat() < it.price.toFloat()) {
                 maxPrice = it.price.toFloat().toInt() + 1
             }
         }
     }
+
     fun filterByPrice(price: String) {
 
         if (filter) {
+
             dataFiltered = allData.filter {
 
                 (0.00 <= it.price.toFloat() && it.price.toFloat() <= price.toFloat())
             }
-
             if (price == "") {
                 products.value = RemoteStatus.Success(allData)
             } else {
                 products.value = RemoteStatus.Success(dataFiltered)
             }
 
+
         } else {
             products.value = RemoteStatus.Success(allData)
         }
     }
 
-    fun displayAllProducts(){
+    fun displayAllProducts() {
         products.value = RemoteStatus.Success(allData)
     }
 
