@@ -21,46 +21,51 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
 
     fun getProductInBrand(brand: String) {
         viewModelScope.launch {
+
             repoInterface.getAllProductInBrand(brand).catch { e ->
                 products.value = RemoteStatus.Failure(e)
             }.collect { data ->
                 products.value = RemoteStatus.Success(data)
             }
+
         }
     }
 
-    fun seekMax(){
+    fun seekMax() {
         allData.forEach {
-            if (maxPrice.toFloat() < it.price.toFloat() ){
+            if (maxPrice.toFloat() < it.price.toFloat()) {
                 maxPrice = it.price.toFloat().toInt() + 1
             }
         }
     }
+
     fun filterByPrice(price: String) {
 
         if (filter) {
+
             dataFiltered = allData.filter {
 
                 (0.00 <= it.price.toFloat() && it.price.toFloat() <= price.toFloat())
             }
-
             if (price == "") {
                 products.value = RemoteStatus.Success(allData)
             } else {
                 products.value = RemoteStatus.Success(dataFiltered)
             }
 
+
         } else {
             products.value = RemoteStatus.Success(allData)
         }
     }
 
-    fun displayAllProducts(){
+    fun displayAllProducts() {
         products.value = RemoteStatus.Success(allData)
     }
 
     fun filterByCategory(category: String) {
         if (filter) {
+
             dataFiltered = allData.filter {
                 it.product_type == category
             }

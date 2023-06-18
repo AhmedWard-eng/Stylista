@@ -24,7 +24,6 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
     var filterSubCategory = false
 
     init {
-
         getProducts()
     }
 
@@ -44,6 +43,7 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
                 it.product_type == mainCategory
             }
             products.value = RemoteStatus.Success(productMainCategory)
+
         } else {
             products.value = RemoteStatus.Success(allData)
         }
@@ -54,7 +54,7 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
         if (filterMainCategory) {
             if (filterSubCategory) {
                 productSubCategory.clear()
-                productMainCategory.forEach {product->
+                productMainCategory.forEach { product ->
                     val strings = product.tag.split(",")
                     strings.forEach {
                         if (subCategory.trim().equals(it.trim(), true)) {

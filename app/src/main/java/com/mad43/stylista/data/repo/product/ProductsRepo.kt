@@ -14,24 +14,38 @@ class ProductsRepo(private val remoteProductsDataSource: RemoteProductsDataSourc
     ProductsRepoInterface {
 
     override suspend fun getAllBrand(): Flow<List<DisplayBrand>> {
-
-        return flowOf(remoteProductsDataSource.getAllBrand().smart_collections?.map {
-            it.mapRemoteBrandToDisplayBrand()
-        }) as Flow<List<DisplayBrand>>
+       return try {
+            remoteProductsDataSource.getAllBrand().smart_collections?.map {
+                it.mapRemoteBrandToDisplayBrand()
+            } as Flow<List<DisplayBrand>>
+        }catch (e: Exception){
+            flowOf(listOf())
+        }
 
     }
 
     override suspend fun getAllProductInBrand(brand: String): Flow<List<DisplayProduct>> {
-        return flowOf(remoteProductsDataSource.getAllProductInBrand(brand).products.filter {
-            it.vendor == brand
-        }.map { it.mapRemoteProductToDisplayProduct() })
+        return try {
+            flowOf(remoteProductsDataSource.getAllProductInBrand(brand).products.filter {
+                it.vendor == brand
+            }.map {
+                it.mapRemoteProductToDisplayProduct()
+            })
+        }catch (e:Exception){
+            flowOf(listOf())
+        }
+
     }
     override suspend fun getProductDetails(id: Long): Flow<ProductDetails> {
         return flowOf(remoteProductsDataSource.getProductById(id))
     }
 
     override suspend fun getAllProduct(): Flow<List<DisplayProduct>> {
-        return flowOf(remoteProductsDataSource.getAllProduct().products.map { it.mapRemoteProductToDisplayProduct() })
+        return try {
+            flowOf(remoteProductsDataSource.getAllProduct().products.map { it.mapRemoteProductToDisplayProduct() })
+        }catch (e:Exception){
+            flowOf(listOf())
+        }
     }
 
 }
