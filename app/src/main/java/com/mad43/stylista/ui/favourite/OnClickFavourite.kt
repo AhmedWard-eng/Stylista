@@ -1,4 +1,4 @@
-package com.mad43.stylista.ui.productInfo.view
+package com.mad43.stylista.ui.favourite
 
 import com.mad43.stylista.data.local.entity.Favourite
 

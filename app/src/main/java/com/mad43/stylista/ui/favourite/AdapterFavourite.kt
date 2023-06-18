@@ -1,14 +1,11 @@
-package com.mad43.stylista.ui.productInfo.view
+package com.mad43.stylista.ui.favourite
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.mad43.stylista.data.local.entity.Favourite
-import com.mad43.stylista.data.sharedPreferences.SharedPref.context
 import com.mad43.stylista.databinding.ProductItemBinding
-import com.mad43.stylista.domain.model.Review
 import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.util.setImageFromUrl
 

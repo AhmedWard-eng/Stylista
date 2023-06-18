@@ -178,9 +178,9 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
 
     fun removeProductFromFavourite(){
         insertAllProductToList()
-        var newList = lineItem1.variant_id?.let { it1 ->
+        var newList = lineItem1.variant_id?.let { item ->
             removeAnItemFromFavourite(lineItemsList,
-                it1
+                item
             )
         }
         Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")

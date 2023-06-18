@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.productInfo.view.FavouriteFragment">
+    tools:context=".ui.favourite.FavouriteFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView

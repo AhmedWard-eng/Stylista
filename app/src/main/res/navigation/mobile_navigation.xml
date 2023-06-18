@@ -116,7 +116,7 @@
   </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.mad43.stylista.ui.productInfo.view.FavouriteFragment"
+        android:name="com.mad43.stylista.ui.favourite.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" >
         <action

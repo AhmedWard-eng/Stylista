@@ -18,17 +18,13 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
 import com.mad43.stylista.data.local.entity.Favourite
-import com.mad43.stylista.data.remote.entity.draftOrders.LineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.Property
-import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
-import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
-import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPuttingRequestBody
-import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
 import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
 import com.mad43.stylista.databinding.FragmentProductDetailsBinding
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.productDetails.ProductInfo
+import com.mad43.stylista.ui.favourite.OnClickFavourite
 import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
@@ -39,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
-class ProductDetailsFragment : Fragment() , OnClickFavourite{
+class ProductDetailsFragment : Fragment() , OnClickFavourite {
 
     private var _binding: FragmentProductDetailsBinding? = null
     private val binding get() = _binding!!
