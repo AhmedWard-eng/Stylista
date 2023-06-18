@@ -86,7 +86,6 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
             // Get all favorites
             var  customDraftOrder = productInfo.getLineItems(productInfo.favID)
             productInfo.customDraftOrderList = customDraftOrder
-            Log.d(TAG, "customDraftOrderListcustomDraftOrderListcustomDraftOrderList: ${productInfo.customDraftOrderList.size}, ${customDraftOrder.get(0).draft_order?.line_items?.get(0)?.title}")
             productInfo.uiState.collectLatest {
                     uiState ->when (uiState) {
                 is ApiState.Success -> {

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
@@ -20,6 +21,7 @@ import com.mad43.stylista.databinding.FragmentProfileBinding
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
 import com.mad43.stylista.domain.remote.productDetails.ProductInfo
+import com.mad43.stylista.ui.brand.BrandFragmentDirections
 import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.ui.favourite.AdapterFavourite
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
@@ -131,6 +133,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     }
 
     override fun productClicked(id: Long) {
-
+        val action = ProfileFragmentDirections.actionNavigationProfileToProductDetailsFragment(id)
+        binding.root.findNavController().navigate(action)
     }
 }
