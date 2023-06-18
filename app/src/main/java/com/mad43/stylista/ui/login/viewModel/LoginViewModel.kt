@@ -35,9 +35,20 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
 
 
 
-    private fun getIDForFavourite(): String {
-        var idFavourite = getIDForFavourite()
-        return idFavourite
+    fun getIDForFavourite(): Long {
+        val customerData = favourite.getIDFavouriteForCustumer()
+
+        return if (customerData.isSuccess) {
+            val localCustomer = customerData.getOrNull()
+            val favouriteId = localCustomer?.favouriteID
+            if (favouriteId != null) {
+                favouriteId.toLong()
+            } else {
+                throw Exception("Favourite ID not found")
+            }
+        } else {
+            throw Exception("Customer data not found")
+        }
     }
 
 
@@ -98,7 +109,7 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
 
     suspend fun insertAllProductDB(){
         var faviuriteID = getIDForFavourite()
-        var draftOrder = getLineItems(idFav = faviuriteID )
+        var draftOrder = getLineItems(idFav = faviuriteID.toString() )
         for (response in draftOrder) {
             val draftOrder = response.draft_order
             if (draftOrder != null && draftOrder.line_items != null) {
