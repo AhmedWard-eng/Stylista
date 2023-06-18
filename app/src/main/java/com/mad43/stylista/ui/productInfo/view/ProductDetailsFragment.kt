@@ -52,11 +52,11 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
     var isFavourite : Boolean = false
     var selectedSize : String = ""
     var idVariansSelect: Long? = null
-    var lineItemsList = mutableListOf<InsertingLineItem>()
-    var customDraftOrderList= mutableListOf<CustomDraftOrderResponse>()
-    lateinit var requestBody : DraftOrderPuttingRequestBody
-    lateinit var favID : String
-    lateinit var lineItem1 :  InsertingLineItem
+//    var lineItemsList = mutableListOf<InsertingLineItem>()
+   // var customDraftOrderList= mutableListOf<CustomDraftOrderResponse>()
+    //lateinit var requestBody : DraftOrderPuttingRequestBody
+//    lateinit var favID : String
+//    lateinit var lineItem1 :  InsertingLineItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,11 +91,11 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
 
     private fun displayInfo(){
         lifecycleScope.launch {
-            favID = productInfo.getIDForFavourite().toString()
+            productInfo.favID = productInfo.getIDForFavourite().toString()
             // Get all favorites
-            var  customDraftOrder = productInfo.getLineItems(favID)
-            customDraftOrderList = customDraftOrder
-            Log.d(TAG, "customDraftOrderListcustomDraftOrderListcustomDraftOrderList: ${customDraftOrderList.size}, ${customDraftOrder.get(0).draft_order?.line_items?.get(0)?.title}")
+            var  customDraftOrder = productInfo.getLineItems(productInfo.favID)
+            productInfo.customDraftOrderList = customDraftOrder
+            Log.d(TAG, "customDraftOrderListcustomDraftOrderListcustomDraftOrderList: ${productInfo.customDraftOrderList.size}, ${customDraftOrder.get(0).draft_order?.line_items?.get(0)?.title}")
             productInfo.uiState.collectLatest {
                     uiState ->when (uiState) {
                 is ApiState.Success -> {
@@ -132,7 +132,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
                         val properties = listOf(
                             Property(name = "url_image", value = productImage)
                         )
-                         lineItem1 =  InsertingLineItem(
+                         productInfo.lineItem1 =  InsertingLineItem(
                             properties = properties,
                             variant_id = variantID,
                             quantity = 1,
@@ -155,36 +155,6 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
             }
             }
         }
-    }
-
-    private fun insertAllProductToList(){
-        for (customDraftOrder in customDraftOrderList){
-            for (lineItem in customDraftOrder.draft_order?.line_items.orEmpty()) {
-                var titleOld = lineItem.title
-                var priceOld = lineItem.price
-                var varianceIDOld = lineItem.variant_id
-                var imageOld = lineItem.properties
-                Log.d(TAG, "////customDraftOrderList: ${customDraftOrderList.size}" +
-                        " ${lineItem.title} ")
-                var lineItem2 = InsertingLineItem(
-                    properties= imageOld,
-                    variant_id= varianceIDOld,
-                    quantity = 1,
-                    price = priceOld,
-                    title = titleOld
-                )
-                lineItemsList.add(lineItem2)
-            }
-        }
-    }
-
-    private fun insertProductToList(lineItem1: InsertingLineItem){
-        insertAllProductToList()
-        lineItemsList.add(lineItem1)
-        requestBody = DraftOrderPuttingRequestBody(
-            line_items = lineItemsList
-        )
-        productInfo.insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
     }
 
     private fun addToCart(variantId: Long?) {
@@ -242,27 +212,26 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
             if (it) {
                 if (isFavourite) {
                     productInfo.deleteProduct(product)
-                   // RemoveProductToList(lineItem1)
-                    insertAllProductToList()
-                    Log.d(TAG, "displayInfo: ${lineItemsList.size},, ${lineItemsList.get(0).title}")
+                    productInfo.insertAllProductToList()
+                    Log.d(TAG, "displayInfo: ${productInfo.lineItemsList.size},, ${productInfo.lineItemsList.get(0).title}")
 
-                    var newList = lineItem1.variant_id?.let { it1 ->
-                        productInfo.removeAnItemFromFavourite(lineItemsList,
+                    var newList = productInfo.lineItem1.variant_id?.let { it1 ->
+                        productInfo.removeAnItemFromFavourite(productInfo.lineItemsList,
                             it1
                         )
                     }
                     Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")
-                    requestBody = newList?.let { it1 ->
+                    productInfo.requestBody = newList?.let { it1 ->
                         DraftOrderPuttingRequestBody(
                             line_items = it1
                         )
                     }!!
                     Log.d(TAG, "onClick: ${newList.size}")
-                    productInfo.insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
+                    productInfo.insertFavouriteForCustumer(productInfo.favID.toLong(), DraftOrderPutBody(productInfo.requestBody))
                     Toast.makeText(requireContext(), getString(R.string.remove_favourite), Toast.LENGTH_SHORT).show()
                 } else {
                     productInfo.insertProduct(product)
-                    insertProductToList(lineItem1)
+                    productInfo.insertProductToList(productInfo.lineItem1)
                     Toast.makeText(requireContext(),  getString(R.string.add_favourite), Toast.LENGTH_SHORT).show()
                 }
             }

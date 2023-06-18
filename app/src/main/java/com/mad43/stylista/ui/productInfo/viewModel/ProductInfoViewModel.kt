@@ -12,6 +12,7 @@ import com.mad43.stylista.data.remote.entity.draftOrders.LineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPuttingRequestBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
@@ -39,7 +40,11 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
     private val _isfavourite = MutableStateFlow<RemoteStatus<Boolean>>(RemoteStatus.Loading)
     val isfavouriteExist = _isfavourite.asStateFlow()
 
-
+    var customDraftOrderList= mutableListOf<CustomDraftOrderResponse>()
+    var lineItemsList = mutableListOf<InsertingLineItem>()
+    lateinit var requestBody : DraftOrderPuttingRequestBody
+    lateinit var lineItem1 :  InsertingLineItem
+    lateinit var favID : String
 
     fun getProductDetails(id: Long){
         viewModelScope.launch (Dispatchers.IO){
@@ -100,39 +105,6 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
 
     }
 
-    fun getAllLineItemsFromFavourite(idFavourite: String) {
-        viewModelScope.launch {
-            try {
-                var customDraftOrderList= mutableListOf<CustomDraftOrderResponse>()
-                val lineItemsList = mutableListOf<InsertingLineItem>()
-                val customDraftOrderResponse = favourite.getFavouriteUsingId(idFavourite)
-                var  customDraftOrder = getLineItems(idFavourite)
-                customDraftOrderList = customDraftOrder
-                for (customDraftOrder in customDraftOrderList){
-                    for (lineItem in customDraftOrder.draft_order?.line_items.orEmpty()) {
-                        val titleOld = lineItem.title
-                        val priceOld = lineItem.price
-                        val varianceIDOld = lineItem.variant_id
-                        val imageOld = lineItem.properties
-
-                        val lineItem2 = InsertingLineItem(
-                            properties = imageOld,
-                            variant_id = varianceIDOld,
-                            quantity = 1,
-                            price = priceOld,
-                            title = titleOld
-                        )
-                        lineItemsList.add(lineItem2)
-                    }
-                }
-                _uiStateNetwork.value = customDraftOrderResponse
-                Log.d(TAG, "getFavouriteUsingId: ${_uiStateNetwork.value}")
-                Log.d(TAG, "Line items list size: ${lineItemsList.size}")
-            } catch (e: Exception) {
-                _uiStateNetwork.value = RemoteStatus.Failure(e)
-            }
-        }
-    }
     suspend fun getLineItems(idFav: String): MutableList<CustomDraftOrderResponse>{
         var getProduct = favourite.getFavouriteUsingId(idFav)
 
@@ -173,6 +145,36 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
     fun removeAnItemFromFavourite(putLineItems: MutableList<InsertingLineItem>, variantId: Long): List<InsertingLineItem> {
        return favourite.removeAnItemFromFavourite(putLineItems,variantId)
    }
+
+     fun insertAllProductToList(){
+        for (customDraftOrder in customDraftOrderList){
+            for (lineItem in customDraftOrder.draft_order?.line_items.orEmpty()) {
+                var titleOld = lineItem.title
+                var priceOld = lineItem.price
+                var varianceIDOld = lineItem.variant_id
+                var imageOld = lineItem.properties
+                Log.d(TAG, "////customDraftOrderList: ${customDraftOrderList.size}" +
+                        " ${lineItem.title} ")
+                var lineItem2 = InsertingLineItem(
+                    properties= imageOld,
+                    variant_id= varianceIDOld,
+                    quantity = 1,
+                    price = priceOld,
+                    title = titleOld
+                )
+               lineItemsList.add(lineItem2)
+            }
+        }
+    }
+
+     fun insertProductToList(lineItem1: InsertingLineItem){
+        insertAllProductToList()
+        lineItemsList.add(lineItem1)
+        requestBody = DraftOrderPuttingRequestBody(
+            line_items = lineItemsList
+        )
+        insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
+    }
 
 
 }
