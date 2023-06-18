@@ -25,8 +25,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val favourite : FavouriteLocal) : ViewModel() {
 
-    private var _loginState: MutableStateFlow<RemoteStatus<LoginResponse>> = MutableStateFlow(
-        RemoteStatus.Loading)
+    private var _loginState: MutableStateFlow<RemoteStatus<LoginResponse>> = MutableStateFlow(RemoteStatus.Loading)
     var loginState: StateFlow<RemoteStatus<LoginResponse>> = _loginState
 
     private val _userExists = MutableStateFlow(false)
@@ -34,7 +33,12 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
 
     var checkLogin = authUseCase.isUserLoggedIn()
 
-   // var idFavourite = getIDForFavourite()
+
+
+    private fun getIDForFavourite(): String {
+        var idFavourite = getIDForFavourite()
+        return idFavourite
+    }
 
 
     fun login(email: String, password: String) {
@@ -83,23 +87,6 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
         _userExists.value = customerData.isSuccess
     }
 
-//    fun getIDForFavourite(): Long {
-//        val customerData = favourite.getIDFavouriteForCustumer()
-//
-//        return if (customerData.isSuccess) {
-//            val localCustomer = customerData.getOrNull()
-//            val favouriteId = localCustomer?.favouriteID
-//            if (favouriteId != null) {
-//                favouriteId.toLong()
-//            } else {
-//                throw Exception("Favourite ID not found")
-//            }
-//        } else {
-//            throw Exception("Customer data not found")
-//        }
-//    }
-
-
     suspend fun getLineItems(idFav: String): MutableList<CustomDraftOrderResponse>{
         var getProduct = favourite.getFavouriteUsingId(idFav)
 
@@ -110,23 +97,21 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
     }
 
     suspend fun insertAllProductDB(){
-        var draftOrder = getLineItems("1126064095531")
-        Log.d(TAG, "insertAllProductDB: ${draftOrder},,${draftOrder.size}")
+        var faviuriteID = getIDForFavourite()
+        var draftOrder = getLineItems(idFav = faviuriteID )
         for (response in draftOrder) {
             val draftOrder = response.draft_order
             if (draftOrder != null && draftOrder.line_items != null) {
                 for (lineItem in draftOrder.line_items) {
-                    println("Title: ${lineItem.title}, Price: ${lineItem.price}, Product ID: ${lineItem.product_id}")
                     var properties = lineItem.properties
                     val urlImage = properties?.find { it.name == "url_image" }?.value
                     if (lineItem.title!= null && lineItem.price!=null && lineItem.product_id!=null&& urlImage!=null && lineItem.variant_id!=null){
-                var favouriteProduct = Favourite(lineItem.product_id,lineItem.title,lineItem.price, image = urlImage,lineItem.variant_id)
-                Log.d(TAG, "////////////////////////////////insertAllProductDB: ${lineItem.title},, ${lineItem.price},")
+                        var favouriteProduct = Favourite(lineItem.product_id,lineItem.title,lineItem.price, image = urlImage,lineItem.variant_id)
                         viewModelScope.launch(Dispatchers.IO){
                             favourite.insertProduct(favouriteProduct)
                         }
 
-            }
+                    }
                 }
             }
         }
