@@ -51,6 +51,7 @@
             android:contextClickable="true"
             android:indeterminate="false"
             android:numStars="5"
+            android:progressTint="#FBEA55"
             android:scrollbarSize="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
