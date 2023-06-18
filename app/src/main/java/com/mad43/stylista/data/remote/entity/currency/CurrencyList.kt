@@ -41,8 +41,6 @@ val currencies: Map<String, String> by lazy {
         "TND" to "Tunisian Dinar",
         "TRY" to "Turkish Lira",
         "USD" to "United States Dollar",
-        "XAG" to "Silver (troy ounce)",
-        "XAU" to "Gold (troy ounce)",
         "YER" to "Yemeni Rial"
     )
 }

@@ -10,23 +10,17 @@ import com.mad43.stylista.R
 
 class AddressesFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = AddressesFragment()
-    }
-
     private lateinit var viewModel: AddressesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this)[AddressesViewModel::class.java]
         return inflater.inflate(R.layout.fragment_addresses, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddressesViewModel::class.java)
-        // TODO: Use the ViewModel
     }
-
 }
