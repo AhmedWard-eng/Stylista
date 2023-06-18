@@ -176,5 +176,22 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
         insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
     }
 
+    fun removeProductFromFavourite(){
+        insertAllProductToList()
+        var newList = lineItem1.variant_id?.let { it1 ->
+            removeAnItemFromFavourite(lineItemsList,
+                it1
+            )
+        }
+        Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")
+        requestBody = newList?.let { it1 ->
+            DraftOrderPuttingRequestBody(
+                line_items = it1
+            )
+        }!!
+        Log.d(TAG, "onClick: ${newList.size}")
+        insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
+    }
+
 
 }

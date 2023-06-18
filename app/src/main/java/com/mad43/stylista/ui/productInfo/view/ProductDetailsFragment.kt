@@ -52,11 +52,6 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
     var isFavourite : Boolean = false
     var selectedSize : String = ""
     var idVariansSelect: Long? = null
-//    var lineItemsList = mutableListOf<InsertingLineItem>()
-   // var customDraftOrderList= mutableListOf<CustomDraftOrderResponse>()
-    //lateinit var requestBody : DraftOrderPuttingRequestBody
-//    lateinit var favID : String
-//    lateinit var lineItem1 :  InsertingLineItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -212,22 +207,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
             if (it) {
                 if (isFavourite) {
                     productInfo.deleteProduct(product)
-                    productInfo.insertAllProductToList()
-                    Log.d(TAG, "displayInfo: ${productInfo.lineItemsList.size},, ${productInfo.lineItemsList.get(0).title}")
-
-                    var newList = productInfo.lineItem1.variant_id?.let { it1 ->
-                        productInfo.removeAnItemFromFavourite(productInfo.lineItemsList,
-                            it1
-                        )
-                    }
-                    Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")
-                    productInfo.requestBody = newList?.let { it1 ->
-                        DraftOrderPuttingRequestBody(
-                            line_items = it1
-                        )
-                    }!!
-                    Log.d(TAG, "onClick: ${newList.size}")
-                    productInfo.insertFavouriteForCustumer(productInfo.favID.toLong(), DraftOrderPutBody(productInfo.requestBody))
+                    productInfo.removeProductFromFavourite()
                     Toast.makeText(requireContext(), getString(R.string.remove_favourite), Toast.LENGTH_SHORT).show()
                 } else {
                     productInfo.insertProduct(product)
@@ -263,6 +243,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite{
             fragment.show(requireFragmentManager(), "MyDialogReviewsFragment")
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -53,48 +53,6 @@ class FavouriteLocal (val favouriteRepositoryLocal: FavouriteLocalRepo , val fav
         return favouriteRepositoryRemote.getFavouriteUsingId(id = idFavourite )
     }
 
-//    suspend operator fun invoke(variantId : Long,cartId : Long): RemoteStatus<List<CartItem>> {
-//        val remoteStatus = favouriteRepositoryRemote.getFavouriteUsingId(cartId.toString())
-//
-//        val draftOrder: DraftOrder?
-//
-//        if (remoteStatus is RemoteStatus.Success) {
-//            draftOrder = remoteStatus.data.draft_order
-//        } else {
-//            return remoteStatus as RemoteStatus.Failure
-//        }
-//
-//        val lineItems = draftOrder?.line_items
-//
-//        val updatingList =
-//            removeAnItemFromCart(lineItems!!.toListOfPutLineItems(), variantId)
-//
-//
-//        val draftOrderPutBody = DraftOrderPutBody(
-//            DraftOrderPuttingRequestBody(
-//                updatingList
-//            )
-//        )
-
-
-
-//        val theUpdatingRemoteStatus = favouriteRepositoryRemote.updateCart(cartId, draftOrderPutBody)
-//
-//        return if (theUpdatingRemoteStatus is RemoteStatus.Success) {
-//            val cartItems = theUpdatingRemoteStatus.data.draft_order?.line_items?.toCartItemList()
-//
-//            if (cartItems == null) {
-//                RemoteStatus.Failure(Exception("null array"))
-//            } else {
-//                RemoteStatus.Success(
-//                    cartItems
-//                )
-//            }
-//        } else {
-//            theUpdatingRemoteStatus as RemoteStatus.Failure
-//        }
- //   }
-
      fun removeAnItemFromFavourite(putLineItems: MutableList<InsertingLineItem>, variantId: Long): List<InsertingLineItem> {
         val theUpdatingProduct = putLineItems.find {it.variant_id == variantId }
 

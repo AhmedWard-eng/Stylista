@@ -27,5 +27,6 @@ class ConcreteLocalSource(context: Context) :LocalSource{
     }
     override fun deleteAllProducts() {
         dao.deleteAll()
+
     }
 }

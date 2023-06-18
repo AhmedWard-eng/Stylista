@@ -4,6 +4,7 @@ import com.mad43.stylista.data.remote.entity.auth.*
 import com.mad43.stylista.data.repo.auth.AuthRepository
 import com.mad43.stylista.data.repo.auth.AuthRepositoryImp
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
+import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
 import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import com.mad43.stylista.util.RemoteStatus
@@ -28,6 +29,7 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
     }
     suspend fun logout(){
         authRepository.logout()
+
     }
     fun getCustomerData() : Result<LocalCustomer>{
         return authRepository.getCustomerData()
@@ -36,6 +38,7 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
         authRepository.sendEmailVerification()
     }
     suspend fun signIn(email: String, password: String): FirebaseCustumer?{
+
         return authRepository.signIn(email,password)
     }
     fun isUserLoggedIn(): Boolean{
