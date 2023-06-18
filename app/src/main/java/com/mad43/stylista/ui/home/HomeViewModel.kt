@@ -31,11 +31,16 @@ class HomeViewModel(private val repoInterface: ProductsRepoInterface = ProductsR
 
     private fun getBrand() {
         viewModelScope.launch {
-            repoInterface.getAllBrand().catch { e ->
+            try {
+                repoInterface.getAllBrand().catch { e ->
+                    brands.value = RemoteStatus.Failure(e)
+                }.collect { data ->
+                    brands.value = RemoteStatus.Success(data)
+                }
+            } catch (e: Exception) {
                 brands.value = RemoteStatus.Failure(e)
-            }.collect { data ->
-                brands.value = RemoteStatus.Success(data)
             }
+
         }
 
     }

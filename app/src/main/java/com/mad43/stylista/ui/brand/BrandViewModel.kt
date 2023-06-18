@@ -9,6 +9,7 @@ import com.mad43.stylista.data.repo.product.ProductsRepoInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class BrandViewModel(private val repoInterface: ProductsRepoInterface = ProductsRepo()) :
     ViewModel() {
@@ -21,11 +22,14 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
 
     fun getProductInBrand(brand: String) {
         viewModelScope.launch {
-
-            repoInterface.getAllProductInBrand(brand).catch { e ->
+            try {
+                repoInterface.getAllProductInBrand(brand).catch { e ->
+                    products.value = RemoteStatus.Failure(e)
+                }.collect { data ->
+                    products.value = RemoteStatus.Success(data)
+                }
+            } catch (e: Exception) {
                 products.value = RemoteStatus.Failure(e)
-            }.collect { data ->
-                products.value = RemoteStatus.Success(data)
             }
 
         }
@@ -65,7 +69,6 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
 
     fun filterByCategory(category: String) {
         if (filter) {
-
             dataFiltered = allData.filter {
                 it.product_type == category
             }
