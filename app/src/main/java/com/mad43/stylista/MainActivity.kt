@@ -53,9 +53,6 @@ class MainActivity : AppCompatActivity() {
         binding.imageCart.setOnClickListener {
             navController.navigate(R.id.cartFragment2)
         }
-        lifecycleScope.launch {
-            CurrencyRetrofitService.currencyApiInterface.getCurrenciesRate()
-        }
     }
 
 
