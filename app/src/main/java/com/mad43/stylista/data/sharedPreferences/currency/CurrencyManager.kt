@@ -17,8 +17,8 @@ class CurrencyManager(private val currencySharedPreferences: SharedPreferences =
     }
 
     fun getCurrencyPair(): Pair<String, Double> {
-        val code = currencySharedPreferences.getString(CURRENCY_CODE,"NAN") ?: "NAN"
-        val rate = currencySharedPreferences.getFloat(CURRENCY_RATE,0.0F)
+        val code = currencySharedPreferences.getString(CURRENCY_CODE,"EGP") ?: "EGP"
+        val rate = currencySharedPreferences.getFloat(CURRENCY_RATE,1.0F)
         return Pair(code,rate.toDouble())
     }
 

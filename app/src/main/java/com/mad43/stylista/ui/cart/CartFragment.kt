@@ -16,9 +16,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentCartBinding
 import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.setPrice
+import com.mad43.stylista.util.showConfirmationDialog
 import kotlinx.coroutines.launch
 
 class CartFragment : Fragment() {
@@ -53,9 +55,9 @@ class CartFragment : Fragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.productListStatus.collect{
-                    when(it){
-                        is RemoteStatus.Success ->{
+                viewModel.productListStatus.collect {
+                    when (it) {
+                        is RemoteStatus.Success -> {
                             binding.recyclerView.visibility = VISIBLE
                             binding.shimmerFrameLayout.visibility = GONE
                             binding.progressBar2.visibility = GONE
@@ -67,7 +69,8 @@ class CartFragment : Fragment() {
                             viewModel.deleteCommand.value = Action.Nothing
                             viewModel.editCommand.value = Action.Nothing
                         }
-                        is RemoteStatus.Failure ->{
+
+                        is RemoteStatus.Failure -> {
                             binding.recyclerView.visibility = VISIBLE
                             binding.shimmerFrameLayout.visibility = GONE
                             binding.progressBar2.visibility = GONE
@@ -75,8 +78,9 @@ class CartFragment : Fragment() {
                             binding.shimmerFrameLayout.stopShimmerAnimation()
                             viewModel.deleteCommand.value = Action.Nothing
                             viewModel.editCommand.value = Action.Nothing
-                            Log.e("TAG", "onViewCreated: ",it.msg)
+                            Log.e("TAG", "onViewCreated: ", it.msg)
                         }
+
                         else -> {
                             binding.progressBar2.visibility = GONE
                             binding.recyclerView.visibility = GONE
@@ -119,17 +123,19 @@ class CartFragment : Fragment() {
 
     private fun setQuantity(variantId: Long, quantity: Int) {
         lifecycleScope.launch {
-            viewModel.editCommand.emit(Action.Edit(variantId, quantity,adapter.currentList))
+            viewModel.editCommand.emit(Action.Edit(variantId, quantity, adapter.currentList))
             binding.progressBar2.visibility = VISIBLE
             binding.blockingView.visibility = VISIBLE
         }
     }
 
     private fun delete(variantId: Long) {
-        lifecycleScope.launch {
-            viewModel.deleteCommand.emit(Action.Delete(variantId))
-            binding.progressBar2.visibility = VISIBLE
-            binding.blockingView.visibility = VISIBLE
+        showConfirmationDialog(getString(R.string.are_you_sure_you_want_to_delete_this_item_from_the_cart)) {
+            lifecycleScope.launch {
+                viewModel.deleteCommand.emit(Action.Delete(variantId))
+                binding.progressBar2.visibility = VISIBLE
+                binding.blockingView.visibility = VISIBLE
+            }
         }
     }
 

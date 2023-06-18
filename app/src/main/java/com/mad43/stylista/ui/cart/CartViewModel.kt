@@ -2,6 +2,8 @@ package com.mad43.stylista.ui.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mad43.stylista.data.sharedPreferences.CustomerManager
+import com.mad43.stylista.data.sharedPreferences.PreferencesData
 import com.mad43.stylista.domain.model.CartItem
 import com.mad43.stylista.domain.remote.cart.DeleteCartItemUseCase
 import com.mad43.stylista.domain.remote.cart.EditCartItemUseCase
@@ -17,7 +19,8 @@ import java.sql.RowId
 class CartViewModel(
     private val edit: EditCartItemUseCase = EditCartItemUseCase(),
     private val deleteCartItemUseCase: DeleteCartItemUseCase = DeleteCartItemUseCase(),
-    private val getCartListUseCase: GetCartListUseCase = GetCartListUseCase()
+    private val getCartListUseCase: GetCartListUseCase = GetCartListUseCase(),
+     customerManager: CustomerManager = PreferencesData()
 ) : ViewModel() {
 
     var list : List<CartItem> = listOf()
@@ -28,10 +31,12 @@ class CartViewModel(
 
     val editCommand = MutableStateFlow<Action>(Action.Nothing)
 
+    private val cartId : String
 
     init {
-        getListOfCartItem()
+        cartId = customerManager.getCustomerData().getOrNull()?.cardID.toString()
 
+        getListOfCartItem()
         viewModelScope.launch {
             deleteCommand.collect{
                 if (it is Action.Delete){
@@ -50,29 +55,29 @@ class CartViewModel(
     }
     private fun editQuantityOfItem(variantId : Long,newQuantity: Int,cartItems : List<CartItem>){
         viewModelScope.launch {
-            _productListStatus.emit(edit(variantId = variantId, quantity = newQuantity, cartId = 1125545345323,cartItems))
+            _productListStatus.emit(edit(variantId = variantId, quantity = newQuantity, cartId = cartId.toLong(),cartItems))
         }
     }
     private fun getListOfCartItem(){
         viewModelScope.launch {
-            _productListStatus.emit(getCartListUseCase(cartId = "1125545345323"))
+            _productListStatus.emit(getCartListUseCase(cartId = cartId))
         }
     }
     private fun removeCartItem(variantId : Long){
         viewModelScope.launch {
-            _productListStatus.emit(deleteCartItemUseCase(variantId = variantId,cartId = 1125545345323))
+            _productListStatus.emit(deleteCartItemUseCase(variantId = variantId,cartId = cartId.toLong()))
         }
     }
 
     fun getTotalPrice() : Double{
-        return list.sumOf {
-            it.price * it.quantity
-        }
+        return list.sumOf { it.price * it.quantity }
     }
 
 }
 sealed class Action{
     data class Delete(val variantId: Long) : Action()
+
     object Nothing : Action()
+
     data class Edit(val variantId: Long,val newQuantity: Int,val cartItems : List<CartItem>) : Action()
 }
