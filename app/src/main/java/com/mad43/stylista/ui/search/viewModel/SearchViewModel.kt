@@ -11,41 +11,53 @@ import com.mad43.stylista.domain.model.DisplayProduct
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val repoInterface : ProductsRepoInterface = ProductsRepo()) : ViewModel() {
+class SearchViewModel(private val repoInterface: ProductsRepoInterface = ProductsRepo()) :
+    ViewModel() {
     var brands = listOf<DisplayBrand>()
     var allPrpduct = listOf<DisplayProduct>()
 
     fun getBrand() {
         viewModelScope.launch {
-            repoInterface.getAllBrand()
-                .catch { e ->
-                    Log.e(TAG, "Error fetching all brands: ${e.message}")
-                }
-                .collectLatest {
-                    brands = it
-                }
+            try {
+                repoInterface.getAllBrand()
+                    .catch { e ->
+                        Log.e(TAG, "Error fetching all brands: ${e.message}")
+                    }
+                    .collectLatest {
+                        brands = it
+                    }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error fetching all brands: ${e.message}")
+            }
+
         }
 
     }
+
     fun searchBrand(query: String?): List<DisplayBrand> {
         return if (query.isNullOrBlank()) {
             brands
         } else {
             brands.filter { brand ->
-                brand.title.startsWith(query,true)
+                brand.title.startsWith(query, true)
             }
         }
     }
 
-    fun getAllProduct(){
+    fun getAllProduct() {
         viewModelScope.launch {
-            repoInterface.getAllProduct()
-                .catch { e ->
-                    Log.e(TAG, "Error fetching all product in product: ${e.message}")
-                }
-                .collectLatest {
-                    allPrpduct = it
-                }
+            try {
+                repoInterface.getAllProduct()
+                    .catch { e ->
+                        Log.e(TAG, "Error fetching all product in product: ${e.message}")
+                    }
+                    .collectLatest {
+                        allPrpduct = it
+                    }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error fetching all product in product: ${e.message}")
+            }
+
         }
     }
 
@@ -54,7 +66,7 @@ class SearchViewModel(private val repoInterface : ProductsRepoInterface = Produc
             allPrpduct
         } else {
             allPrpduct.filter { product ->
-                product.title.startsWith(query,true)
+                product.title.startsWith(query, true)
             }
         }
     }
