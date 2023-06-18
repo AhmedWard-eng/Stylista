@@ -41,7 +41,6 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
 
 
 
-
     fun getProductDetails(id: Long){
         viewModelScope.launch (Dispatchers.IO){
             productInfo.getProductDetails(id).catch {   e->_uiState.value=ApiState.Failure(e) }
@@ -171,12 +170,9 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
         }
     }
 
+    fun removeAnItemFromFavourite(putLineItems: MutableList<InsertingLineItem>, variantId: Long): List<InsertingLineItem> {
+       return favourite.removeAnItemFromFavourite(putLineItems,variantId)
+   }
 
-//    private fun addProductToList(product: LineItem){
-//        val mlist:MutableList<LineItem> = mutableListOf()
-////        mlist.addAll(cartDraftOrder?.draft_order?.line_items?: listOf())
-////        mlist.add(product)
-////        cartDraftOrder?.draft_order?.line_items = mlist
-//    }
 
 }

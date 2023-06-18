@@ -30,4 +30,10 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) :
             authUseCase.logout()
         }
     }
+    fun getFavouriteID():String{
+        var userData = authUseCase.getCustomerData()
+        var favouriteID = userData.getOrNull()?.favouriteID
+        return favouriteID.toString()
+    }
+
 }
