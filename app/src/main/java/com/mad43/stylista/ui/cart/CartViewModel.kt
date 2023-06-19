@@ -23,9 +23,12 @@ class CartViewModel(
      customerManager: CustomerManager = PreferencesData()
 ) : ViewModel() {
 
+
     var list : List<CartItem> = listOf()
+
     private val _productListStatus = MutableStateFlow<RemoteStatus<List<CartItem>>>(RemoteStatus.Loading)
     val productListStatus : StateFlow<RemoteStatus<List<CartItem>>> = _productListStatus.asStateFlow()
+
 
     val deleteCommand = MutableStateFlow<Action>(Action.Nothing)
 

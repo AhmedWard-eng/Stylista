@@ -1,4 +1,4 @@
-package com.mad43.stylista.ui.address
+package com.mad43.stylista.ui.address.edit
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,15 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.mad43.stylista.R
 
-class AddressesFragment : Fragment() {
+class AddressDetailsEditFragment : Fragment() {
 
-    private lateinit var viewModel: AddressesViewModel
+    private lateinit var viewModel: AddressDetailsEditViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[AddressesViewModel::class.java]
+        viewModel = ViewModelProvider(this)[AddressDetailsEditViewModel::class.java]
         return inflater.inflate(R.layout.fragment_addresses, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
