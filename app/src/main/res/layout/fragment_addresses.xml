@@ -47,7 +47,7 @@
         android:ems="10"
         android:hint="@string/city"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/editTextText2"
+        app:layout_constraintBottom_toTopOf="@+id/editTextProvince"
         app:layout_constraintEnd_toStartOf="@+id/address_phone"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/address_2"
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toTopOf="@+id/address_city" />
 
     <EditText
-        android:id="@+id/editTextText2"
+        android:id="@+id/editTextProvince"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -81,18 +81,18 @@
         app:layout_constraintTop_toBottomOf="@+id/address_city" />
 
     <EditText
-        android:id="@+id/editTextText3"
+        android:id="@+id/editTextCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/country"
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextText2"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextProvince"
         app:layout_constraintEnd_toEndOf="@+id/address_phone"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editTextText2"
+        app:layout_constraintStart_toEndOf="@+id/editTextProvince"
         app:layout_constraintStart_toStartOf="@+id/address_phone"
-        app:layout_constraintTop_toTopOf="@+id/editTextText2"
+        app:layout_constraintTop_toTopOf="@+id/editTextProvince"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
@@ -101,8 +101,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/save"
-        app:layout_constraintEnd_toEndOf="@+id/editTextText3"
-        app:layout_constraintStart_toStartOf="@+id/editTextText2"
+        app:layout_constraintEnd_toEndOf="@+id/editTextCountry"
+        app:layout_constraintStart_toStartOf="@+id/editTextProvince"
         app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     <TextView
@@ -125,6 +125,20 @@
         android:layout_marginTop="16dp"
         android:text="@string/set_as_default_address"
         android:padding="8dp"
-        app:layout_constraintStart_toStartOf="@+id/editTextText2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintStart_toStartOf="@+id/editTextProvince"
+        app:layout_constraintTop_toBottomOf="@+id/editTextProvince" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary_color"
+        android:indeterminateTintMode="src_atop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

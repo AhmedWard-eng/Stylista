@@ -26,4 +26,6 @@ interface AddressRemoteDataSource {
     suspend fun makeThisAddressAsDefault(customerId: String, addressId: String): CustomerAddress
 
     suspend fun getAddressesOfCustomer(customerId: String): AllAddresses
+
+    suspend fun deleteAddressOfCustomerWithId( customerId : String,addressId :String): Response<Any>
 }

@@ -5,6 +5,11 @@ import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.Custom
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.postingrequestBody.DraftOrderRequestBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
+import com.mad43.stylista.data.remote.entity.product.Product
+import com.mad43.stylista.data.remote.entity.product.mapRemoteProductToDisplayProduct
+import com.mad43.stylista.domain.model.DisplayProduct
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 interface RemoteDraftOrdersDataSource {
 
@@ -18,5 +23,7 @@ interface RemoteDraftOrdersDataSource {
     suspend fun getAllDraftOrders(): AllDraftOrders
 
     suspend fun getDraftOrderById(id: String): CustomDraftOrderResponse
+
+    suspend fun getAllProduct(): List<Product>
 
 }

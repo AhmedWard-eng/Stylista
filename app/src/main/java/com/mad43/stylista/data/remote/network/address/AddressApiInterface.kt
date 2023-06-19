@@ -7,6 +7,7 @@ import com.mad43.stylista.data.remote.entity.auth.SignupResponse
 import com.mad43.stylista.util.Constants
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -42,4 +43,11 @@ interface AddressApiInterface {
         @Path("customerId") customerId : String,
         @Header("X-Shopify-Access-Token") password: String = Constants.PASSWORD
     ): AllAddresses
+
+    @DELETE("customers/{customerId}/addresses/{addressId}.json")
+    suspend fun deleteAddressOfCustomerWithId(
+        @Path("customerId") customerId : String,
+        @Path("addressId") addressId :String,
+        @Header("X-Shopify-Access-Token") password: String = Constants.PASSWORD
+    ): Response<Any>
 }

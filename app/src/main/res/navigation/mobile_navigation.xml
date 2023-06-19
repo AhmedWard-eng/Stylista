@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_currencyFragment"
             app:destination="@id/currencyFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -115,5 +118,23 @@
         android:name="com.mad43.stylista.ui.currency.CurrencyFragment"
         android:label="fragment_currency"
         tools:layout="@layout/fragment_currency" />
+    <fragment
+        android:id="@+id/addressListFragment"
+        android:name="com.mad43.stylista.ui.address.list.AddressListFragment"
+        android:label="fragment_address_list"
+        tools:layout="@layout/fragment_address_list" >
+        <action
+            android:id="@+id/action_addressListFragment_to_addressDetailsEditFragment"
+            app:destination="@id/addressDetailsEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressDetailsEditFragment"
+        android:name="com.mad43.stylista.ui.address.edit.AddressDetailsEditFragment"
+        android:label="fragment_addresses"
+        tools:layout="@layout/fragment_addresses" >
+        <argument
+            android:name="address"
+            app:argType="com.mad43.stylista.domain.model.AddressItem" />
+    </fragment>
 
 </navigation>

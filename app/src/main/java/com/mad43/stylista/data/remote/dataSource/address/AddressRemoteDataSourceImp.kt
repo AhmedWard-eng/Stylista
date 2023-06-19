@@ -5,6 +5,7 @@ import com.mad43.stylista.data.remote.entity.address.oneAddress.CustomerAddress
 import com.mad43.stylista.data.remote.entity.address.request.AddressRequest
 import com.mad43.stylista.data.remote.network.ApiService
 import com.mad43.stylista.data.remote.network.address.AddressApiInterface
+import retrofit2.Response
 
 class AddressRemoteDataSourceImp(private val addressApiInterface: AddressApiInterface = ApiService.addressApiInterface): AddressRemoteDataSource {
     override suspend fun postNewAddress(customerId: String, body: AddressRequest): CustomerAddress {
@@ -28,5 +29,12 @@ class AddressRemoteDataSourceImp(private val addressApiInterface: AddressApiInte
 
     override suspend fun getAddressesOfCustomer(customerId: String): AllAddresses {
         return addressApiInterface.getAddressesOfCustomer(customerId)
+    }
+
+    override suspend fun deleteAddressOfCustomerWithId(
+        customerId: String,
+        addressId: String
+    ): Response<Any> {
+        return addressApiInterface.deleteAddressOfCustomerWithId(customerId,addressId)
     }
 }

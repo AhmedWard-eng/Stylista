@@ -6,14 +6,15 @@ import com.mad43.stylista.domain.model.AddressItem
 import com.mad43.stylista.domain.model.toAddressItemList
 import com.mad43.stylista.util.RemoteStatus
 
-class GetAddressesListUseCase(private val addressRepo: AddressRepo = AddressRepoImp()) {
-    suspend operator fun invoke(customerId : String): RemoteStatus<List<AddressItem>> {
+class DeleteAnAddressUseCase(private val addressRepo: AddressRepo = AddressRepoImp()) {
+    suspend operator fun invoke(customerId : String,addressId : String): RemoteStatus<Boolean> {
        return try {
-           val addresses = addressRepo.getAddressesOfCustomer(customerId).addresses
-           if(addresses != null){
-               RemoteStatus.Success(addresses.toAddressItemList())
+           val result = addressRepo.deleteAddressOfCustomerWithId(customerId,addressId)
+
+           if (result.isSuccessful){
+               RemoteStatus.Success(true)
            }else{
-               RemoteStatus.Failure(Exception("Null Array"))
+               RemoteStatus.Failure(Exception("network is failed"))
            }
         }catch (e : Exception){
            RemoteStatus.Failure(e)

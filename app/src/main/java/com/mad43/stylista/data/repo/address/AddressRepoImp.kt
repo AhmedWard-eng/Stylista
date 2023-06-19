@@ -5,6 +5,7 @@ import com.mad43.stylista.data.remote.dataSource.address.AddressRemoteDataSource
 import com.mad43.stylista.data.remote.entity.address.allAddresses.AllAddresses
 import com.mad43.stylista.data.remote.entity.address.oneAddress.CustomerAddress
 import com.mad43.stylista.data.remote.entity.address.request.AddressRequest
+import retrofit2.Response
 
 class AddressRepoImp(private val addressRemoteDataSource: AddressRemoteDataSource = AddressRemoteDataSourceImp()) : AddressRepo {
     override suspend fun postNewAddress(customerId: String, body: AddressRequest): CustomerAddress {
@@ -28,5 +29,12 @@ class AddressRepoImp(private val addressRemoteDataSource: AddressRemoteDataSourc
 
     override suspend fun getAddressesOfCustomer(customerId: String): AllAddresses {
         return addressRemoteDataSource.getAddressesOfCustomer(customerId)
+    }
+
+    override suspend fun deleteAddressOfCustomerWithId(
+        customerId: String,
+        addressId: String
+    ): Response<Any> {
+        return addressRemoteDataSource.deleteAddressOfCustomerWithId(customerId,addressId)
     }
 }

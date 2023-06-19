@@ -36,6 +36,20 @@ class AddressAdapter(private val clickListener: ClickListener) :
             append(", ")
             append(item.country)
         }
+        if(item.isDefault){
+            binding.checkBoxIsDefault.isChecked = true
+            binding.checkBoxIsDefault.isEnabled = false
+        }else{
+            binding.checkBoxIsDefault.isEnabled = true
+            binding.checkBoxIsDefault.isChecked = false
+        }
+
+        binding.checkBoxIsDefault.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.checkBoxIsDefault.isChecked = false
+            clickListener.setDefault(item)
+        }
+
+
 
         binding.root.setOnLongClickListener {
             clickListener.delete(item)
@@ -54,9 +68,10 @@ class AddressAdapter(private val clickListener: ClickListener) :
         }
     }
 
-    class ClickListener(private val editListener: (addressItem: AddressItem) -> Unit,private val deleteListener: (addressItem: AddressItem) -> Unit) {
+    class ClickListener(private val editListener: (addressItem: AddressItem) -> Unit,private val deleteListener: (addressItem: AddressItem) -> Unit,private val setDefaultListener: (addressItem: AddressItem) -> Unit) {
         fun edit(addressItem: AddressItem) = editListener(addressItem)
         fun delete(addressItem: AddressItem) = deleteListener(addressItem)
+        fun setDefault(addressItem: AddressItem) = setDefaultListener(addressItem)
     }
 
 

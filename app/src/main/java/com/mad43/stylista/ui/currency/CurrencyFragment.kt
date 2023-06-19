@@ -71,7 +71,7 @@ class CurrencyFragment : Fragment() {
                         is RemoteStatus.Failure -> {
                             binding.blockingView.visibility = GONE
                             binding.progressBar.visibility = GONE
-                            MyDialog().showAlertDialog("Something Went Wrong", requireContext())
+                            MyDialog().showAlertDialog(getString(R.string.something_went_wrong), requireContext())
                         }
 
                         is RemoteStatus.Loading -> {
