@@ -10,6 +10,7 @@ import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.putti
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
 import com.mad43.stylista.data.repo.DraftOrderType
 import com.mad43.stylista.util.RemoteStatus
+import kotlinx.coroutines.flow.Flow
 
 class FavouriteRepositoryImp (private val remoteDraftOrdersDataSource: RemoteDraftOrdersDataSource = RemoteDraftOrdersDataSourceImp()) : FavouriteRepository {
     override suspend fun createFavouriteForCustomer(customerId: Long): RemoteStatus<Long> {
@@ -35,5 +36,27 @@ class FavouriteRepositoryImp (private val remoteDraftOrdersDataSource: RemoteDra
 
     }
 
+    override suspend fun insertFavouriteForCustomer(idFavourite: Long, draftOrderPutBody: DraftOrderPutBody): RemoteStatus<DraftOrderResponse> {
+        return try {
+
+            val draftOrderResponse = remoteDraftOrdersDataSource.putDraftOrder(
+                idFavourite,
+                draftOrderPutBody = draftOrderPutBody
+            )
+            RemoteStatus.Success(draftOrderResponse)
+        } catch (e: Exception) {
+            RemoteStatus.Failure(e)
+        }
+    }
+
+
+    override suspend fun getFavouriteUsingId(id: String):RemoteStatus<CustomDraftOrderResponse> {
+        return try {
+            val customDraftOrderResponse = remoteDraftOrdersDataSource.getDraftOrderById(id)
+            RemoteStatus.Success(customDraftOrderResponse)
+        } catch (e: Exception) {
+            RemoteStatus.Failure(e)
+        }
+    }
 
 }

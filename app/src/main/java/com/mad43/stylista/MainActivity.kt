@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.searchProductFragment)
             }
         }
+        binding.imageFavorite.setOnClickListener {
+            navController.navigate(R.id.favouriteFragment)
+        }
+
+
         binding.imageCart.setOnClickListener {
             navController.navigate(R.id.cartFragment2)
         }
@@ -84,34 +89,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //    @SuppressLint("SetTextI18n")
-//    private fun setLabelInActionBar(){
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            when (destination.id) {
-//                R.id.navigation_home -> {
-//                    binding.fragmentName.text = resources.getString(R.string.title_home)
-//                }
-//                R.id.navigation_dashboard -> {
-//                    binding.fragmentName.text = resources.getString(R.string.category)
-//                }
-//                R.id.navigation_notifications -> {
-//                    binding.fragmentName.text = resources.getString(R.string.profile)
-//                }
-//                R.id.brandFragment -> {
-//                    binding.fragmentName.text = resources.getString(R.string.brand_Products)
-//                }
-//                R.id.productDetailsFragment3 -> {
-//                    binding.fragmentName.text = resources.getString(R.string.product_Details)
-//                }
-//                R.id.searchFragment -> {
-//                    binding.fragmentName.text = resources.getString(R.string.search)
-//                }
-//                else -> {
-//                }
-//            }
-//        }
-//
-//    }
+
     private fun setActionHint() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

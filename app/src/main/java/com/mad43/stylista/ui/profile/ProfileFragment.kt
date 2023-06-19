@@ -1,11 +1,8 @@
-package com.mad43.stylista.ui.profile
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,11 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentProfileBinding
+import com.mad43.stylista.ui.profile.ProfileViewModel
 import com.mad43.stylista.ui.home.HomeBrandAdapter
 import com.mad43.stylista.ui.login.viewModel.LoginViewModel
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 class ProfileFragment : Fragment() {
 
@@ -33,14 +32,13 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileViewModel=ViewModelProvider(this)[ProfileViewModel::class.java]
+        profileViewModel= ViewModelProvider(this)[ProfileViewModel::class.java]
 
         var userName = profileViewModel.getUserName()
         binding.textViewHelloUserName.text = "Welcome $userName"
