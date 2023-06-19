@@ -8,10 +8,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentProfileBinding
+import com.mad43.stylista.ui.home.HomeBrandAdapter
 import com.mad43.stylista.ui.login.viewModel.LoginViewModel
+import com.mad43.stylista.util.RemoteStatus
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
@@ -52,6 +59,27 @@ class ProfileFragment : Fragment() {
         binding.currencyView.setOnClickListener {
             Navigation.findNavController(requireView())
                 .navigate(R.id.action_navigation_profile_to_currencyFragment)
+        }
+
+        lifecycleScope.launch {
+            profileViewModel.orders.collectLatest {
+                when (it) {
+                    is RemoteStatus.Loading -> {
+                        Log.i("Orders ","Loading")
+                    }
+
+                    is RemoteStatus.Success -> {
+                        Log.i("Orders ","Success")
+                        it.data.forEach {
+                            Log.i("Orders ","created_at ${it.created_at.toString()}")
+                            Log.i("Orders ","price ${it.current_subtotal_price.toString()}")
+                        }
+                    }
+                    else -> {
+
+                    }
+                }
+            }
         }
     }
 
