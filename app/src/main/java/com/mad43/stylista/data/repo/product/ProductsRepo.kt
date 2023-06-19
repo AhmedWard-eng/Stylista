@@ -1,6 +1,5 @@
 package com.mad43.stylista.data.repo.product
 
-import android.util.Log
 import com.mad43.stylista.data.remote.dataSource.product.RemoteProductsDataSource
 import com.mad43.stylista.data.remote.dataSource.product.RemoteProductsDataSourceImp
 import com.mad43.stylista.data.remote.entity.brand.mapRemoteBrandToDisplayBrand
