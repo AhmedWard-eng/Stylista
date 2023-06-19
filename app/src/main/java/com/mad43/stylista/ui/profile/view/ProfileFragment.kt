@@ -20,15 +20,10 @@ import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
 import com.mad43.stylista.databinding.FragmentProfileBinding
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
-import com.mad43.stylista.domain.remote.productDetails.ProductInfo
-import com.mad43.stylista.ui.brand.BrandFragmentDirections
 import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.ui.favourite.AdapterFavourite
-import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
-import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
 import com.mad43.stylista.ui.profile.viewModel.ProfileFactoryViewModel
 import com.mad43.stylista.ui.profile.viewModel.ProfileViewModel
-import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -48,27 +43,55 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         val context = requireContext().applicationContext
         val localSource = ConcreteLocalSource(context)
         val favouriteLocalRepo = FavouriteLocalRepoImp(localSource)
 
-        val AuthRepo = AuthRepositoryImp()
-        favFactory = ProfileFactoryViewModel(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
-        profileViewModel = ViewModelProvider(this, favFactory).get(ProfileViewModel::class.java)
+        val authRepo = AuthRepositoryImp()
+        favFactory = ProfileFactoryViewModel(AuthUseCase(authRepo), FavouriteLocal(favouriteLocalRepo))
+        profileViewModel = ViewModelProvider(this, favFactory)[ProfileViewModel::class.java]
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         displayUserName()
         displayLogout()
         displayWishList()
         displayAllFavourite()
 
+        binding.textViewCurrencyCode.text = profileViewModel.getCurrencyCode()
+        binding.currencyView.setOnClickListener {
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_navigation_profile_to_currencyFragment)
+        }
+
+        binding.addressesView.setOnClickListener {
+            Log.d("TAG", "onViewCreated: addressesView")
+        }
+
+        lifecycleScope.launch {
+            profileViewModel.orders.collectLatest {
+                when (it) {
+                    is RemoteStatus.Loading -> {
+                        Log.i("Orders ","Loading")
+                    }
+
+                    is RemoteStatus.Success -> {
+                        Log.i("Orders ","Success")
+                        it.data.forEach {
+                            Log.i("Orders ","created_at ${it.created_at.toString()}")
+                            Log.i("Orders ","price ${it.current_subtotal_price.toString()}")
+                        }
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
 
     }
     private fun displayLogout(){
@@ -80,7 +103,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     }
     private fun displayUserName(){
         var userName = profileViewModel.getUserName()
-        binding.textViewHelloUserName.text = "Welcom ${userName}"
+        binding.textViewHelloUserName.text = "Welcome, $userName"
     }
     private fun displayWishList(){
         brandAdapter = AdapterFavourite(favouriteList,this@ProfileFragment)
