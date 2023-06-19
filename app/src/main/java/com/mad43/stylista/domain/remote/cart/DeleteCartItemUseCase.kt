@@ -11,8 +11,6 @@ import com.mad43.stylista.domain.model.toCartItemList
 import com.mad43.stylista.util.RemoteStatus
 
 class DeleteCartItemUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
-
-
     suspend operator fun invoke(variantId : Long,cartId : Long): RemoteStatus<List<CartItem>> {
         val remoteStatus = cartRepo.getCartUsingId(cartId.toString())
 
@@ -30,14 +28,7 @@ class DeleteCartItemUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
             removeAnItemFromCart(lineItems!!.toListOfPutLineItems(), variantId)
 
 
-        val draftOrderPutBody = DraftOrderPutBody(
-            DraftOrderPuttingRequestBody(
-                updatingList
-            )
-        )
-
-
-
+        val draftOrderPutBody = DraftOrderPutBody(DraftOrderPuttingRequestBody(updatingList))
         val theUpdatingRemoteStatus = cartRepo.updateCart(cartId, draftOrderPutBody)
 
         return if (theUpdatingRemoteStatus is RemoteStatus.Success) {

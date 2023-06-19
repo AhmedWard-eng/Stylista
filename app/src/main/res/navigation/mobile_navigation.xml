@@ -27,12 +27,15 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.mad43.stylista.ui.profile.ProfileFragment"
+        android:name="com.mad43.stylista.ui.profile.view.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_navigation_profile_to_logInFragment"
             app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
         <action
             android:id="@+id/action_navigation_profile_to_currencyFragment"
             app:destination="@id/currencyFragment" />
@@ -100,7 +103,11 @@
         android:id="@+id/cartFragment2"
         android:name="com.mad43.stylista.ui.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <argument
+            android:name="idVarians"
+            app:argType="long" />
+    </fragment>
 
   <fragment
         android:id="@+id/productDetailsFragment"
@@ -109,6 +116,18 @@
         <argument
             android:name="id"
             app:argType="long" />
+      <action
+          android:id="@+id/action_productDetailsFragment_to_cartFragment2"
+          app:destination="@id/cartFragment2" />
+  </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.mad43.stylista.ui.favourite.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
