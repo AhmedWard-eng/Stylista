@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.data.remote.entity.auth.LoginResponse
 import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
+import com.mad43.stylista.data.sharedPreferences.currency.CurrencyManager
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
 import com.mad43.stylista.util.RemoteStatus
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val favourite : FavouriteLocal) : ViewModel() {
+class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val favourite : FavouriteLocal,private val currencyManager: CurrencyManager = CurrencyManager()) : ViewModel() {
 
     private var _loginState: MutableStateFlow<RemoteStatus<LoginResponse>> = MutableStateFlow(
         RemoteStatus.Loading)
