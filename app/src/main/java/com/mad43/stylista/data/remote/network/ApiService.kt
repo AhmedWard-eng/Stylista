@@ -2,6 +2,7 @@ package com.mad43.stylista.data.remote.network
 
 import com.mad43.stylista.data.remote.network.auth.AuthAPIInterface
 import com.mad43.stylista.data.remote.network.draftOrders.DraftOrdersAPIInterface
+import com.mad43.stylista.data.remote.network.order.OrdersAPIInterface
 import com.mad43.stylista.data.remote.network.product.ProductsAPIInterface
 import com.mad43.stylista.util.Constants
 import okhttp3.OkHttpClient
@@ -13,9 +14,14 @@ object ApiService {
 
     val authApiService: AuthAPIInterface = AppRetrofit.retrofit.create(AuthAPIInterface::class.java)
 
-    val brandsApiService: ProductsAPIInterface = AppRetrofit.retrofit.create(ProductsAPIInterface::class.java)
+    val brandsApiService: ProductsAPIInterface =
+        AppRetrofit.retrofit.create(ProductsAPIInterface::class.java)
 
-    val draftAPIService : DraftOrdersAPIInterface = AppRetrofit.retrofit.create(DraftOrdersAPIInterface::class.java)
+    val draftAPIService: DraftOrdersAPIInterface =
+        AppRetrofit.retrofit.create(DraftOrdersAPIInterface::class.java)
+
+    val ordersAPIService: OrdersAPIInterface =
+        AppRetrofit.retrofit.create(OrdersAPIInterface::class.java)
 
     object AppRetrofit {
         @Volatile
@@ -26,7 +32,7 @@ object ApiService {
                     .setLevel(HttpLoggingInterceptor.Level.BODY)
             )
             .build()
-        val retrofit: Retrofit =  Retrofit.Builder()
+        val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
