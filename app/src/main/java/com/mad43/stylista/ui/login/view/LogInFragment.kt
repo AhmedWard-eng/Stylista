@@ -112,7 +112,7 @@ class LogInFragment : Fragment() {
         lifecycleScope.launch {
             signInViewModel.userExists.collect { userExists ->
                 if (userExists) {
-                    view.findNavController().navigate(R.id.action_logInFragment_to_navigation_home)
+                    view.findNavController().navigate(R.id.navigation_home)
                 } else {
                    // dialog.showAlertDialog(getString(R.string.check_login), requireContext())
                 }

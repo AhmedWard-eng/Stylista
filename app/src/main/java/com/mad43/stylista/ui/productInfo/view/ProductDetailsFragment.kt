@@ -42,12 +42,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
 
     lateinit var productInfo : ProductInfoViewModel
     lateinit var favFactory: ProductInfoViewModelFactory
-    var availableSizesTitle = mutableListOf<String>()
-    var availableSizesID = mutableListOf<Long>()
-    lateinit var sizeIdPairs: List<Pair<String, Long>>
     var isFavourite : Boolean = false
-    var selectedSize : String = ""
-    var idVariansSelect: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,15 +68,18 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
             productInfo.getProductDetails(id)
             productInfo.isFavourite(id)
         }
+
         displayInfo()
         displayReviews()
         checkFavourite()
-        addToCart(idVariansSelect)
+        addToCart(productInfo.idVariansSelect)
 
     }
 
     private fun displayInfo(){
         lifecycleScope.launch {
+
+
             productInfo.favID = productInfo.getIDForFavourite().toString()
             // Get all favorites
             var  customDraftOrder = productInfo.getLineItems(productInfo.favID)
@@ -109,9 +107,11 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
                         binding.buttonAvailableSize.text = variant.title
                         val idVariants = variant.id
                         val size = variant.title
-                        availableSizesTitle.add(size)
-                        availableSizesID.add(idVariants)
-                        sizeIdPairs = availableSizesTitle.zip(availableSizesID)
+                        productInfo.availableSizesTitle.add(size)
+                        productInfo.availableSizesID.add(idVariants)
+
+                        productInfo.sizeIdPairs = productInfo.availableSizesTitle.zip(productInfo.availableSizesID)
+                        Log.d(TAG, "displayInfo: ${productInfo.sizeIdPairs.size},,${productInfo.sizeIdPairs.get(0).first},,${productInfo.sizeIdPairs.get(0).second}")
                     }
                     displayMenueAvaliableSize()
 
@@ -160,20 +160,25 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
     }
     private fun displayMenueAvaliableSize(){
         val popupMenu = PopupMenu(requireContext(), binding.buttonAvailableSize)
-        for (size in availableSizesTitle) {
-            popupMenu.menu.add(size)
-        }
-
-        binding.buttonAvailableSize.setOnClickListener(View.OnClickListener { popupMenu.show() })
+        binding.buttonAvailableSize.text = getString(R.string.choose_size)
+        binding.buttonAvailableSize.setOnClickListener(View.OnClickListener {
+            popupMenu.menu.clear()
+            for (size in productInfo.availableSizesTitle) {
+                Log.d(TAG, "/////uniqueSizes: ${productInfo.availableSizesTitle.size}")
+                popupMenu.menu.add(size)
+            }
+            popupMenu.show() }
+        )
 
         popupMenu.setOnMenuItemClickListener { item ->
-            selectedSize = item.title.toString()
-            binding.buttonAvailableSize.text = selectedSize
-            idVariansSelect = sizeIdPairs.find { it.first == selectedSize }?.second
-            idVariansSelect?.let { addToCart(it)
-                Log.d(TAG, "////////////idVariansSelect:::: ${idVariansSelect}")
+            productInfo.selectedSize = item.title.toString()
+            binding.buttonAvailableSize.text = productInfo.selectedSize
+            productInfo.idVariansSelect = productInfo.sizeIdPairs.find { it.first == productInfo.selectedSize }?.second
+            productInfo.idVariansSelect?.let { addToCart(it)
+                Log.d(TAG, "////////////idVariansSelect:::: ${productInfo.idVariansSelect}")
             }
             true
+
         }
     }
     private fun isDataSuccess(){

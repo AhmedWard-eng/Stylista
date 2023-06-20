@@ -86,16 +86,21 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
     fun getIDForFavourite(): Long {
         val customerData = favourite.getIDFavouriteForCustumer()
 
-        return if (customerData.isSuccess) {
-            val localCustomer = customerData.getOrNull()
-            val favouriteId = localCustomer?.favouriteID
-            if (favouriteId != null) {
-                favouriteId.toLong()
+        return try {
+            if (customerData.isSuccess) {
+                val localCustomer = customerData.getOrNull()
+                val favouriteId = localCustomer?.favouriteID
+                if (favouriteId != null) {
+                    favouriteId.toLong()
+                } else {
+                    throw Exception("Favourite ID not found")
+                }
             } else {
-                throw Exception("Favourite ID not found")
+                throw Exception("Customer data not found")
             }
-        } else {
-            throw Exception("Customer data not found")
+        } catch (e: Exception) {
+            Log.e(ContentValues.TAG, "Error in getIDForFavourite(): ${e.message}")
+            -1L
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
 import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
@@ -21,6 +22,7 @@ import com.mad43.stylista.ui.brand.OnItemProductClicked
 
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
+import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
@@ -64,6 +66,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
 
         if(NetwarkInternet().isNetworkAvailable(requireContext())){
             var favID = productInfo.getIDForFavourite()
+            Log.d(TAG, "favIDfavIDfavIDfavID: ${favID}")
             productInfo.getFavouriteUsingId(favID.toString())
         }else{
             productInfo.getLocalFavourite()
@@ -75,6 +78,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     is RemoteStatus.Success -> {
                         brandAdapter.setData(uiState.data)
                     }
+
                 else -> {}
                 }
             }
@@ -101,6 +105,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     }
                 is RemoteStatus.Failure ->{
                     Log.d(TAG, "failllllllllllllll:::;: ")
+                    MyDialog().showAlertDialog(getString(R.string.favourite_fail), requireContext())
                 }
                 else -> {
                     Log.d(TAG, "elllllllllllse:::;: ")

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
 import com.mad43.stylista.data.local.entity.Favourite
@@ -35,7 +36,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
 
     lateinit var profileViewModel : ProfileViewModel
     lateinit var favFactory: ProfileFactoryViewModel
-    private lateinit var brandAdapter: AdapterFavourite
+    private lateinit var brandAdapter: AdapterWishList
     var favouriteList= mutableListOf<Favourite>()
 
     override fun onCreateView(
@@ -106,17 +107,46 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         binding.textViewHelloUserName.text = "Welcome, $userName"
     }
     private fun displayWishList(){
-        brandAdapter = AdapterFavourite(favouriteList,this@ProfileFragment)
+        brandAdapter = AdapterWishList(favouriteList,this@ProfileFragment)
         binding.recyclerViewWishList.adapter = brandAdapter
-        binding.recyclerViewWishList.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerViewWishList.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewWishList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         var favID = profileViewModel.getIDForFavourite()
         profileViewModel.getFavouriteUsingId(favID.toString())
 
         lifecycleScope.launch {
+//            profileViewModel.uiStateNetwork.collectLatest {
+//                    uiState ->when (uiState) {
+//                is RemoteStatus.Success -> {
+//                    for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
+//                        var title = uiState.data.draft_order?.line_items?.get(i)?.title
+//                        var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
+//                        var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
+//                        var image = uiState.data.draft_order?.line_items?.get(i)?.properties
+//                        val urlImage = image?.find { it.name == "url_image" }?.value
+//                        var price = uiState.data.draft_order?.line_items?.get(i)?.price
+//                        if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
+//                            var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
+//                            favouriteList.add(favourite)
+//
+//                        }
+//
+//                    }
+//                    brandAdapter.setData(favouriteList.take(4))
+//                }
+//                is RemoteStatus.Failure ->{
+//                    Log.d(ContentValues.TAG, "failllllllllllllll:::;: ")
+//                }
+//                else -> {
+//                    Log.d(ContentValues.TAG, "elllllllllllse:::;: ")
+//                }
+//            }
+//            }
             profileViewModel.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
                 is RemoteStatus.Success -> {
+                    val favouriteSet = mutableSetOf<Favourite>()
                     for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
                         var title = uiState.data.draft_order?.line_items?.get(i)?.title
                         var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
@@ -126,12 +156,11 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                         var price = uiState.data.draft_order?.line_items?.get(i)?.price
                         if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
                             var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
-                            favouriteList.add(favourite)
-
+                            favouriteSet += favourite
                         }
-
                     }
-                    brandAdapter.setData(favouriteList.take(4))
+                    val favouriteList1 = favouriteSet.toList()
+                    brandAdapter.setData(favouriteList1)
                 }
                 is RemoteStatus.Failure ->{
                     Log.d(ContentValues.TAG, "failllllllllllllll:::;: ")

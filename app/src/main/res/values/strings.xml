@@ -70,6 +70,8 @@
     <string name="select_size">Please, select your size in Avaliable Size Menu.</string>
     <string name="my_favourite">My Favourite</string>
     <string name="wish_list">Wish list</string>
+    <string name="favourite_fail">please, login first.</string>
+    <string name="choose_size">Choose Size</string>
     /***Marina***/
 
     /***Ahmed***/
