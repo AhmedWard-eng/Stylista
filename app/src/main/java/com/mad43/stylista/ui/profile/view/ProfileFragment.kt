@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.profile.view
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -101,9 +102,14 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     }
     private fun displayLogout(){
         binding.buttonLogOut.setOnClickListener {
-            profileViewModel.logout()
-            Navigation.findNavController(requireView())
-                .navigate(R.id.action_navigation_profile_to_logInFragment)
+            if (NetwarkInternet().isNetworkAvailable(requireContext())){
+                profileViewModel.logout()
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.action_navigation_profile_to_logInFragment)
+            }else{
+                Log.d(TAG, "check network: ")
+            }
+
         }
     }
     private fun displayUserName(){
