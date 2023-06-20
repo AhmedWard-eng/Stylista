@@ -25,6 +25,7 @@ import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.ui.favourite.AdapterFavourite
 import com.mad43.stylista.ui.profile.viewModel.ProfileFactoryViewModel
 import com.mad43.stylista.ui.profile.viewModel.ProfileViewModel
+import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -109,15 +110,39 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         var userName = profileViewModel.getUserName()
         binding.textViewHelloUserName.text = "Welcome! Nice to meet , $userName"
     }
+
     private fun displayWishList(){
         brandAdapter = AdapterWishList(favouriteList,this@ProfileFragment)
         binding.recyclerViewWishList.adapter = brandAdapter
         binding.recyclerViewWishList.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewWishList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        var favID = profileViewModel.getIDForFavourite()
-        profileViewModel.getFavouriteUsingId(favID.toString())
+        if (NetwarkInternet().isNetworkAvailable(requireContext())){
+            var favID = profileViewModel.getIDForFavourite()
+            profileViewModel.getFavouriteUsingId(favID.toString())
+        }else{
+            profileViewModel.getLocalFavourite()
+        }
+        lifecycleScope.launch {
 
+            profileViewModel.favouriteList.collectLatest { uiState ->when (uiState) {
+                is RemoteStatus.Success -> {
+
+                    if(uiState.data.size <= 4){
+                        brandAdapter.setData(uiState.data)
+                        binding.textViewMoreWishList.visibility = View.GONE
+                    }
+                    else{
+                        val firstFourFavourite = uiState.data.take(4)
+                        brandAdapter.setData(firstFourFavourite)
+                        binding.textViewMoreWishList.visibility = View.VISIBLE
+                    }
+                }
+
+                else -> {}
+            }
+            }
+        }
         lifecycleScope.launch {
             profileViewModel.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
