@@ -38,6 +38,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     lateinit var favFactory: ProfileFactoryViewModel
     private lateinit var brandAdapter: AdapterWishList
     var favouriteList= mutableListOf<Favourite>()
+    var isLogin = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +60,8 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayUserName()
+        profileViewModel.checkUserIsLogin()
+        observeLogin()
         displayLogout()
         displayWishList()
         displayAllFavourite()
@@ -116,33 +119,6 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         profileViewModel.getFavouriteUsingId(favID.toString())
 
         lifecycleScope.launch {
-//            profileViewModel.uiStateNetwork.collectLatest {
-//                    uiState ->when (uiState) {
-//                is RemoteStatus.Success -> {
-//                    for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
-//                        var title = uiState.data.draft_order?.line_items?.get(i)?.title
-//                        var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
-//                        var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
-//                        var image = uiState.data.draft_order?.line_items?.get(i)?.properties
-//                        val urlImage = image?.find { it.name == "url_image" }?.value
-//                        var price = uiState.data.draft_order?.line_items?.get(i)?.price
-//                        if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
-//                            var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
-//                            favouriteList.add(favourite)
-//
-//                        }
-//
-//                    }
-//                    brandAdapter.setData(favouriteList.take(4))
-//                }
-//                is RemoteStatus.Failure ->{
-//                    Log.d(ContentValues.TAG, "failllllllllllllll:::;: ")
-//                }
-//                else -> {
-//                    Log.d(ContentValues.TAG, "elllllllllllse:::;: ")
-//                }
-//            }
-//            }
             profileViewModel.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
                 is RemoteStatus.Success -> {
@@ -163,7 +139,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                     brandAdapter.setData(favouriteList1)
                 }
                 is RemoteStatus.Failure ->{
-                    Log.d(ContentValues.TAG, "failllllllllllllll:::;: ")
+                    Log.d(ContentValues.TAG, "Plaese Login,,,,failllllllllllllll:::;: ")
                 }
                 else -> {
                     Log.d(ContentValues.TAG, "elllllllllllse:::;: ")
@@ -188,4 +164,23 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         val action = ProfileFragmentDirections.actionNavigationProfileToProductDetailsFragment(id)
         binding.root.findNavController().navigate(action)
     }
+
+    fun observeLogin(){
+        lifecycleScope.launch {
+            profileViewModel.userExists.collect { userExists ->
+                if (userExists) {
+                    isLogin = true
+                    binding.buttonLogOut.visibility = View.VISIBLE
+                    binding.textViewMoreWishList.visibility = View.VISIBLE
+                    binding.recyclerViewWishList.visibility = View.VISIBLE
+                } else {
+                    isLogin = false
+                    binding.buttonLogOut.visibility = View.GONE
+                    binding.textViewMoreWishList.visibility = View.GONE
+                    binding.recyclerViewWishList.visibility = View.GONE
+                }
+            }
+        }
+    }
+
 }

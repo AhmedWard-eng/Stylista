@@ -36,6 +36,8 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
     private val _favourite = MutableStateFlow<RemoteStatus<List<Favourite>>>(RemoteStatus.Loading)
     val favouriteList = _favourite.asStateFlow()
 
+    private val _userExists = MutableStateFlow(false)
+    val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
 
     var orders = MutableStateFlow<RemoteStatus<List<Orders>>>(RemoteStatus.Loading)
 
@@ -154,6 +156,10 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
                 _uiStateNetwork.value = RemoteStatus.Failure(e)
             }
         }
+    }
+    fun checkUserIsLogin(){
+        val customerData = favourite.getIDFavouriteForCustumer()
+        _userExists.value = customerData.isSuccess
     }
 
 }
