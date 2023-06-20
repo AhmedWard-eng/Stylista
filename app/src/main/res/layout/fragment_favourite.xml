@@ -26,6 +26,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="@string/my_favourite"
         android:textSize="24sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="parent" />
 
