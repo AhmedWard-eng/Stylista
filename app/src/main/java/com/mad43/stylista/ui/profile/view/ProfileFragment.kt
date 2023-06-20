@@ -107,7 +107,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     }
     private fun displayUserName(){
         var userName = profileViewModel.getUserName()
-        binding.textViewHelloUserName.text = "Welcome, $userName"
+        binding.textViewHelloUserName.text = "Welcome! Nice to meet , $userName"
     }
     private fun displayWishList(){
         brandAdapter = AdapterWishList(favouriteList,this@ProfileFragment)
@@ -136,7 +136,15 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                         }
                     }
                     val favouriteList1 = favouriteSet.toList()
-                    brandAdapter.setData(favouriteList1)
+                    if(favouriteList1.size <= 4){
+                        brandAdapter.setData(favouriteList1)
+                        binding.textViewMoreWishList.visibility = View.GONE
+                    }
+                    else{
+                        val firstFourFavourite = favouriteList1.take(4)
+                        brandAdapter.setData(firstFourFavourite)
+                        binding.textViewMoreWishList.visibility = View.VISIBLE
+                    }
                 }
                 is RemoteStatus.Failure ->{
                     Log.d(ContentValues.TAG, "Plaese Login,,,,failllllllllllllll:::;: ")
@@ -173,11 +181,13 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                     binding.buttonLogOut.visibility = View.VISIBLE
                     binding.textViewMoreWishList.visibility = View.VISIBLE
                     binding.recyclerViewWishList.visibility = View.VISIBLE
+                    binding.textViewWishList.visibility = View.VISIBLE
                 } else {
                     isLogin = false
                     binding.buttonLogOut.visibility = View.GONE
                     binding.textViewMoreWishList.visibility = View.GONE
                     binding.recyclerViewWishList.visibility = View.GONE
+                    binding.textViewWishList.visibility = View.GONE
                 }
             }
         }
