@@ -1,6 +1,8 @@
 package com.mad43.stylista.ui.favourite
 
+import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +10,7 @@ import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.databinding.ProductItemBinding
 import com.mad43.stylista.databinding.RowFavouriteBinding
 import com.mad43.stylista.ui.brand.OnItemProductClicked
+import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.setImageFromUrl
 
 class AdapterFavourite (private var favouriteList: List<Favourite>,private val onClick:OnItemProductClicked) :
@@ -34,8 +37,13 @@ class AdapterFavourite (private var favouriteList: List<Favourite>,private val o
             binding.nameProduct.text = favourite.title
             binding.priceProduct.text = favourite.price
             binding.imageProduct.setImageFromUrl(favourite.image)
-            binding.cardProduct.setOnClickListener {
-                listener.productClicked(favourite.id)
+            val context = itemView.context
+            if (NetwarkInternet().isNetworkAvailable(context = context)){
+                binding.cardProduct.setOnClickListener {
+                    listener.productClicked(favourite.id)
+                }
+            }else{
+                Log.d(ContentValues.TAG, "bind: check network")
             }
         }
     }
