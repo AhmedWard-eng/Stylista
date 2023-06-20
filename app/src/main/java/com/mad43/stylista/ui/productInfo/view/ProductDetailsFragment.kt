@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.productInfo.view
 
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -72,7 +73,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
         displayInfo()
         displayReviews()
         checkFavourite()
-        addToCart(productInfo.idVariansSelect)
+        addToCart(productInfo.idVariansSelect,productInfo.selectedSize)
 
     }
 
@@ -147,12 +148,13 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
         }
     }
 
-    private fun addToCart(variantId: Long?) {
+    private fun addToCart(variantId: Long?, nameItem : String) {
         binding.buttonAddToCart.setOnClickListener {
             if(variantId!= null){
                 //idVarians
-                val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
-                binding.root.findNavController().navigate(action)
+                showConfirmationDialog(variantId,nameItem)
+//                val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
+//                binding.root.findNavController().navigate(action)
             }else{
                 MyDialog().showAlertDialog(getString(R.string.select_size),requireContext())
             }
@@ -174,7 +176,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
             productInfo.selectedSize = item.title.toString()
             binding.buttonAvailableSize.text = productInfo.selectedSize
             productInfo.idVariansSelect = productInfo.sizeIdPairs.find { it.first == productInfo.selectedSize }?.second
-            productInfo.idVariansSelect?.let { addToCart(it)
+            productInfo.idVariansSelect?.let { addToCart(it,productInfo.selectedSize)
                 Log.d(TAG, "////////////idVariansSelect:::: ${productInfo.idVariansSelect}")
             }
             true
@@ -244,7 +246,17 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
         }
     }
 
-
+    private fun showConfirmationDialog(variantId: Long,nameItem: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.added_to_cart_confirm)} ${nameItem} ${getString(R.string.addedd_countinue_cart)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
+                binding.root.findNavController().navigate(action)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
+        builder.show()
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

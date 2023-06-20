@@ -194,13 +194,11 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
                 item
             )
         }
-        Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")
         requestBody = newList?.let { it1 ->
             DraftOrderPuttingRequestBody(
                 line_items = it1
             )
         }!!
-        Log.d(TAG, "onClick: ${newList.size}")
         insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
     }
 

@@ -93,7 +93,7 @@ class LogInFragment : Fragment() {
                 when (it) {
                     is RemoteStatus.Success -> {
                         view.findNavController()
-                            .navigate(R.id.action_logInFragment_to_navigation_home)
+                            .navigate(R.id.navigation_home)
                         signInViewModel.insertAllProductDB()
 
                     }
