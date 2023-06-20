@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.R
@@ -44,6 +45,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
     lateinit var productInfo : ProductInfoViewModel
     lateinit var favFactory: ProductInfoViewModelFactory
     var isFavourite : Boolean = false
+    var isLogin : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,8 +74,12 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
 
         displayInfo()
         displayReviews()
+        productInfo.checkUserIsLogin()
+        observeLogin()
         checkFavourite()
+
         addToCart(productInfo.idVariansSelect,productInfo.selectedSize)
+
 
     }
 
@@ -115,25 +121,30 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
                         Log.d(TAG, "displayInfo: ${productInfo.sizeIdPairs.size},,${productInfo.sizeIdPairs.get(0).first},,${productInfo.sizeIdPairs.get(0).second}")
                     }
                     displayMenueAvaliableSize()
+                        binding.imageViewFavourite.setOnClickListener {
 
-                    binding.imageViewFavourite.setOnClickListener {
+                            var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
 
-                        var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
+                            val properties = listOf(
+                                Property(name = "url_image", value = productImage)
+                            )
+                            productInfo.lineItem1 =  InsertingLineItem(
+                                properties = properties,
+                                variant_id = variantID,
+                                quantity = 1,
+                                price = productPrice,
+                                title = productTitle
+                            )
+if(isLogin){
+    onClick(productFavourite)
+}else{
+      showConfirmationDialog()
+    Log.d(TAG, "PPPPPPPlease LLLOgin :) ::::: ")
+}
 
-                        val properties = listOf(
-                            Property(name = "url_image", value = productImage)
-                        )
-                         productInfo.lineItem1 =  InsertingLineItem(
-                            properties = properties,
-                            variant_id = variantID,
-                            quantity = 1,
-                            price = productPrice,
-                            title = productTitle
-                        )
 
-                        onClick(productFavourite)
+                        }
 
-                    }
 
                 }
                 is ApiState.Loading ->{
@@ -150,14 +161,17 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
 
     private fun addToCart(variantId: Long?, nameItem : String) {
         binding.buttonAddToCart.setOnClickListener {
-            if(variantId!= null){
-                //idVarians
-                showConfirmationDialog(variantId,nameItem)
-//                val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
-//                binding.root.findNavController().navigate(action)
+            if (isLogin){
+                if(variantId!= null){
+                    //idVarians
+                    showConfirmationDialog(variantId,nameItem)
+                }else{
+                    MyDialog().showAlertDialog(getString(R.string.select_size),requireContext())
+                }
             }else{
-                MyDialog().showAlertDialog(getString(R.string.select_size),requireContext())
+                showConfirmationDialog()
             }
+
         }
     }
     private fun displayMenueAvaliableSize(){
@@ -256,6 +270,32 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
         builder.show()
+    }
+
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.check_login)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.logInFragment)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
+        builder.show()
+    }
+
+    fun observeLogin(){
+        lifecycleScope.launch {
+            productInfo.userExists.collect { userExists ->
+                if (userExists) {
+                    Log.d(TAG, "observeLogin: HHHHhhi login ${userExists}")
+                    isLogin = true
+                } else {
+                    Log.d(TAG, "observeLogin: please, login:))))  ${userExists}")
+                    isLogin = false
+                }
+            }
+        }
     }
     override fun onDestroy() {
         super.onDestroy()

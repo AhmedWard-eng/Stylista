@@ -52,6 +52,9 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
     lateinit var sizeIdPairs: List<Pair<String, Long>>
     var selectedSize : String = ""
     var idVariansSelect: Long? = null
+
+    private val _userExists = MutableStateFlow(false)
+    val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
     fun getProductDetails(id: Long){
         viewModelScope.launch (Dispatchers.IO){
             productInfo.getProductDetails(id).catch {   e->_uiState.value=ApiState.Failure(e) }
@@ -202,5 +205,8 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
         insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
     }
 
-
+    fun checkUserIsLogin(){
+        val customerData = favourite.getIDFavouriteForCustumer()
+        _userExists.value = customerData.isSuccess
+    }
 }
