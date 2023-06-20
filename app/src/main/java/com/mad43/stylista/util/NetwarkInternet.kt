@@ -1,10 +1,12 @@
 package com.mad43.stylista.util
 
+import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.mad43.stylista.data.sharedPreferences.SharedPref.context
 
 class NetwarkInternet : Application() {
     fun isNetworkAvailable(context: Context?): Boolean {
@@ -30,5 +32,13 @@ class NetwarkInternet : Application() {
             }
         }
         return false
+    }
+
+    fun displayNetworkDialog(context: Context?) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("No Internet Connection")
+        builder.setMessage("Please check your network connection and try again.")
+        builder.setPositiveButton("OK") { _, _ -> }
+        builder.show()
     }
 }

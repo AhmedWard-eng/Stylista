@@ -167,6 +167,7 @@
         android:isScrollContainer="true"
         android:enabled="true"
         android:textSize="16dp"
+        android:layout_marginBottom="120dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
