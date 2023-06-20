@@ -1,5 +1,6 @@
 package com.mad43.stylista.ui.favourite
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mad43.stylista.R
@@ -87,6 +89,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
             productInfo.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
                     is RemoteStatus.Success -> {
+                        binding.textViewMyFavourite.visibility = View.VISIBLE
                         val favouriteSet = mutableSetOf<Favourite>()
                         for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
                             var title = uiState.data.draft_order?.line_items?.get(i)?.title
@@ -105,7 +108,8 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     }
                 is RemoteStatus.Failure ->{
                     Log.d(TAG, "failllllllllllllll:::;: ")
-                    MyDialog().showAlertDialog(getString(R.string.favourite_fail), requireContext())
+                    binding.textViewMyFavourite.visibility = View.GONE
+                    showConfirmationDialog()
                 }
                 else -> {
                     Log.d(TAG, "elllllllllllse:::;: ")
@@ -121,5 +125,19 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
         binding.root.findNavController().navigate(action)
     }
 
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.check_login)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.logInFragment)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.navigation_home)
+            }
+        builder.show()
+    }
 
 }
