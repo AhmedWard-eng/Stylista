@@ -1,21 +1,51 @@
 package com.mad43.stylista.ui.productInfo.viewModel
 
+import android.content.ContentValues
+import android.content.ContentValues.TAG
+import android.util.Log
+import android.util.Property
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denzcoskun.imageslider.models.SlideModel
+import com.mad43.stylista.data.local.entity.Favourite
+import com.mad43.stylista.data.remote.entity.draftOrders.LineItem
+import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPuttingRequestBody
+import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
+import com.mad43.stylista.data.sharedPreferences.LocalCustomer
+import com.mad43.stylista.domain.local.favourite.FavouriteLocal
+import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import com.mad43.stylista.domain.remote.productDetails.ProductInfo
 import com.mad43.stylista.ui.productInfo.model.ApiState
+import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()): ViewModel() {
+class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo(), private val favourite : FavouriteLocal): ViewModel() {
 
     private val _uiState = MutableStateFlow<ApiState>(ApiState.Loading)
     val uiState = _uiState.asStateFlow()
+
+    private val _uiStateNetwork = MutableStateFlow<RemoteStatus<CustomDraftOrderResponse>>(RemoteStatus.Loading)
+    val uiStateNetwork: StateFlow<RemoteStatus<CustomDraftOrderResponse>> = _uiStateNetwork
+
     val imagesArray = ArrayList<SlideModel>()
+
+    private val _favourite = MutableStateFlow<RemoteStatus<List<Favourite>>>(RemoteStatus.Loading)
+    val favouriteList = _favourite.asStateFlow()
+
+    private val _isfavourite = MutableStateFlow<RemoteStatus<Boolean>>(RemoteStatus.Loading)
+    val isfavouriteExist = _isfavourite.asStateFlow()
+
+    var customDraftOrderList= mutableListOf<CustomDraftOrderResponse>()
+    var lineItemsList = mutableListOf<InsertingLineItem>()
+    lateinit var requestBody : DraftOrderPuttingRequestBody
+    lateinit var lineItem1 :  InsertingLineItem
+    lateinit var favID : String
+
     fun getProductDetails(id: Long){
         viewModelScope.launch (Dispatchers.IO){
             productInfo.getProductDetails(id).catch {   e->_uiState.value=ApiState.Failure(e) }
@@ -31,6 +61,137 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
         }
     }
 
+    fun insertProduct(product: Favourite){
+        viewModelScope.launch (Dispatchers.IO){
+            favourite.insertProduct(product)
+        }
+    }
+    fun deleteProduct(product: Favourite){
+        viewModelScope.launch (Dispatchers.IO){
+            favourite.deleteProduct(product)
+        }
+    }
+
+    fun getLocalFavourite(){
+        viewModelScope.launch (Dispatchers.IO){
+            favourite.getStoredProduct()
+                .catch {
+                        e->_favourite.value=RemoteStatus.Failure(e)
+                    Log.i(ContentValues.TAG, "getLocalFavourite: FailureFailureFailureFailure")
+                }
+                .collect{
+                        data ->
+                    _favourite.value=RemoteStatus.Success(data)
+                }
+        }
+    }
+
+    fun isFavourite(productID : Long){
+        viewModelScope.launch {
+            favourite.isProductFavorite(productID).catch {
+                    e->_isfavourite.value=RemoteStatus.Failure(e)
+            }.collectLatest {
+                data ->
+                _isfavourite.value= RemoteStatus.Success(data)
+            }
+        }
+    }
+
+    fun insertFavouriteForCustumer(id : Long, draftOrderPutBody: DraftOrderPutBody)  {
+        viewModelScope.launch (Dispatchers.IO){
+             favourite.insertFavouriteForCustumer(id = id, draftOrderPutBody)
+
+        }
+
+    }
+
+    suspend fun getLineItems(idFav: String): MutableList<CustomDraftOrderResponse>{
+        var getProduct = favourite.getFavouriteUsingId(idFav)
+
+        return when (getProduct) {
+            is RemoteStatus.Success -> mutableListOf(getProduct.data)
+            else -> mutableListOf()
+        }
+    }
+
+    fun getIDForFavourite(): Long {
+        val customerData = favourite.getIDFavouriteForCustumer()
+
+        return if (customerData.isSuccess) {
+            val localCustomer = customerData.getOrNull()
+            val favouriteId = localCustomer?.favouriteID
+            if (favouriteId != null) {
+                favouriteId.toLong()
+            } else {
+                throw Exception("Favourite ID not found")
+            }
+        } else {
+            throw Exception("Customer data not found")
+        }
+    }
+
+    fun getFavouriteUsingId(idFavourite : String){
+        viewModelScope.launch {
+            try {
+                val customDraftOrderResponse = favourite.getFavouriteUsingId(idFavourite)
+                _uiStateNetwork.value = customDraftOrderResponse
+                Log.d(TAG, "getFavouriteUsingId: ${_uiStateNetwork.value}")
+            } catch (e: Exception) {
+                _uiStateNetwork.value = RemoteStatus.Failure(e)
+            }
+        }
+    }
+
+    fun removeAnItemFromFavourite(putLineItems: MutableList<InsertingLineItem>, variantId: Long): List<InsertingLineItem> {
+       return favourite.removeAnItemFromFavourite(putLineItems,variantId)
+   }
+
+     fun insertAllProductToList(){
+        for (customDraftOrder in customDraftOrderList){
+            for (lineItem in customDraftOrder.draft_order?.line_items.orEmpty()) {
+                var titleOld = lineItem.title
+                var priceOld = lineItem.price
+                var varianceIDOld = lineItem.variant_id
+                var imageOld = lineItem.properties
+                Log.d(TAG, "////customDraftOrderList: ${customDraftOrderList.size}" +
+                        " ${lineItem.title} ")
+                var lineItem2 = InsertingLineItem(
+                    properties= imageOld,
+                    variant_id= varianceIDOld,
+                    quantity = 1,
+                    price = priceOld,
+                    title = titleOld
+                )
+               lineItemsList.add(lineItem2)
+            }
+        }
+    }
+
+     fun insertProductToList(lineItem1: InsertingLineItem){
+        insertAllProductToList()
+        lineItemsList.add(lineItem1)
+        requestBody = DraftOrderPuttingRequestBody(
+            line_items = lineItemsList
+        )
+        insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
+    }
+
+    fun removeProductFromFavourite(){
+        insertAllProductToList()
+        var newList = lineItem1.variant_id?.let { item ->
+            removeAnItemFromFavourite(lineItemsList,
+                item
+            )
+        }
+        Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")
+        requestBody = newList?.let { it1 ->
+            DraftOrderPuttingRequestBody(
+                line_items = it1
+            )
+        }!!
+        Log.d(TAG, "onClick: ${newList.size}")
+        insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
+    }
+
 
 }
-

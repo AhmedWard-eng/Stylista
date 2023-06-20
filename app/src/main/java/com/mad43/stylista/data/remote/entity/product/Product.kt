@@ -1,8 +1,11 @@
 package com.mad43.stylista.data.remote.entity.product
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.mad43.stylista.domain.model.DisplayProduct
 
 data class Product(
+    @PrimaryKey
     val id: Long,
     val title: String,
     val body_html: String,

@@ -45,8 +45,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.addressesView.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.action_navigation_profile_to_addressListFragment)
+            Log.d("TAG", "onViewCreated: addressesView")
         }
 
         binding.textViewCurrencyCode.text = profileViewModel.getCurrencyCode()

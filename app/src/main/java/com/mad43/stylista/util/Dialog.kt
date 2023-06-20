@@ -13,4 +13,19 @@ class MyDialog {
         val dialog = builder.create()
         dialog.show()
     }
+
+    fun showAlertDialog(message: String, context: Context, callback: (Boolean) -> Unit) {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(message)
+            .setPositiveButton("OK") { dialog, _ ->
+                callback(true)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                callback(false)
+                dialog.dismiss()
+            }
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
