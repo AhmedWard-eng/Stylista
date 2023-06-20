@@ -182,12 +182,18 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                     binding.textViewMoreWishList.visibility = View.VISIBLE
                     binding.recyclerViewWishList.visibility = View.VISIBLE
                     binding.textViewWishList.visibility = View.VISIBLE
+                    binding.addressesView.visibility = View.VISIBLE
+                    binding.separator3.visibility = View.VISIBLE
+                    binding.textView3.visibility = View.VISIBLE
                 } else {
                     isLogin = false
                     binding.buttonLogOut.visibility = View.GONE
                     binding.textViewMoreWishList.visibility = View.GONE
                     binding.recyclerViewWishList.visibility = View.GONE
                     binding.textViewWishList.visibility = View.GONE
+                    binding.addressesView.visibility = View.GONE
+                    binding.separator3.visibility = View.GONE
+                    binding.textView3.visibility = View.GONE
                 }
             }
         }
