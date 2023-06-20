@@ -2,7 +2,6 @@ package com.mad43.stylista.ui.cart
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -46,20 +45,19 @@ class CartAdapter(private val clickListener: ClickListener) : ListAdapter<CartIt
         }
 
         holder.binding.buttonIncreaseQuantity.setOnClickListener {
-            clickListener.setQuantity(item.variant_id,item.quantity + 1)
+            clickListener.setQuantity(item.variant_id,item.quantity + 1,true)
         }
 
         holder.binding.buttonDecreaseQuantity.setOnClickListener {
 
-            clickListener.setQuantity(item.variant_id,item.quantity - 1)
+            clickListener.setQuantity(item.variant_id,item.quantity - 1,false)
         }
     }
 
 
     object DiffUtils : DiffUtil.ItemCallback<CartItem>(){
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            val b = (oldItem.variant_id == newItem.variant_id)
-           return b
+            return (oldItem.variant_id == newItem.variant_id)
         }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
@@ -67,8 +65,8 @@ class CartAdapter(private val clickListener: ClickListener) : ListAdapter<CartIt
         }
     }
 
-    class ClickListener(private val setQuantityListener : (Long,Int) -> Unit ,private val deleteListener : (Long) -> Unit){
-        fun setQuantity(variantId: Long , quantity: Int) = setQuantityListener(variantId,quantity)
+    class ClickListener(private val setQuantityListener : (Long,Int,Boolean) -> Unit ,private val deleteListener : (Long) -> Unit){
+        fun setQuantity(variantId: Long , quantity: Int,isIncreasing : Boolean) = setQuantityListener(variantId,quantity,isIncreasing)
 
         fun delete(variantId: Long) = deleteListener(variantId)
     }

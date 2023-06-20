@@ -36,7 +36,7 @@ class ProductDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -50,7 +50,7 @@ class ProductDetailsFragment : Fragment() {
         productInfo = ViewModelProvider(this)[ProductInfoViewModel::class.java]
         binding.textViewReviews.setOnClickListener {
             val fragment = ReviewFragment()
-            fragment.show(requireFragmentManager(), "MyDialogReviewsFragment")
+            fragment.show(requireActivity().supportFragmentManager, "MyDialogReviewsFragment")
         }
         if (id != null) {
             productInfo.getProductDetails(id)

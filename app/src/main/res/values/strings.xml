@@ -90,5 +90,6 @@
     <string name="something_went_wrong">Something Went Wrong</string>
     <string name="cannot_delete_the_customer_s_default_address">You cannot delete your default address</string>
     <string name="are_you_sure_you_want_to_make_this_address_your_default_address">Are you sure you want to make this address as a default address</string>
+    <string name="sorry_no_available_quantity">Sorry, no available quantity</string>
     /***Ahmed***/
 </resources>
