@@ -47,7 +47,6 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
 
     init {
         getOrders()
-        postOrder()
     }
 
     fun getUserName():String{
