@@ -2,6 +2,8 @@ package com.mad43.stylista.ui.registration.viewModel
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -21,6 +23,16 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
     private var _signUpState: MutableStateFlow<RemoteStatus<SignupResponse>> = MutableStateFlow(RemoteStatus.Loading)
     var signUpState: StateFlow<RemoteStatus<SignupResponse>> = _signUpState
 
+    private var _signUpStateLiveData: MutableLiveData<RemoteStatus<SignupResponse>> = MutableLiveData(RemoteStatus.Loading)
+    var signUpStateLiveData: LiveData<RemoteStatus<SignupResponse>> = _signUpStateLiveData
+
+    lateinit var userName : String
+    lateinit var email : String
+    lateinit var password : String
+    lateinit var confirmPassword :String
+
+    var isRegister : Boolean = false
+
     fun signUp(userName: String,email: String, password: String){
         viewModelScope.launch {
             try {
@@ -38,37 +50,65 @@ class SignUpViewModel (private val authUseCase : AuthUseCase = AuthUseCase()) : 
                         )
                     }
                     _signUpState.value = RemoteStatus.Success(registerApi.body()!!)
+                    _signUpStateLiveData.value = RemoteStatus.Success(registerApi.body()!!)
                     authUseCase.sendEmailVerification()
+                    isRegister = true
 
                 }
             }catch (e: FirebaseAuthUserCollisionException){
                 _signUpState.value = RemoteStatus.Valied(R.string.email_isExist)
                 Log.d(TAG, "Firbase signUp:::: ${e.message}")
+                isRegister =false
+            }
+            catch (e : Exception){
+                Log.d(TAG, "Firbase not stable signUp:::: ${e.message}")
             }
         }
     }
 
     fun validateInputs(userName: String ,email: String, password: String,confirmPassword : String) {
+        Log.d(TAG, "validateInputs: FIRST DEBUGGGGGGG")
         if (userName.isEmpty()){
-            _signUpState.value = RemoteStatus.Valied(R.string.userNameEmpty)
+
+            //_signUpState.value = RemoteStatus.Valied(R.string.userNameEmpty)
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.userNameEmpty)
+            Log.d(TAG, "validateInputs:${ _signUpState.value}user name is  empty")
+            isRegister =false
         }
         else if (email.isEmpty()) {
             _signUpState.value = RemoteStatus.Valied(R.string.emailNameEmpty)
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.emailNameEmpty)
+            isRegister =false
+            Log.d(TAG, "validateInputs:${ _signUpState.value} email empty")
         }else if(!email.matches(Validation.EMAIL_PATTERN.toRegex())){
-            _signUpState.value = RemoteStatus.Valied(R.string.validateEmail)
+            //_signUpState.value = RemoteStatus.Valied(R.string.validateEmail)
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.validateEmail)
+            isRegister =false
+            Log.d(TAG, "validateInputs:${ _signUpState.value} not valied email")
         }
         else if (password.isEmpty()) {
             _signUpState.value = RemoteStatus.Valied(R.string.passwordEmpty)
+            isRegister =false
+            Log.d(TAG, "validateInputs:${ _signUpState.value} password empty")
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.passwordEmpty)
         } else if (confirmPassword.isEmpty()) {
             _signUpState.value = RemoteStatus.Valied(R.string.confirmPasswordEmpty)
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.confirmPasswordEmpty)
+            isRegister =false
         }else if(password != confirmPassword){
             _signUpState.value = RemoteStatus.Valied(R.string.matchPassword)
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.matchPassword)
+            isRegister =false
+            Log.d(TAG, "validateInputs:${ _signUpState.value} confirm not match")
         }
         else if (!password.matches(Validation.PASSWORD_PATTERN.toRegex())) {
             _signUpState.value = RemoteStatus.Valied(R.string.validatePassword)
+            _signUpStateLiveData.value = RemoteStatus.Valied(R.string.validatePassword)
+            isRegister =false
+            Log.d(TAG, "validateInputs:${ _signUpState.value} password not valid")
         }
         else {
-
+            Log.d(TAG, "//////validateInputs SIGNUP: ${_signUpState}")
             signUp(userName,email,password)
 
         }

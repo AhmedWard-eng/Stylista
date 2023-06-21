@@ -8,6 +8,8 @@ import com.mad43.stylista.data.remote.entity.auth.*
 import com.mad43.stylista.data.sharedPreferences.CustomerManager
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import com.mad43.stylista.data.sharedPreferences.PreferencesData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import retrofit2.Response
 
 class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRemoteSourceImp(),private  val authFirbase: AuthFirbase=AuthFirebaseImp(),private val userManager: CustomerManager = PreferencesData()):AuthRepository {

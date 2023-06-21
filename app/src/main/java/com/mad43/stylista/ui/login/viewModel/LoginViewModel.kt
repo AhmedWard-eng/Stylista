@@ -2,6 +2,8 @@ package com.mad43.stylista.ui.login.viewModel
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.R
@@ -16,12 +18,12 @@ import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
 import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
 import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
+import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val favourite : FavouriteLocal) : ViewModel() {
 
@@ -30,6 +32,9 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
 
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
+
+    private var _signInStateLiveData: MutableLiveData<RemoteStatus<LoginResponse>>  = MutableLiveData(RemoteStatus.Loading)
+    var signInStateLiveData: LiveData<RemoteStatus<LoginResponse>>  = _signInStateLiveData
 
     var checkLogin = authUseCase.isUserLoggedIn()
 
@@ -51,7 +56,6 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
         }
     }
 
-
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
@@ -66,7 +70,9 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
                             authUseCase.signIn(email,password)
                             var checkEmail = authUseCase.isEmailVerified(email)
                            if (checkEmail){
+
                                _loginState.value = RemoteStatus.Success(data)
+                               _signInStateLiveData.value = RemoteStatus.Success(data)
                                authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email,
                                    state = true, userName = data.customers[0].first_name, cardID = data.customers[0].last_name,
                                    favouriteID = data.customers[0].note))
@@ -74,20 +80,27 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
 
                            }else{
                                _loginState.value = RemoteStatus.Valied(R.string.verfid)
+                               _signInStateLiveData.value = RemoteStatus.Valied(R.string.verfid)
                            }
 
                         }else{
                             _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
+                            _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
                         }
                     }else {
                         _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
+                        _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
+                        Log.d(TAG, "login: NULLLLLLLLLLLLLLLLLLLLLLLLLLL")
                     }
                 }else{
                     _loginState.value = RemoteStatus.Valied(R.string.login_faild)
+                    _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_faild)
+                    Log.d(TAG, "ERRRRRRROOOOORRRRR login: ${user.errorBody()}")
                 }
 
             } catch (e: Exception) {
                 _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
+                _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
                 Log.d(TAG, "Exception:  ${e.message}")
             }
         }

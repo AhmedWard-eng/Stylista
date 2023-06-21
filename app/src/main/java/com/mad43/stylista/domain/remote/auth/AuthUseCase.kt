@@ -8,6 +8,7 @@ import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
 import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import com.mad43.stylista.util.RemoteStatus
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import kotlin.math.log
 import kotlin.time.Duration.Companion.days
@@ -18,7 +19,7 @@ class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
      return authRepository.signUp(userName,email,password)
     }
     suspend fun loginCustomer(email:String): Response<LoginResponse> {
-        return   authRepository.loginCustomer(email)
+        return authRepository.loginCustomer(email)
     }
 
     suspend fun isEmailVerified(email: String): Boolean{
