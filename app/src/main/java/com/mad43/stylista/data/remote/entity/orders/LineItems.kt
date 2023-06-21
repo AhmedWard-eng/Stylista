@@ -14,8 +14,8 @@ data class LineItems(
     val price: String? = "",
     @SerializedName("quantity")
     val quantity: Int? = 0,
-    val properties: List<Property>?,
-    val product_id: Long?,
+    val properties: List<Property>? = null,
+    val product_id: Long? =0L,
     @SerializedName("variant_id")
     val variantId: Long? = 0L,
 ) : Parcelable

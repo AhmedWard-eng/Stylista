@@ -40,6 +40,11 @@
         <action
             android:id="@+id/action_navigation_profile_to_currencyFragment"
             app:destination="@id/currencyFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_orderDetailsFragment2"
+            app:destination="@id/orderDetailsFragment2" />
+
+
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -143,14 +148,6 @@
         <action
             android:id="@+id/action_ordersFragment_to_orderDetailsFragment2"
             app:destination="@id/orderDetailsFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="ProfileFragment"
-        android:label="ProfileFragment" >
-        <action
-            android:id="@+id/action_profileFragment_to_ordersFragment"
-            app:destination="@id/ordersFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment2"

@@ -17,9 +17,9 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
     ViewModel() {
 
     var products = MutableStateFlow<RemoteStatus<List<DisplayProduct>>>(RemoteStatus.Loading)
-    lateinit var productMainCategory: List<DisplayProduct>
+    private lateinit var productMainCategory: List<DisplayProduct>
     private var productSubCategory: MutableList<DisplayProduct> = mutableListOf()
-    lateinit var allData: List<DisplayProduct>
+    var allData: List<DisplayProduct> = listOf()
     var filterMainCategory = false
     var filterSubCategory = false
 
@@ -27,7 +27,7 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
         getProducts()
     }
 
-    private fun getProducts() {
+    fun getProducts() {
         viewModelScope.launch {
             try {
                 repoInterface.getAllProduct().catch { e ->
@@ -38,16 +38,15 @@ class CategoryViewModel(private val repoInterface: ProductsRepoInterface = Produ
             }catch (e:Exception){
                 products.value = RemoteStatus.Failure(e)
             }
-
         }
     }
 
     fun filterByMainCategory(mainCategory: String) {
         if (filterMainCategory) {
-            productMainCategory = allData.filter {
-                it.product_type == mainCategory
-            }
-            products.value = RemoteStatus.Success(productMainCategory)
+                productMainCategory = allData.filter {
+                    it.product_type == mainCategory
+                }
+                products.value = RemoteStatus.Success(productMainCategory)
 
         } else {
             products.value = RemoteStatus.Success(allData)

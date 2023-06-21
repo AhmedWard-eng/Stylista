@@ -14,9 +14,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
 import com.mad43.stylista.data.local.entity.Favourite
+import com.mad43.stylista.data.remote.entity.orders.Orders
 import com.mad43.stylista.data.repo.auth.AuthRepositoryImp
 import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
 import com.mad43.stylista.databinding.FragmentProfileBinding
@@ -24,6 +26,9 @@ import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
 import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.ui.favourite.AdapterFavourite
+import com.mad43.stylista.ui.orders.OnItemOrderClicked
+import com.mad43.stylista.ui.orders.OrdersAdapter
+import com.mad43.stylista.ui.orders.OrdersFragmentDirections
 import com.mad43.stylista.ui.profile.viewModel.ProfileFactoryViewModel
 import com.mad43.stylista.ui.profile.viewModel.ProfileViewModel
 import com.mad43.stylista.util.NetwarkInternet
@@ -31,7 +36,7 @@ import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ProfileFragment : Fragment(), OnItemProductClicked {
+class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -39,6 +44,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     lateinit var profileViewModel : ProfileViewModel
     lateinit var favFactory: ProfileFactoryViewModel
     private lateinit var brandAdapter: AdapterWishList
+    private lateinit var orderAdapter : OrdersProfileAdapter
     var favouriteList= mutableListOf<Favourite>()
     var isLogin = false
 
@@ -51,12 +57,6 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         val context = requireContext().applicationContext
         val localSource = ConcreteLocalSource(context)
         val favouriteLocalRepo = FavouriteLocalRepoImp(localSource)
-
-
-        binding.textViewHelloUserName.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.ordersFragment)
-        }
 
 
         val authRepo = AuthRepositoryImp()
@@ -76,6 +76,9 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         displayWishList()
         displayAllFavourite()
 
+        binding.textViewMoreOrders.setOnClickListener {
+            Navigation.findNavController(requireView()).navigate(R.id.ordersFragment)
+        }
 
         binding.textViewCurrencyCode.text = profileViewModel.getCurrencyCode()
         binding.currencyView.setOnClickListener {
@@ -91,14 +94,30 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
             profileViewModel.orders.collectLatest {
                 when (it) {
                     is RemoteStatus.Loading -> {
-                        Log.i("Orders ","Loading")
+                        binding.recyclerViewOrders.visibility = View.GONE
                     }
 
                     is RemoteStatus.Success -> {
-                        Log.i("Orders ","Success")
-                        it.data.forEach {
-                            Log.i("Orders ","created_at ${it.created_at.toString()}")
-                            Log.i("Orders ","price ${it.current_subtotal_price.toString()}")
+                        binding.recyclerViewOrders.visibility = View.VISIBLE
+                        lifecycleScope.launch {
+
+                            orderAdapter = OrdersProfileAdapter(this@ProfileFragment)
+                            binding.recyclerViewOrders.apply {
+                                adapter = orderAdapter
+                                var list : MutableList<Orders>  = mutableListOf()
+                                if (it.data.isNotEmpty()){
+                                    if (it.data.size >1) {
+                                        list.add(it.data[0])
+                                        list.add(it.data[1])
+                                    }else {
+                                        list.add(it.data[0])
+                                    }
+                                }
+                                orderAdapter.submitList(list)
+                                layoutManager = LinearLayoutManager(context).apply {
+                                    orientation = RecyclerView.HORIZONTAL
+                                }
+                            }
                         }
                     }
                     else -> {
@@ -238,6 +257,11 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                 }
             }
         }
+    }
+
+    override fun orderClicked(orders: Orders) {
+        val action = ProfileFragmentDirections.actionNavigationProfileToOrderDetailsFragment2(orders)
+        binding.root.findNavController().navigate(action)
     }
 
 }

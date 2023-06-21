@@ -51,7 +51,6 @@ class OrdersFragment : Fragment(), OnItemOrderClicked {
             ordersViewModel.orders.collectLatest {
                 when (it) {
                     is RemoteStatus.Loading -> {
-                        Log.i("DDDDDD","Loading")
                         binding.recycleOrders.visibility = View.GONE
                         binding.shimmerFrameLayoutOrders.startShimmerAnimation()
                     }
@@ -64,7 +63,6 @@ class OrdersFragment : Fragment(), OnItemOrderClicked {
                         ordersAdapter = OrdersAdapter(this@OrdersFragment)
                         binding.recycleOrders.apply {
                             adapter = ordersAdapter
-                            Log.i("DDDDDD",it.data.count().toString())
                             ordersAdapter.submitList(it.data)
                             layoutManager = LinearLayoutManager(context).apply {
                                 orientation = RecyclerView.VERTICAL
