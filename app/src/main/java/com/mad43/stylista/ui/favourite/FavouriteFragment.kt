@@ -83,6 +83,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
             productInfo.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
                     is RemoteStatus.Success -> {
+                        val favouriteSet = mutableSetOf<Favourite>()
                         for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
                             var title = uiState.data.draft_order?.line_items?.get(i)?.title
                             var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
@@ -92,12 +93,11 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                             var price = uiState.data.draft_order?.line_items?.get(i)?.price
                             if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
                                 var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
-                                favouriteList.add(favourite)
-
+                                favouriteSet += favourite
                             }
-
                         }
-                        brandAdapter.setData(favouriteList)
+                        val favouriteList1 = favouriteSet.toList()
+                        brandAdapter.setData(favouriteList1)
                     }
                 is RemoteStatus.Failure ->{
                     Log.d(TAG, "failllllllllllllll:::;: ")
