@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentCartBinding
 import com.mad43.stylista.util.MyDialog
@@ -50,6 +51,15 @@ class CartFragment : Fragment() {
 
         adapter = CartAdapter(CartAdapter.ClickListener(::setQuantity, ::delete))
         binding.recyclerView.adapter = adapter
+
+        binding.buttonCheckout.setOnClickListener {
+            if (viewModel.list.isEmpty()){
+                MyDialog().showAlertDialog("No item in cart",requireContext())
+            }else{
+                val action = CartFragmentDirections.actionCartFragment2ToCompletingPurchasingFragment(viewModel.list.toTypedArray())
+                Navigation.findNavController(requireView()).navigate(action)
+            }
+        }
 
         handleScrollingBehavior()
 

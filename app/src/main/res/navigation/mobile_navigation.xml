@@ -110,6 +110,9 @@
         <argument
             android:name="idVarians"
             app:argType="long" />
+        <action
+            android:id="@+id/action_cartFragment2_to_completingPurchasingFragment"
+            app:destination="@id/completingPurchasingFragment" />
     </fragment>
 
   <fragment
@@ -145,6 +148,10 @@
         <action
             android:id="@+id/action_addressListFragment_to_addressDetailsEditFragment"
             app:destination="@id/addressDetailsEditFragment" />
+        <argument
+            android:name="chooseAddress"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/addressDetailsEditFragment"
@@ -154,6 +161,21 @@
         <argument
             android:name="address"
             app:argType="com.mad43.stylista.domain.model.AddressItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/completingPurchasingFragment"
+        android:name="com.mad43.stylista.ui.cart.completingPurchase.CompletingPurchasingFragment"
+        android:label="fragment_completing_purchasing"
+        tools:layout="@layout/fragment_completing_purchasing" >
+        <argument
+            android:name="cartArray"
+            app:argType="com.mad43.stylista.domain.model.CartItem[]" />
+        <action
+            android:id="@+id/action_completingPurchasingFragment_to_addressDetailsEditFragment"
+            app:destination="@id/addressDetailsEditFragment" />
+        <action
+            android:id="@+id/action_completingPurchasingFragment_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
     </fragment>
 
 </navigation>

@@ -113,7 +113,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
                         availableSizesID.add(idVariants)
                         sizeIdPairs = availableSizesTitle.zip(availableSizesID)
                     }
-                    displayMenueAvaliableSize()
+                    displayMenuAvailableSize()
 
                     binding.imageViewFavourite.setOnClickListener {
 
@@ -150,7 +150,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
     private fun addToCart(variantId: Long?) {
         binding.buttonAddToCart.setOnClickListener {
             if(variantId!= null){
-                //idVarians
+                //idVariants
                 val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
                 binding.root.findNavController().navigate(action)
             }else{
@@ -158,7 +158,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
             }
         }
     }
-    private fun displayMenueAvaliableSize(){
+    private fun displayMenuAvailableSize(){
         val popupMenu = PopupMenu(requireContext(), binding.buttonAvailableSize)
         for (size in availableSizesTitle) {
             popupMenu.menu.add(size)

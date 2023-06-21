@@ -98,5 +98,14 @@
     <string name="cannot_delete_the_customer_s_default_address">You cannot delete your default address</string>
     <string name="are_you_sure_you_want_to_make_this_address_your_default_address">Are you sure you want to make this address as a default address</string>
     <string name="sorry_no_available_quantity">Sorry, no available quantity</string>
+    <string name="shipping_address">Shipping address</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="change"><u>Change</u></string>
+    <string name="no_address_associated_with_this_account">No address associated with this account</string>
+    <string name="coupon_is_expired">Coupon is Expired</string>
+    <string name="coupon_is_not_found">Coupon is not found</string>
+    <string name="discount_applied">Discount Applied</string>
+    <string name="can_t_apply_that_coupon_to_that_pilling">Can\'t apply that coupon to that pilling</string>
     /***Ahmed***/
 </resources>

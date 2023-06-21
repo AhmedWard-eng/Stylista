@@ -112,6 +112,13 @@ dependencies {
 
     /***Ahmed***/
     implementation "com.squareup.okhttp3:logging-interceptor:4.11.0"
+    implementation 'com.braintreepayments.api:google-pay:4.29.0'
+    // to offer card payments
+    implementation 'com.braintreepayments.api:card:4.29.0'
+
+    // to collect device data
+    implementation 'com.braintreepayments.api:data-collector:4.29.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
     /***Ahmed***/
 
 }

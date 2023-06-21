@@ -36,6 +36,9 @@ class AddressAdapter(private val clickListener: ClickListener) :
             append(", ")
             append(item.country)
         }
+
+        binding.textViewPhoneNumber.text = item.phone
+
         if(item.isDefault){
             binding.checkBoxIsDefault.isChecked = true
             binding.checkBoxIsDefault.isEnabled = false

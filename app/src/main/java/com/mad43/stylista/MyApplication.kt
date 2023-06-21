@@ -23,15 +23,6 @@ class MyApplication : Application() {
         super.onCreate()
         SharedPref.init(this)
         CurrencySharedPref.context = this
-//        val currency = GetCurrencyRateUseCase()
-//        val currencyManager = CurrencyManager()
-//        CoroutineScope(context).launch {
-//            val status = currency(currencyManager.getCurrencyPair().first)
-//            if(status is RemoteStatus.Success){
-//                currencyManager.setCurrency(Pair(status.data.second,status.data.first))
-//                Log.d("TAG", "onCreate: ${currencyManager.getCurrencyPair().second}")
-//            }
-//        }
     }
 
 

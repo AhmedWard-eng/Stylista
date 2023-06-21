@@ -69,7 +69,8 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         }
 
         binding.addressesView.setOnClickListener {
-            Log.d("TAG", "onViewCreated: addressesView")
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_navigation_profile_to_addressListFragment)
         }
 
         lifecycleScope.launch {
@@ -102,7 +103,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         }
     }
     private fun displayUserName(){
-        var userName = profileViewModel.getUserName()
+        val userName = profileViewModel.getUserName()
         binding.textViewHelloUserName.text = "Welcome, $userName"
     }
     private fun displayWishList(){
@@ -110,7 +111,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         binding.recyclerViewWishList.adapter = brandAdapter
         binding.recyclerViewWishList.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        var favID = profileViewModel.getIDForFavourite()
+        val favID = profileViewModel.getIDForFavourite()
         profileViewModel.getFavouriteUsingId(favID.toString())
 
         lifecycleScope.launch {
