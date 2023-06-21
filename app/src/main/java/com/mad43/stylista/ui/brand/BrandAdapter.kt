@@ -15,8 +15,7 @@ import com.mad43.stylista.util.setImageFromUrl
 
 
 class BrandAdapter(
-    private val context: Context,
-    private val onItemProductClicked: OnItemProductClicked,
+    private val onItemProductClicked: OnItemProductClicked
 ) : ListAdapter<DisplayProduct, BrandAdapter.ViewHolder>(DiffUtilsBrand()) {
 
     private lateinit var binding: ProductItemBinding

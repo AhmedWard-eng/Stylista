@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cardBrand"
+    android:id="@+id/cardProduct"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="15dp"
     app:cardElevation="8dp"
@@ -22,21 +22,23 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageBrand"
+            android:id="@+id/imageProduct"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:scaleType="fitXY"
+            android:layout_height="100dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toTopOf="@id/brandName"
+            app:layout_constraintBottom_toTopOf="@id/nameProduct"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/brandName"
+            android:id="@+id/nameProduct"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -46,9 +48,25 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/imageBrand"
-            app:layout_constraintStart_toStartOf="@+id/imageBrand"
-            app:layout_constraintTop_toBottomOf="@+id/imageBrand"
+            app:layout_constraintEnd_toEndOf="@+id/imageProduct"
+            app:layout_constraintStart_toStartOf="@+id/imageProduct"
+            app:layout_constraintTop_toBottomOf="@+id/imageProduct"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/priceProduct"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/imageProduct"
+            app:layout_constraintStart_toStartOf="@+id/imageProduct"
+            app:layout_constraintTop_toBottomOf="@+id/nameProduct"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

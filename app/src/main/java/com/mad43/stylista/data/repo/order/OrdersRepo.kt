@@ -15,15 +15,13 @@ class OrdersRepo(
 ) :
     OrdersRepoInterface {
 
-    private var email : String? = null
+    private var customerId : Long? = null
     override suspend fun getAllOrders(): Flow<List<Orders>> {
-        return flowOf(remoteOrdersDataSource.getAllOrders().orders?.filter {
-            preferencesData.getCustomerData().onSuccess {it ->
-                email = it.email
-            }
+        preferencesData.getCustomerData().onSuccess {
+            customerId = it.customerId
+        }
 
-            it.email == email
-        }) as Flow<List<Orders>>
+        return flowOf(remoteOrdersDataSource.getAllOrders(customerId ?: 0L).orders) as Flow<List<Orders>>
     }
 
     override suspend fun postOrder(postOrder: PostOrderResponse): Response<PostOrderResponse> {

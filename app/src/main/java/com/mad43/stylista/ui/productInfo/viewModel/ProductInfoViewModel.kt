@@ -41,6 +41,15 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
     lateinit var lineItem1 :  InsertingLineItem
     lateinit var favID : String
 
+
+    var availableSizesTitle = mutableSetOf<String>()
+    var availableSizesID = mutableSetOf<Long>()
+    lateinit var sizeIdPairs: List<Pair<String, Long>>
+    var selectedSize : String = ""
+    var idVariansSelect: Long? = null
+
+    private val _userExists = MutableStateFlow(false)
+    val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
     fun getProductDetails(id: Long){
         viewModelScope.launch (Dispatchers.IO){
             productInfo.getProductDetails(id).catch {   e->_uiState.value=ApiState.Failure(e) }
@@ -116,16 +125,21 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
     fun getIDForFavourite(): Long {
         val customerData = favourite.getIDFavouriteForCustumer()
 
-        return if (customerData.isSuccess) {
-            val localCustomer = customerData.getOrNull()
-            val favouriteId = localCustomer?.favouriteID
-            if (favouriteId != null) {
-                favouriteId.toLong()
+        return try {
+            if (customerData.isSuccess) {
+                val localCustomer = customerData.getOrNull()
+                val favouriteId = localCustomer?.favouriteID
+                if (favouriteId != null) {
+                    favouriteId.toLong()
+                } else {
+                    throw Exception("Favourite ID not found")
+                }
             } else {
-                throw Exception("Favourite ID not found")
+                throw Exception("Customer data not found")
             }
-        } else {
-            throw Exception("Customer data not found")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in getIDForFavourite(): ${e.message}")
+            -1L
         }
     }
 
@@ -182,15 +196,16 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
                 item
             )
         }
-        Log.d(TAG, "newList: ${newList?.size},,${newList?.get(0)?.title}")
         requestBody = newList?.let { it1 ->
             DraftOrderPuttingRequestBody(
                 line_items = it1
             )
         }!!
-        Log.d(TAG, "onClick: ${newList.size}")
         insertFavouriteForCustumer(favID.toLong(), DraftOrderPutBody(requestBody))
     }
 
-
+    fun checkUserIsLogin(){
+        val customerData = favourite.getIDFavouriteForCustumer()
+        _userExists.value = customerData.isSuccess
+    }
 }

@@ -23,36 +23,42 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
+
 class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), val favourite : FavouriteLocal, private val currencyManager: CurrencyManager = CurrencyManager(),
                         private val ordersRepo: OrdersRepo = OrdersRepo(),) : ViewModel() {
 
     private var _loginState: MutableStateFlow<RemoteStatus<LoginResponse>> = MutableStateFlow(
-        RemoteStatus.Loading)
+        RemoteStatus.Loading
+    )
     var loginState: StateFlow<RemoteStatus<LoginResponse>> = _loginState
 
-    private val _uiStateNetwork = MutableStateFlow<RemoteStatus<CustomDraftOrderResponse>>(RemoteStatus.Loading)
+    private val _uiStateNetwork =
+        MutableStateFlow<RemoteStatus<CustomDraftOrderResponse>>(RemoteStatus.Loading)
     val uiStateNetwork: StateFlow<RemoteStatus<CustomDraftOrderResponse>> = _uiStateNetwork
 
     private val _favourite = MutableStateFlow<RemoteStatus<List<Favourite>>>(RemoteStatus.Loading)
     val favouriteList = _favourite.asStateFlow()
+
+    private val _userExists = MutableStateFlow(false)
+    val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
 
 
     var orders = MutableStateFlow<RemoteStatus<List<Orders>>>(RemoteStatus.Loading)
 
     init {
         getOrders()
-        postOrder()
     }
 
     fun getUserName():String{
         var userData = authUseCase.getCustomerData()
         var userName = userData.getOrNull()?.userName
-        if (userName == null){
+        if (userName == null) {
             return "guest"
-        }else{
+        } else {
             return userName.toString()
         }
     }
+
 
     fun getCurrencyCode(): String {
         return currencyManager.getCurrencyPair().first
@@ -61,18 +67,17 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
     fun getLocalFavourite(){
         viewModelScope.launch (Dispatchers.IO){
             favourite.getStoredProduct()
-                .catch {
-                        e->_favourite.value=RemoteStatus.Failure(e)
+                .catch { e ->
+                    _favourite.value = RemoteStatus.Failure(e)
                     Log.i(ContentValues.TAG, "getLocalFavourite: FailureFailureFailureFailure")
                 }
-                .collect{
-                        data ->
-                    _favourite.value=RemoteStatus.Success(data)
+                .collect { data ->
+                    _favourite.value = RemoteStatus.Success(data)
                 }
         }
     }
 
-    fun logout(){
+    fun logout() {
         viewModelScope.launch {
             authUseCase.logout()
             deleteAllFavouriteFromDB()
@@ -86,18 +91,24 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
     fun getIDForFavourite(): Long {
         val customerData = favourite.getIDFavouriteForCustumer()
 
-        return if (customerData.isSuccess) {
-            val localCustomer = customerData.getOrNull()
-            val favouriteId = localCustomer?.favouriteID
-            if (favouriteId != null) {
-                favouriteId.toLong()
+        return try {
+            if (customerData.isSuccess) {
+                val localCustomer = customerData.getOrNull()
+                val favouriteId = localCustomer?.favouriteID
+                if (favouriteId != null) {
+                    favouriteId.toLong()
+                } else {
+                    throw Exception("Favourite ID not found")
+                }
             } else {
-                throw Exception("Favourite ID not found")
+                throw Exception("Customer data not found")
             }
-        } else {
-            throw Exception("Customer data not found")
+        } catch (e: Exception) {
+            Log.e(ContentValues.TAG, "Error in getIDForFavourite(): ${e.message}")
+            -1L
         }
     }
+
 
     private fun getOrders() {
         viewModelScope.launch {
@@ -149,6 +160,10 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
                 _uiStateNetwork.value = RemoteStatus.Failure(e)
             }
         }
+    }
+    fun checkUserIsLogin(){
+        val customerData = favourite.getIDFavouriteForCustumer()
+        _userExists.value = customerData.isSuccess
     }
 
 }

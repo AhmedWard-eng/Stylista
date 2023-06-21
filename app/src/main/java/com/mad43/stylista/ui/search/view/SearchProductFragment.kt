@@ -53,19 +53,21 @@ class SearchProductFragment : Fragment() , OnItemProductClicked {
         val toolbar = activity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.materialToolbar)
         activity.setSupportActionBar(toolbar)
 
-        brandAdapter = BrandAdapter(requireContext(),this@SearchProductFragment)
+        brandAdapter = BrandAdapter(this@SearchProductFragment)
         binding.searchByNameRecyclerView.adapter = brandAdapter
         binding.searchByNameRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         var searchView = toolbar.findViewById<android.widget.EditText>(R.id.searchView)
         searchView.hint = getString(R.string.search_product)
+        searchViewModel.getAllProduct()
+        brandAdapter.submitList(searchViewModel.allPrpduct)
         searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 searchViewModel.getAllProduct()
                     brandAdapter.submitList(searchViewModel.allPrpduct)
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val searchTextContent = searchView.text.toString()
+                val searchTextContent = s.toString()
                 val filteredProducts = searchViewModel.searchAllProduct(searchTextContent)
                 brandAdapter.submitList(filteredProducts)
             }

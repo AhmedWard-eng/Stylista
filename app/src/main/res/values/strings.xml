@@ -20,6 +20,13 @@
     <string name="brand_Products">Brand’s Products</string>
     <string name="product_Details">Product’s Details</string>
     <string name="search">Search</string>
+    <string name="createdAt">Created at:</string>
+    <string name="orderNumber">Order number:</string>
+    <string name="productsOrder">Products</string>
+    <string name="priceOrder">Price:</string>
+    <string name="title">Title:</string>
+    <string name="more">show more</string>
+    <string name="orders">Orders</string>
 
     /***Fatma***/
 
@@ -51,7 +58,7 @@
     <string name="check_login">Please Login First</string>
     <string name="skip">Skip</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="reviews">Reviews</string>
+    <string name="reviews">View reviews</string>
     <string name="add_to_cart">Add to cart</string>
     <string name="description">"Description "</string>
     <string name="more_than">more..</string>
@@ -67,9 +74,16 @@
     <string name="remove_favourite">remove this product to favorites</string>
     <string name="is_add_favourite">Are you sure you want to add this product to favorites?</string>
     <string name="is_remove_favourite">Are you sure you want to remove this product from favorites?</string>
-    <string name="select_size">Please, select your size in Avaliable Size Menu.</string>
+    <string name="select_size">Please, choose your size from Avaliable Size Menu.</string>
     <string name="my_favourite">My Favourite</string>
     <string name="wish_list">Wish list</string>
+    <string name="favourite_fail">please, login first.</string>
+    <string name="choose_size">Choose Size</string>
+    <string name="added_to_cart_confirm">Are you sure to add size: </string>
+    <string name="addedd_countinue_cart"> to the cart?</string>
+    <string name="yes"> Yes</string>
+    <string name="cancel"> Cancel</string>
+    <string name="welcome">Welcome! Nice to meet</string>
     /***Marina***/
 
     /***Ahmed***/

@@ -164,15 +164,19 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
                         binding.shimmerFrameLayout.visibility = View.GONE
                         binding.shimmerFrameLayout.stopShimmerAnimation()
                         if (!categoryViewModel.filterMainCategory) {
-                            categoryViewModel.allData = it.data
-                            categoryViewModel.filterMainCategory = true
-                            categoryViewModel.filterByMainCategory("SHOES")
-                            categoryViewModel.filterSubCategory = true
-                            subCategory = "kid"
-                            categoryViewModel.filterBySubCategory(subCategory)
+                            if (it.data.isNotEmpty()) {
+                                categoryViewModel.allData = it.data
+                                categoryViewModel.filterMainCategory = true
+                                categoryViewModel.filterByMainCategory("SHOES")
+                                categoryViewModel.filterSubCategory = true
+                                subCategory = "kid"
+                                categoryViewModel.filterBySubCategory(subCategory)
+                            }else{
+                                categoryViewModel.getProducts()
+                            }
                         }
 
-                        categoryAdapter = CategoryAdapter(requireContext(), this@CategoryFragment)
+                        categoryAdapter = CategoryAdapter(this@CategoryFragment)
                         binding.recyclerView.apply {
                             adapter = categoryAdapter
                             categoryAdapter.submitList(it.data)

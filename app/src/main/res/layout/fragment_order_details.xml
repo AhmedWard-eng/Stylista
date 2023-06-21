@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.oder.details.OrderDetailsFragment">
+
+    <TextView
+        android:id="@+id/orderNumberLabelDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="20sp"
+        android:text="@string/orderNumber"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/orderNumberValueDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/orderNumberLabelDetails"
+        app:layout_constraintBottom_toBottomOf="@id/orderNumberLabelDetails"
+        app:layout_constraintTop_toTopOf="@id/orderNumberLabelDetails"
+        android:layout_marginStart="20dp"
+        android:textSize="15sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/priceLabelDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orderNumberLabelDetails"
+        android:textSize="20sp"
+        android:text="@string/priceOrder"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/priceValueDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@id/priceLabelDetails"
+        app:layout_constraintBottom_toBottomOf="@id/priceLabelDetails"
+        app:layout_constraintStart_toEndOf="@id/priceLabelDetails" />
+
+    <TextView
+        android:id="@+id/createdLabelDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/priceLabelDetails"
+        android:textSize="20sp"
+        android:text="@string/createdAt"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/createdValueDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@id/createdLabelDetails"
+        app:layout_constraintBottom_toBottomOf="@id/createdLabelDetails"
+        app:layout_constraintStart_toEndOf="@id/createdLabelDetails" />
+
+    <TextView
+        android:id="@+id/products"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/createdLabelDetails"
+        android:textSize="20sp"
+        android:text="@string/productsOrder"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detailsOrdersProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/products"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
