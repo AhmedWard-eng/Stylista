@@ -8,16 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mad43.stylista.R
-import com.mad43.stylista.data.remote.entity.orders.Orders
 import com.mad43.stylista.databinding.FragmentOrderDetailsBinding
-import com.mad43.stylista.databinding.FragmentOrdersBinding
-import com.mad43.stylista.ui.brand.BrandAdapter
-import com.mad43.stylista.ui.orders.OrdersFragmentDirections
-import com.mad43.stylista.ui.orders.OrdersViewModel
 import com.mad43.stylista.util.setPrice
 
 class OrderDetailsFragment : Fragment(), OnItemProductOrderClicked {
