@@ -41,10 +41,9 @@
             android:id="@+id/action_navigation_profile_to_currencyFragment"
             app:destination="@id/currencyFragment" />
         <action
-
             android:id="@+id/action_navigation_profile_to_addressListFragment"
             app:destination="@id/addressListFragment" />
-
+        <action
             android:id="@+id/action_navigation_profile_to_orderDetailsFragment2"
             app:destination="@id/orderDetailsFragment2" />
     </fragment>
@@ -167,6 +166,7 @@
             android:name="address"
             app:argType="com.mad43.stylista.domain.model.AddressItem" />
     </fragment>
+
     <fragment
         android:id="@+id/completingPurchasingFragment"
         android:name="com.mad43.stylista.ui.cart.completingPurchase.CompletingPurchasingFragment"
@@ -181,7 +181,9 @@
         <action
             android:id="@+id/action_completingPurchasingFragment_to_addressListFragment"
             app:destination="@id/addressListFragment" />
+    </fragment>
 
+    <fragment
         android:id="@+id/ordersFragment"
         android:name="com.mad43.stylista.ui.orders.OrdersFragment"
         android:label="fragment_orders"
