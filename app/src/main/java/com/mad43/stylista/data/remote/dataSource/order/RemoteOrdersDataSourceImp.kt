@@ -8,8 +8,8 @@ import retrofit2.Response
 
 class RemoteOrdersDataSourceImp(private val ordersAPIInterface: OrdersAPIInterface = ApiService.ordersAPIService) :
     RemoteOrdersDataSource {
-    override suspend fun getAllOrders(): ResponseOrders {
-        return ordersAPIInterface.getAllOrders()
+    override suspend fun getAllOrders(id : Long): ResponseOrders {
+        return ordersAPIInterface.getAllOrders(customerId = id.toString())
     }
 
     override suspend fun postOrder(postOrder : PostOrderResponse): Response<PostOrderResponse> {

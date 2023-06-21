@@ -171,7 +171,7 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                         if (!brandViewModel.filter) {
                             brandViewModel.allData = it.data
                         }
-                        brandAdapter = BrandAdapter(requireContext(), this@BrandFragment)
+                        brandAdapter = BrandAdapter(this@BrandFragment)
                         binding.recyclerView.apply {
                             adapter = brandAdapter
                             brandAdapter.submitList(it.data)

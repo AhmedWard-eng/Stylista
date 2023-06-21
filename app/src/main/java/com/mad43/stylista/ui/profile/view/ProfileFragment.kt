@@ -60,6 +60,11 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         val localSource = ConcreteLocalSource(context)
         val favouriteLocalRepo = FavouriteLocalRepoImp(localSource)
 
+        binding.textViewHelloUserName.setOnClickListener {
+            Navigation.findNavController(requireView())
+                .navigate(R.id.ordersFragment)
+        }
+
         val AuthRepo = AuthRepositoryImp()
         favFactory = ProfileFactoryViewModel(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
         profileViewModel = ViewModelProvider(this, favFactory).get(ProfileViewModel::class.java)
@@ -68,7 +73,6 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         displayLogout()
         displayWishList()
         displayAllFavourite()
-
 
     }
     private fun displayLogout(){

@@ -1,5 +1,6 @@
 package com.mad43.stylista.ui.orders
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mad43.stylista.data.remote.entity.orders.Orders
@@ -22,13 +23,19 @@ class OrdersViewModel(
 
     private fun getOrders() {
         viewModelScope.launch {
+            Log.i("DDDDDD","Enterrrrrrrr")
             try {
+                Log.i("DDDDDD","Enter")
                 ordersRepo.getAllOrders().catch { e ->
+                    Log.i("DDDDDD","EnterF")
                     orders.value = RemoteStatus.Failure(e)
                 }.collect { data ->
+                    Log.i("DDDDDD","EnterS")
                     orders.value = RemoteStatus.Success(data)
                 }
             } catch (e: Exception) {
+                Log.i("DDDDDD","EnterFF")
+                Log.i("DDDDDD",e.message.toString())
                 orders.value = RemoteStatus.Failure(e)
             }
 

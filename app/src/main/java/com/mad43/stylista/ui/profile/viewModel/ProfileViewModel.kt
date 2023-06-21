@@ -18,43 +18,48 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val favourite : FavouriteLocal,private val currencyManager: CurrencyManager = CurrencyManager()) : ViewModel() {
+class ProfileViewModel(
+    private val authUseCase: AuthUseCase = AuthUseCase(),
+    val favourite: FavouriteLocal,
+    private val currencyManager: CurrencyManager = CurrencyManager(),
+) : ViewModel() {
 
     private var _loginState: MutableStateFlow<RemoteStatus<LoginResponse>> = MutableStateFlow(
-        RemoteStatus.Loading)
+        RemoteStatus.Loading
+    )
     var loginState: StateFlow<RemoteStatus<LoginResponse>> = _loginState
 
-    private val _uiStateNetwork = MutableStateFlow<RemoteStatus<CustomDraftOrderResponse>>(RemoteStatus.Loading)
+    private val _uiStateNetwork =
+        MutableStateFlow<RemoteStatus<CustomDraftOrderResponse>>(RemoteStatus.Loading)
     val uiStateNetwork: StateFlow<RemoteStatus<CustomDraftOrderResponse>> = _uiStateNetwork
 
     private val _favourite = MutableStateFlow<RemoteStatus<List<Favourite>>>(RemoteStatus.Loading)
     val favouriteList = _favourite.asStateFlow()
 
-    fun getUserName():String{
+    fun getUserName(): String {
         var userData = authUseCase.getCustomerData()
         var userName = userData.getOrNull()?.userName
-        if (userName == null){
+        if (userName == null) {
             return "guest"
-        }else{
+        } else {
             return userName.toString()
         }
     }
 
-    fun getLocalFavourite(){
-        viewModelScope.launch (Dispatchers.IO){
+    fun getLocalFavourite() {
+        viewModelScope.launch(Dispatchers.IO) {
             favourite.getStoredProduct()
-                .catch {
-                        e->_favourite.value=RemoteStatus.Failure(e)
+                .catch { e ->
+                    _favourite.value = RemoteStatus.Failure(e)
                     Log.i(ContentValues.TAG, "getLocalFavourite: FailureFailureFailureFailure")
                 }
-                .collect{
-                        data ->
-                    _favourite.value=RemoteStatus.Success(data)
+                .collect { data ->
+                    _favourite.value = RemoteStatus.Success(data)
                 }
         }
     }
 
-    fun logout(){
+    fun logout() {
         viewModelScope.launch {
             authUseCase.logout()
             deleteAllFavouriteFromDB()
@@ -81,7 +86,7 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),va
         }
     }
 
-    fun getFavouriteUsingId(idFavourite : String){
+    fun getFavouriteUsingId(idFavourite: String) {
         viewModelScope.launch {
             try {
                 val customDraftOrderResponse = favourite.getFavouriteUsingId(idFavourite)
