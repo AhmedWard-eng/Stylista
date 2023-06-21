@@ -172,7 +172,7 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
                             categoryViewModel.filterBySubCategory(subCategory)
                         }
 
-                        categoryAdapter = CategoryAdapter(requireContext(), this@CategoryFragment)
+                        categoryAdapter = CategoryAdapter(this@CategoryFragment)
                         binding.recyclerView.apply {
                             adapter = categoryAdapter
                             categoryAdapter.submitList(it.data)

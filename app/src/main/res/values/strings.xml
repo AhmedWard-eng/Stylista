@@ -20,6 +20,11 @@
     <string name="brand_Products">Brand’s Products</string>
     <string name="product_Details">Product’s Details</string>
     <string name="search">Search</string>
+    <string name="createdAt">Created at:</string>
+    <string name="orderNumber">Order number:</string>
+    <string name="productsOrder">Products</string>
+    <string name="priceOrder">Price:</string>
+    <string name="title">Title:</string>
 
     /***Fatma***/
 

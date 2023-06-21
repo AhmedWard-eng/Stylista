@@ -16,7 +16,6 @@ import com.mad43.stylista.util.setImageFromUrl
 
 
 class CategoryAdapter(
-    private val context: Context,
     private val onItemProductClicked: OnItemProductClicked,
 ) : ListAdapter<DisplayProduct, CategoryAdapter.ViewHolder>(DiffUtilsBrand()) {
 
@@ -30,7 +29,7 @@ class CategoryAdapter(
         binding = ProductItemBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
- 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.imageProduct.setImageFromUrl(getItem(position).image)

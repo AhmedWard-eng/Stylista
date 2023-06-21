@@ -53,7 +53,7 @@ class SearchProductFragment : Fragment() , OnItemProductClicked {
         val toolbar = activity.findViewById<androidx.appcompat.widget.Toolbar>(R.id.materialToolbar)
         activity.setSupportActionBar(toolbar)
 
-        brandAdapter = BrandAdapter(requireContext(),this@SearchProductFragment)
+        brandAdapter = BrandAdapter(this@SearchProductFragment)
         binding.searchByNameRecyclerView.adapter = brandAdapter
         binding.searchByNameRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 

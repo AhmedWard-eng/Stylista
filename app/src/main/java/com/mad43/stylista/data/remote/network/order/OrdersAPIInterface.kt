@@ -8,11 +8,18 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface OrdersAPIInterface {
-    @GET("orders.json")
-    suspend fun getAllOrders(@Header("X-Shopify-Access-Token") passwordToken: String = Constants.PASSWORD): ResponseOrders
+    @GET("customers/{customerId}/orders.json")
+    suspend fun getAllOrders(
+        @Header("X-Shopify-Access-Token") passwordToken: String = Constants.PASSWORD,
+        @Path("customerId") customerId: String
+    ): ResponseOrders
 
     @POST("orders.json")
-    suspend fun postOrder(@Body order: PostOrderResponse , @Header("X-Shopify-Access-Token") passwordToken: String = Constants.PASSWORD) : Response<PostOrderResponse>
+    suspend fun postOrder(
+        @Body order: PostOrderResponse,
+        @Header("X-Shopify-Access-Token") passwordToken: String = Constants.PASSWORD,
+    ): Response<PostOrderResponse>
 }

@@ -48,6 +48,13 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         val localSource = ConcreteLocalSource(context)
         val favouriteLocalRepo = FavouriteLocalRepoImp(localSource)
 
+
+        binding.textViewHelloUserName.setOnClickListener {
+            Navigation.findNavController(requireView())
+                .navigate(R.id.ordersFragment)
+        }
+
+
         val authRepo = AuthRepositoryImp()
         favFactory = ProfileFactoryViewModel(AuthUseCase(authRepo), FavouriteLocal(favouriteLocalRepo))
         profileViewModel = ViewModelProvider(this, favFactory)[ProfileViewModel::class.java]
@@ -55,12 +62,14 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayUserName()
         displayLogout()
         displayWishList()
         displayAllFavourite()
+
 
         binding.textViewCurrencyCode.text = profileViewModel.getCurrencyCode()
         binding.currencyView.setOnClickListener {
@@ -92,6 +101,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                 }
             }
         }
+
 
     }
     private fun displayLogout(){
