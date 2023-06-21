@@ -62,6 +62,7 @@ class LogInFragment : Fragment() {
         val AuthRepo = AuthRepositoryImp()
         favFactory = LoginViewModelFactory(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
         signInViewModel = ViewModelProvider(this, favFactory).get(LoginViewModel::class.java)
+        binding?.progressBarSignIn?.visibility = View.GONE
 
         signInViewModel.signInStateLiveData.observe(viewLifecycleOwner){
             val navController = Navigation.findNavController(view)
@@ -86,7 +87,7 @@ class LogInFragment : Fragment() {
 
                     }
                     else -> {
-                        // Handle other states as needed
+                        binding?.progressBarSignIn?.visibility = View.GONE
                     }
                 }
             }
