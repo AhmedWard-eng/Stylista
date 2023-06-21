@@ -11,26 +11,26 @@
         tools:context=".ui.profile.view.ProfileFragment">
 
 
+        <!--        <TextView-->
+<!--            android:id="@+id/buttonLogOut"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:background="@color/white"-->
+<!--            android:text="@string/logout"-->
+<!--            android:textColor="@color/secondary_color"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline11"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
         <TextView
             android:id="@+id/textViewHelloUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="28dp"
             android:textColor="#5E5B5B"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLogOut" />
-
-        <TextView
-            android:id="@+id/buttonLogOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            android:text="@string/logout"
-            android:textColor="@color/secondary_color"
-            app:layout_constraintEnd_toStartOf="@+id/guideline11"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -166,15 +166,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <View
-        android:id="@+id/addressesView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/separator3"
-        app:layout_constraintEnd_toEndOf="@+id/separator1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator2" />
+        <View
+            android:id="@+id/addressesView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/separator3"
+            app:layout_constraintEnd_toEndOf="@+id/separator1"
+            app:layout_constraintStart_toStartOf="@+id/guideline10"
+            app:layout_constraintTop_toBottomOf="@+id/separator2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonLogOut"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/buton_style_details"
+            android:text="@string/logout"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline12"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline13"
+            app:layout_constraintTop_toBottomOf="@+id/addressesView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="88dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="79dp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -103,9 +103,15 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     private fun displayLogout(){
         binding.buttonLogOut.setOnClickListener {
             if (NetwarkInternet().isNetworkAvailable(requireContext())){
-                profileViewModel.logout()
-                Navigation.findNavController(requireView())
-                    .navigate(R.id.action_navigation_profile_to_logInFragment)
+                if (binding.buttonLogOut.text == getString(R.string.logout)){
+                    profileViewModel.logout()
+                    Navigation.findNavController(requireView())
+                        .navigate(R.id.action_navigation_profile_to_logInFragment)
+                }
+                if (binding.buttonLogOut.text == getString(R.string.sign_in)){
+                    Navigation.findNavController(requireView())
+                        .navigate(R.id.action_navigation_profile_to_logInFragment)
+                }
             }else{
                 NetwarkInternet().displayNetworkDialog(requireContext())
                 Log.d(TAG, "check network: ")
@@ -115,7 +121,8 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
     }
     private fun displayUserName(){
         var userName = profileViewModel.getUserName()
-        binding.textViewHelloUserName.text = "Welcome! Nice to meet , $userName"
+        var message = getString(R.string.welcome)
+        binding.textViewHelloUserName.text = "${message} , $userName"
     }
 
     private fun displayWishList(){
@@ -210,7 +217,8 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
             profileViewModel.userExists.collect { userExists ->
                 if (userExists) {
                     isLogin = true
-                    binding.buttonLogOut.visibility = View.VISIBLE
+                //    binding.buttonLogOut.visibility = View.VISIBLE
+                    binding.buttonLogOut.text = getString(R.string.logout)
                     binding.textViewMoreWishList.visibility = View.VISIBLE
                     binding.recyclerViewWishList.visibility = View.VISIBLE
                     binding.textViewWishList.visibility = View.VISIBLE
@@ -219,7 +227,8 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                     binding.textView3.visibility = View.VISIBLE
                 } else {
                     isLogin = false
-                    binding.buttonLogOut.visibility = View.GONE
+                    //binding.buttonLogOut.visibility = View.GONE
+                    binding.buttonLogOut.text = getString(R.string.sign_in)
                     binding.textViewMoreWishList.visibility = View.GONE
                     binding.recyclerViewWishList.visibility = View.GONE
                     binding.textViewWishList.visibility = View.GONE
