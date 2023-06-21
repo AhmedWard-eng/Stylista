@@ -1,10 +1,13 @@
 package com.mad43.stylista.domain.model
 
+import android.os.Parcelable
 import com.mad43.stylista.data.remote.entity.draftOrders.LineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.Property
 import com.mad43.stylista.data.remote.entity.draftOrders.TaxLine
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CartItem(
     val id: Long,
     val name: String,
@@ -19,7 +22,7 @@ data class CartItem(
     val variant_id: Long,
     val sku: String,
     val variant_title: String,
-)
+) : Parcelable
 
 fun List<CartItem>.toInsertingLineItemList(): List<InsertingLineItem> {
     return map { cartItem ->

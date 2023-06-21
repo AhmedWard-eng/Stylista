@@ -203,6 +203,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+
+    <View
+        android:id="@+id/addressesView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/separator3"
+        app:layout_constraintEnd_toEndOf="@+id/currencyView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:id="@+id/addressesView"
             android:layout_width="0dp"
@@ -245,3 +258,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
+

@@ -12,12 +12,13 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentCartBinding
+import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.showConfirmationDialog
@@ -51,6 +52,15 @@ class CartFragment : Fragment() {
         adapter = CartAdapter(CartAdapter.ClickListener(::setQuantity, ::delete))
         binding.recyclerView.adapter = adapter
 
+        binding.buttonCheckout.setOnClickListener {
+            if (viewModel.list.isEmpty()){
+                MyDialog().showAlertDialog("No item in cart",requireContext())
+            }else{
+                val action = CartFragmentDirections.actionCartFragment2ToCompletingPurchasingFragment(viewModel.list.toTypedArray())
+                Navigation.findNavController(requireView()).navigate(action)
+            }
+        }
+
         handleScrollingBehavior()
 
         lifecycleScope.launch {
@@ -79,6 +89,9 @@ class CartFragment : Fragment() {
                             viewModel.deleteCommand.value = Action.Nothing
                             viewModel.editCommand.value = Action.Nothing
                             Log.e("TAG", "onViewCreated: ", it.msg)
+                            if(it.msg is CantUpdateException){
+                                MyDialog().showAlertDialog(getString(R.string.sorry_no_available_quantity),requireContext())
+                            }
                         }
 
                         else -> {
@@ -121,9 +134,9 @@ class CartFragment : Fragment() {
     }
 
 
-    private fun setQuantity(variantId: Long, quantity: Int) {
+    private fun setQuantity(variantId: Long, quantity: Int,isIncreasing:Boolean) {
         lifecycleScope.launch {
-            viewModel.editCommand.emit(Action.Edit(variantId, quantity, adapter.currentList))
+            viewModel.editCommand.emit(Action.Edit(variantId, quantity, adapter.currentList,isIncreasing))
             binding.progressBar2.visibility = VISIBLE
             binding.blockingView.visibility = VISIBLE
         }

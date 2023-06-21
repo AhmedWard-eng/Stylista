@@ -47,8 +47,7 @@ class EditCartItemUseCase (private val cartRepo: CartRepo = CartRepoImp()) {
         Log.d("TAG", "updateQuantityOfItem: $putLineItems")
         val theUpdatingProduct = putLineItems.find {it.variant_id == variantId }
         if (theUpdatingProduct != null) {
-            putLineItems.remove(theUpdatingProduct)
-            putLineItems.add(theUpdatingProduct.copy(quantity = quantity))
+            putLineItems[putLineItems.indexOf(theUpdatingProduct)] = theUpdatingProduct.copy(quantity = quantity)
             putLineItems.add(InsertingLineItem(properties = listOf(),variant_id = null,quantity = 1))
         }
         return putLineItems.toList()

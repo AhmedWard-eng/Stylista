@@ -50,7 +50,7 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -120,8 +120,10 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
                         productInfo.sizeIdPairs = productInfo.availableSizesTitle.zip(productInfo.availableSizesID)
                         Log.d(TAG, "displayInfo: ${productInfo.sizeIdPairs.size},,${productInfo.sizeIdPairs.get(0).first},,${productInfo.sizeIdPairs.get(0).second}")
                     }
+
                     displayMenueAvaliableSize()
                         binding.imageViewFavourite.setOnClickListener {
+
 
                             var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
 
@@ -161,6 +163,7 @@ if(isLogin){
 
     private fun addToCart(variantId: Long?, nameItem : String) {
         binding.buttonAddToCart.setOnClickListener {
+
             if (isLogin){
                 if(variantId!= null){
                     //idVarians
@@ -174,7 +177,7 @@ if(isLogin){
 
         }
     }
-    private fun displayMenueAvaliableSize(){
+    private fun displayMenuAvailableSize(){
         val popupMenu = PopupMenu(requireContext(), binding.buttonAvailableSize)
         binding.buttonAvailableSize.text = getString(R.string.choose_size)
         binding.buttonAvailableSize.setOnClickListener(View.OnClickListener {

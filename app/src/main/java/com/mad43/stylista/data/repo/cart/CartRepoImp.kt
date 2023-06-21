@@ -9,6 +9,7 @@ import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.posti
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.postingrequestBody.DraftOrderRequestBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
+import com.mad43.stylista.data.remote.entity.product.Product
 import com.mad43.stylista.data.repo.DraftOrderType
 import com.mad43.stylista.util.RemoteStatus
 
@@ -85,8 +86,9 @@ class CartRepoImp(private val remoteDraftOrdersDataSource: RemoteDraftOrdersData
         }
     }
 
-
-
+    override suspend fun getAllProduct(): List<Product> {
+        return remoteDraftOrdersDataSource.getAllProduct()
+    }
 
 
 }

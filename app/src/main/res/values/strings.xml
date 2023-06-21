@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Stylista</string>
     <string name="title_home">Home</string>
 
@@ -87,13 +87,39 @@
     /***Marina***/
 
     /***Ahmed***/
+    <string name="please_fill_all_data">Please fill all data.</string>
     <string name="checkout">Checkout</string>
     <string name="subtotal">Subtotal</string>
     <string name="delivery">Delivery</string>
     <string name="currency">Currency</string>
     <string name="addresses">Addresses</string>
-
+    <string name="default_word">Default</string>
     <string name="changeCurrencyAssurance">Are you sure you want to choose %1$s as a main currency</string>
     <string name="are_you_sure_you_want_to_delete_this_item_from_the_cart">are you sure you want to delete this item from the cart</string>
+    <string name="address_2">address 2</string>
+    <string name="address_1">address 1</string>
+    <string name="city">city</string>
+    <string name="province">province</string>
+    <string name="phone">phone</string>
+    <string name="country">country</string>
+    <string name="save">save</string>
+    <string name="set_as_default_address">set as default address</string>
+    <string name="address">Address</string>
+    <string name="no_addresses_yet">No addresses yet</string>
+    <string name="add_new_address">Add new address</string>
+    <string name="are_you_sure_you_want_to_delete_this_address">are you sure you want to delete this address</string>
+    <string name="something_went_wrong">Something Went Wrong</string>
+    <string name="cannot_delete_the_customer_s_default_address">You cannot delete your default address</string>
+    <string name="are_you_sure_you_want_to_make_this_address_your_default_address">Are you sure you want to make this address as a default address</string>
+    <string name="sorry_no_available_quantity">Sorry, no available quantity</string>
+    <string name="shipping_address">Shipping address</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="change"><u>Change</u></string>
+    <string name="no_address_associated_with_this_account">No address associated with this account</string>
+    <string name="coupon_is_expired">Coupon is Expired</string>
+    <string name="coupon_is_not_found">Coupon is not found</string>
+    <string name="discount_applied">Discount Applied</string>
+    <string name="can_t_apply_that_coupon_to_that_pilling">Can\'t apply that coupon to that pilling</string>
     /***Ahmed***/
 </resources>

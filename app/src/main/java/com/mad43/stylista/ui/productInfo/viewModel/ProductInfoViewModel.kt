@@ -3,20 +3,15 @@ package com.mad43.stylista.ui.productInfo.viewModel
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.util.Property
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.denzcoskun.imageslider.models.SlideModel
 import com.mad43.stylista.data.local.entity.Favourite
-import com.mad43.stylista.data.remote.entity.draftOrders.LineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.InsertingLineItem
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPutBody
 import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.puttingrequestBody.DraftOrderPuttingRequestBody
-import com.mad43.stylista.data.remote.entity.draftOrders.postingAndPutting.response.DraftOrderResponse
-import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
-import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
 import com.mad43.stylista.domain.remote.productDetails.ProductInfo
 import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.util.RemoteStatus
@@ -69,6 +64,10 @@ class ProductInfoViewModel (private val productInfo: ProductInfo = ProductInfo()
                 }
         }
     }
+
+//    fun insertItemInCart(){
+//        putItemInCartUseCase(PuttingCartItem())
+//    }
 
     fun insertProduct(product: Favourite){
         viewModelScope.launch (Dispatchers.IO){

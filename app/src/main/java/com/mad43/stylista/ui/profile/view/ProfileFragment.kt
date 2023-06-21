@@ -87,7 +87,8 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         }
 
         binding.addressesView.setOnClickListener {
-            Log.d("TAG", "onViewCreated: addressesView")
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_navigation_profile_to_addressListFragment)
         }
 
         lifecycleScope.launch {
@@ -149,9 +150,11 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         }
     }
     private fun displayUserName(){
+
         var userName = profileViewModel.getUserName()
         var message = getString(R.string.welcome)
         binding.textViewHelloUserName.text = "${message} , $userName"
+
     }
 
     private fun displayWishList(){
@@ -160,6 +163,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         binding.recyclerViewWishList.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewWishList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
+
         if (NetwarkInternet().isNetworkAvailable(requireContext())){
             var favID = profileViewModel.getIDForFavourite()
             profileViewModel.getFavouriteUsingId(favID.toString())
@@ -167,6 +171,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
             profileViewModel.getLocalFavourite()
         }
         lifecycleScope.launch {
+
 
             profileViewModel.favouriteList.collectLatest { uiState ->when (uiState) {
                 is RemoteStatus.Success -> {

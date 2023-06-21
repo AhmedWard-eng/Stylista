@@ -1,6 +1,8 @@
 package com.mad43.stylista.data.remote.network
 
+import com.mad43.stylista.data.remote.network.address.AddressApiInterface
 import com.mad43.stylista.data.remote.network.auth.AuthAPIInterface
+import com.mad43.stylista.data.remote.network.coupons.CouponsApiInterface
 import com.mad43.stylista.data.remote.network.draftOrders.DraftOrdersAPIInterface
 import com.mad43.stylista.data.remote.network.order.OrdersAPIInterface
 import com.mad43.stylista.data.remote.network.product.ProductsAPIInterface
@@ -9,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object ApiService {
 
@@ -22,6 +25,10 @@ object ApiService {
 
     val ordersAPIService: OrdersAPIInterface =
         AppRetrofit.retrofit.create(OrdersAPIInterface::class.java)
+
+    val addressApiInterface : AddressApiInterface = AppRetrofit.retrofit.create(AddressApiInterface::class.java)
+
+    val couponsApiInterface : CouponsApiInterface = AppRetrofit.retrofit.create(CouponsApiInterface::class.java)
 
     object AppRetrofit {
         @Volatile
