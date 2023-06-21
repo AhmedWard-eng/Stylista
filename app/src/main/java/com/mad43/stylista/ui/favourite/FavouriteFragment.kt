@@ -1,5 +1,6 @@
 package com.mad43.stylista.ui.favourite
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
 import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
@@ -21,6 +24,7 @@ import com.mad43.stylista.ui.brand.OnItemProductClicked
 
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
+import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
@@ -64,6 +68,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
 
         if(NetwarkInternet().isNetworkAvailable(requireContext())){
             var favID = productInfo.getIDForFavourite()
+            Log.d(TAG, "favIDfavIDfavIDfavID: ${favID}")
             productInfo.getFavouriteUsingId(favID.toString())
         }else{
             productInfo.getLocalFavourite()
@@ -75,6 +80,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     is RemoteStatus.Success -> {
                         brandAdapter.setData(uiState.data)
                     }
+
                 else -> {}
                 }
             }
@@ -83,6 +89,7 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
             productInfo.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
                     is RemoteStatus.Success -> {
+                        binding.textViewMyFavourite.visibility = View.VISIBLE
                         val favouriteSet = mutableSetOf<Favourite>()
                         for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
                             var title = uiState.data.draft_order?.line_items?.get(i)?.title
@@ -101,6 +108,8 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     }
                 is RemoteStatus.Failure ->{
                     Log.d(TAG, "failllllllllllllll:::;: ")
+                    binding.textViewMyFavourite.visibility = View.GONE
+                    showConfirmationDialog()
                 }
                 else -> {
                     Log.d(TAG, "elllllllllllse:::;: ")
@@ -116,5 +125,19 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
         binding.root.findNavController().navigate(action)
     }
 
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.check_login)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.logInFragment)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.navigation_home)
+            }
+        builder.show()
+    }
 
 }

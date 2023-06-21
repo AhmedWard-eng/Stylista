@@ -74,17 +74,16 @@ class LogInFragment : Fragment() {
                 signInViewModel.login(email, password)
             }
         }
-        binding?.tabSignUp?.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.action_logInFragment_to_registrationFragment)
+        val navController = Navigation.findNavController(view)
+        binding.tabSignUp.setOnClickListener {
+            navController.navigate(R.id.action_logInFragment_to_registrationFragment)
         }
         binding?.tabSignIn?.setOnClickListener {
-            Navigation.findNavController(requireView())
+            navController
                 .navigate(R.id.logInFragment)
         }
-        binding?.textViewSkip?.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.action_logInFragment_to_navigation_home)
+        binding.textViewSkip.setOnClickListener {
+            navController.navigate(R.id.action_logInFragment_to_navigation_home)
         }
 
 
@@ -93,7 +92,7 @@ class LogInFragment : Fragment() {
                 when (it) {
                     is RemoteStatus.Success -> {
                         view.findNavController()
-                            .navigate(R.id.action_logInFragment_to_navigation_home)
+                            .navigate(R.id.navigation_home)
                         signInViewModel.insertAllProductDB()
 
                     }
@@ -112,7 +111,7 @@ class LogInFragment : Fragment() {
         lifecycleScope.launch {
             signInViewModel.userExists.collect { userExists ->
                 if (userExists) {
-                    view.findNavController().navigate(R.id.action_logInFragment_to_navigation_home)
+                    view.findNavController().navigate(R.id.navigation_home)
                 } else {
                    // dialog.showAlertDialog(getString(R.string.check_login), requireContext())
                 }

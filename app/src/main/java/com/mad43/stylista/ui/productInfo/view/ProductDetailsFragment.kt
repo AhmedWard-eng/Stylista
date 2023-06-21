@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.productInfo.view
 
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.R
@@ -42,12 +44,8 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
 
     lateinit var productInfo : ProductInfoViewModel
     lateinit var favFactory: ProductInfoViewModelFactory
-    var availableSizesTitle = mutableListOf<String>()
-    var availableSizesID = mutableListOf<Long>()
-    lateinit var sizeIdPairs: List<Pair<String, Long>>
     var isFavourite : Boolean = false
-    var selectedSize : String = ""
-    var idVariansSelect: Long? = null
+    var isLogin : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,15 +71,22 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
             productInfo.getProductDetails(id)
             productInfo.isFavourite(id)
         }
+
         displayInfo()
         displayReviews()
+        productInfo.checkUserIsLogin()
+        observeLogin()
         checkFavourite()
-        addToCart(idVariansSelect)
+
+        addToCart(productInfo.idVariansSelect,productInfo.selectedSize)
+
 
     }
 
     private fun displayInfo(){
         lifecycleScope.launch {
+
+
             productInfo.favID = productInfo.getIDForFavourite().toString()
             // Get all favorites
             var  customDraftOrder = productInfo.getLineItems(productInfo.favID)
@@ -109,30 +114,37 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
                         binding.buttonAvailableSize.text = variant.title
                         val idVariants = variant.id
                         val size = variant.title
-                        availableSizesTitle.add(size)
-                        availableSizesID.add(idVariants)
-                        sizeIdPairs = availableSizesTitle.zip(availableSizesID)
+                        productInfo.availableSizesTitle.add(size)
+                        productInfo.availableSizesID.add(idVariants)
+
+                        productInfo.sizeIdPairs = productInfo.availableSizesTitle.zip(productInfo.availableSizesID)
+                        Log.d(TAG, "displayInfo: ${productInfo.sizeIdPairs.size},,${productInfo.sizeIdPairs.get(0).first},,${productInfo.sizeIdPairs.get(0).second}")
                     }
                     displayMenueAvaliableSize()
+                        binding.imageViewFavourite.setOnClickListener {
 
-                    binding.imageViewFavourite.setOnClickListener {
+                            var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
 
-                        var productFavourite = Favourite(id=productID, title = productTitle, price = productPrice, image = productImage, variantID =variantID )
+                            val properties = listOf(
+                                Property(name = "url_image", value = productImage)
+                            )
+                            productInfo.lineItem1 =  InsertingLineItem(
+                                properties = properties,
+                                variant_id = variantID,
+                                quantity = 1,
+                                price = productPrice,
+                                title = productTitle
+                            )
+if(isLogin){
+    onClick(productFavourite)
+}else{
+      showConfirmationDialog()
+    Log.d(TAG, "PPPPPPPlease LLLOgin :) ::::: ")
+}
 
-                        val properties = listOf(
-                            Property(name = "url_image", value = productImage)
-                        )
-                         productInfo.lineItem1 =  InsertingLineItem(
-                            properties = properties,
-                            variant_id = variantID,
-                            quantity = 1,
-                            price = productPrice,
-                            title = productTitle
-                        )
 
-                        onClick(productFavourite)
+                        }
 
-                    }
 
                 }
                 is ApiState.Loading ->{
@@ -147,33 +159,42 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
         }
     }
 
-    private fun addToCart(variantId: Long?) {
+    private fun addToCart(variantId: Long?, nameItem : String) {
         binding.buttonAddToCart.setOnClickListener {
-            if(variantId!= null){
-                //idVarians
-                val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
-                binding.root.findNavController().navigate(action)
+            if (isLogin){
+                if(variantId!= null){
+                    //idVarians
+                    showConfirmationDialog(variantId,nameItem)
+                }else{
+                    MyDialog().showAlertDialog(getString(R.string.select_size),requireContext())
+                }
             }else{
-                MyDialog().showAlertDialog(getString(R.string.select_size),requireContext())
+                showConfirmationDialog()
             }
+
         }
     }
     private fun displayMenueAvaliableSize(){
         val popupMenu = PopupMenu(requireContext(), binding.buttonAvailableSize)
-        for (size in availableSizesTitle) {
-            popupMenu.menu.add(size)
-        }
-
-        binding.buttonAvailableSize.setOnClickListener(View.OnClickListener { popupMenu.show() })
+        binding.buttonAvailableSize.text = getString(R.string.choose_size)
+        binding.buttonAvailableSize.setOnClickListener(View.OnClickListener {
+            popupMenu.menu.clear()
+            for (size in productInfo.availableSizesTitle) {
+                Log.d(TAG, "/////uniqueSizes: ${productInfo.availableSizesTitle.size}")
+                popupMenu.menu.add(size)
+            }
+            popupMenu.show() }
+        )
 
         popupMenu.setOnMenuItemClickListener { item ->
-            selectedSize = item.title.toString()
-            binding.buttonAvailableSize.text = selectedSize
-            idVariansSelect = sizeIdPairs.find { it.first == selectedSize }?.second
-            idVariansSelect?.let { addToCart(it)
-                Log.d(TAG, "////////////idVariansSelect:::: ${idVariansSelect}")
+            productInfo.selectedSize = item.title.toString()
+            binding.buttonAvailableSize.text = productInfo.selectedSize
+            productInfo.idVariansSelect = productInfo.sizeIdPairs.find { it.first == productInfo.selectedSize }?.second
+            productInfo.idVariansSelect?.let { addToCart(it,productInfo.selectedSize)
+                Log.d(TAG, "////////////idVariansSelect:::: ${productInfo.idVariansSelect}")
             }
             true
+
         }
     }
     private fun isDataSuccess(){
@@ -239,7 +260,43 @@ class ProductDetailsFragment : Fragment() , OnClickFavourite {
         }
     }
 
+    private fun showConfirmationDialog(variantId: Long,nameItem: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.added_to_cart_confirm)} ${nameItem} ${getString(R.string.addedd_countinue_cart)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                val action = ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(variantId)
+                binding.root.findNavController().navigate(action)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
+        builder.show()
+    }
 
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.check_login)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.logInFragment)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
+        builder.show()
+    }
+
+    fun observeLogin(){
+        lifecycleScope.launch {
+            productInfo.userExists.collect { userExists ->
+                if (userExists) {
+                    Log.d(TAG, "observeLogin: HHHHhhi login ${userExists}")
+                    isLogin = true
+                } else {
+                    Log.d(TAG, "observeLogin: please, login:))))  ${userExists}")
+                    isLogin = false
+                }
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
