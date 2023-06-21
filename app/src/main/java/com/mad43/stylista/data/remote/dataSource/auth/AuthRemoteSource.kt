@@ -4,6 +4,7 @@ import com.mad43.stylista.data.remote.entity.auth.Customer
 import com.mad43.stylista.data.remote.entity.auth.LoginResponse
 import com.mad43.stylista.data.remote.entity.auth.SignupResponse
 import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
+import kotlinx.coroutines.flow.Flow
 
 import retrofit2.Response
 

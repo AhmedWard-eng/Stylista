@@ -8,6 +8,8 @@ import com.mad43.stylista.data.remote.entity.auth.SignupResponse
 import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
 import com.mad43.stylista.data.remote.network.ApiService
 import com.mad43.stylista.data.remote.network.auth.AuthAPIInterface
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import retrofit2.Response
 
 class AuthRemoteSourceImp (private val authAPIInterface: AuthAPIInterface = ApiService.authApiService) : AuthRemoteSource {

@@ -107,6 +107,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked {
                 Navigation.findNavController(requireView())
                     .navigate(R.id.action_navigation_profile_to_logInFragment)
             }else{
+                NetwarkInternet().displayNetworkDialog(requireContext())
                 Log.d(TAG, "check network: ")
             }
 

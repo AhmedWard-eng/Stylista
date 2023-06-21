@@ -2,6 +2,7 @@ package com.mad43.stylista.data.repo.auth
 
 import com.mad43.stylista.data.remote.entity.auth.*
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface AuthRepository {
