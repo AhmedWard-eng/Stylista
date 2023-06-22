@@ -8,5 +8,5 @@ interface RemoteOrdersDataSource {
 
     suspend fun getAllOrders(id : Long): ResponseOrders
 
-    suspend fun postOrder(postOrder : PostOrderResponse) : Response<PostOrderResponse>
+    suspend fun postOrder(postOrder : PostOrderResponse) : PostOrderResponse
 }

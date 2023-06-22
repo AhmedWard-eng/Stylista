@@ -30,10 +30,11 @@ class OrderDetailsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        holder.binding.productDetailsImage.setImageFromUrl(
-            getItem(position).properties?.get(0)?.value ?: ""
-        )
+        if (! getItem(position).properties.isNullOrEmpty()){
+            holder.binding.productDetailsImage.setImageFromUrl(
+                getItem(position).properties?.get(0)?.value ?: ""
+            )
+        }
 
         holder.binding.productTitleValue.text = getItem(position).name.toString()
 

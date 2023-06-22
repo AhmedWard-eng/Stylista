@@ -22,14 +22,22 @@ import com.braintreepayments.api.UserCanceledException
 import com.google.android.gms.wallet.TransactionInfo
 import com.google.android.gms.wallet.WalletConstants
 import com.mad43.stylista.R
+import com.mad43.stylista.data.remote.entity.orders.DiscountCode
+import com.mad43.stylista.data.remote.entity.orders.Orders
+import com.mad43.stylista.data.remote.entity.orders.post.order.CustomerOrder
+import com.mad43.stylista.data.remote.entity.orders.post.order.PostOrderResponse
 import com.mad43.stylista.data.sharedPreferences.currency.CurrencyManager
 import com.mad43.stylista.databinding.FragmentCompletingPurchasingBinding
 import com.mad43.stylista.domain.model.AddressItem
+import com.mad43.stylista.domain.model.toOrderLineItems
 import com.mad43.stylista.domain.remote.address.HasNoAddressException
+import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.setPrice
 import kotlinx.coroutines.launch
+import okhttp3.internal.notifyAll
 import java.lang.Exception
+import javax.annotation.meta.When
 
 class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
 
@@ -91,24 +99,66 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
                 viewModel.validateCouponStatus.collect{
                     when(it){
                         is RemoteStatus.Success -> {
+                            viewModel.discountCode = it.data.code
                             viewModel.discountAmount = it.data.value
                             viewModel.discountType = it.data.value_type
                             setDiscountInText()
                             binding.textViewDiscountMessage.text = getString(R.string.discount_applied)
+
+                            binding.groupLoading.visibility = GONE
                         }
                         is RemoteStatus.Failure ->{
-                            if (it.msg is CouponExpiredException){
-                                binding.textViewDiscountMessage.visibility = VISIBLE
-                                binding.textViewDiscountMessage.text = getString(R.string.coupon_is_expired)
-                            }else if(it.msg is NotExistedException){
-                                binding.textViewDiscountMessage.visibility = VISIBLE
-                                binding.textViewDiscountMessage.text = getString(R.string.coupon_is_not_found)
-                            }else if(it.msg is CantApplyDiscountException){
-                                binding.textViewDiscountMessage.visibility = VISIBLE
-                                binding.textViewDiscountMessage.text = getString(R.string.can_t_apply_that_coupon_to_that_pilling)
+
+                            viewModel.discountCode = ""
+                            viewModel.discountAmount = -0.0
+                            viewModel.discountType = ""
+                            setDiscountInText()
+
+                            when (it.msg) {
+                                is CouponExpiredException -> {
+                                    binding.textViewDiscountMessage.visibility = VISIBLE
+                                    binding.textViewDiscountMessage.text = getString(R.string.coupon_is_expired)
+
+                                }
+
+                                is NotExistedException -> {
+                                    binding.textViewDiscountMessage.visibility = VISIBLE
+                                    binding.textViewDiscountMessage.text = getString(R.string.coupon_is_not_found)
+                                }
+
+                                is CantApplyDiscountException -> {
+                                    binding.textViewDiscountMessage.visibility = VISIBLE
+                                    binding.textViewDiscountMessage.text = getString(R.string.can_t_apply_that_coupon_to_that_pilling)
+                                }
                             }
+
+                            binding.groupLoading.visibility = GONE
                         }
                         else ->{
+
+                        }
+                    }
+                }
+            }
+        }
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.postingOrderState.collect{
+                    when (it){
+                        is RemoteStatus.Success -> {
+                            binding.groupLoading.visibility = GONE
+                            Navigation.findNavController(requireView()).navigate(R.id.action_completingPurchasingFragment_to_navigation_home)
+                            viewModel.clearCart()
+                            binding.groupLoading.visibility = GONE
+
+                            MyDialog().showAlertDialog(getString(R.string.your_order_is_confirmed), requireContext())
+
+                        }
+                        is RemoteStatus.Failure ->{
+                            binding.groupLoading.visibility = GONE
+                            MyDialog().showAlertDialog(getString(R.string.something_went_wrong_while_completing_your_order),requireContext())
+                        }
+                        else -> {
 
                         }
                     }
@@ -136,10 +186,22 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
 
         binding.buttonPurchase.setOnClickListener {
             when(viewModel.paymentType){
-                PaymentType.COD ->{
-
+                PaymentType.COD -> {
+                    val discountCode = if(viewModel.discountCode.isNotBlank()){
+                        listOf(DiscountCode(type = viewModel.discountType, amount = (viewModel.getDiscount() * -1).toString(), code = viewModel.discountCode))
+                    }else{
+                        null
+                    }
+                    viewModel.postOrder(PostOrderResponse(
+                        order = Orders(
+                            lineItems = viewModel.cartList.toOrderLineItems(),
+                            discount_codes = discountCode,
+                            email = viewModel.email,
+                            customer = CustomerOrder(viewModel.userId)
+                        )
+                    ))
                 }
-                PaymentType.GOOGLE_PAY ->{
+                PaymentType.GOOGLE_PAY -> {
                     val googlePayRequest = GooglePayRequest()
 
                     googlePayRequest.transactionInfo = TransactionInfo.newBuilder()
@@ -150,11 +212,14 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
                     googlePayRequest.isBillingAddressRequired = true
 
                     googlePayClient.requestPayment(requireActivity(), googlePayRequest)
+
+                    binding.groupLoading.visibility = VISIBLE
                 }
             }
         }
 
         binding.buttonApplyCoupon.setOnClickListener {
+            binding.groupLoading.visibility = VISIBLE
             viewModel.applyCoupon(binding.editTextcoupon.text.toString())
         }
 
@@ -177,6 +242,7 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
             append(", ")
             append(addressItem.country)
         }
+
         binding.textViewPhoneNumber.text = addressItem.phone
     }
 
@@ -186,14 +252,29 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
     }
 
     override fun onGooglePaySuccess(paymentMethodNonce: PaymentMethodNonce) {
-        // complete Order
+        val discountCode = if(viewModel.discountCode.isNotBlank()){
+            listOf(DiscountCode(type = viewModel.discountType, amount = (viewModel.getDiscount() * -1).toString(), code = viewModel.discountCode))
+        }else{
+            null
+        }
+        viewModel.postOrder(PostOrderResponse(
+            order = Orders(
+                lineItems = viewModel.cartList.toOrderLineItems(),
+                discount_codes = discountCode,
+                email = viewModel.email,
+                customer = CustomerOrder(viewModel.userId)
+            )
+        ))
+        binding.groupLoading.visibility = VISIBLE
     }
 
     override fun onGooglePayFailure(error: Exception) {
         if (error is UserCanceledException) {
             Log.d("TAG", "userCancel: $error")
         } else {
+            MyDialog().showAlertDialog(getString(R.string.try_again),requireContext())
             Log.d("TAG", "onGooglePayFailure: $error")
         }
+        binding.groupLoading.visibility = GONE
     }
 }

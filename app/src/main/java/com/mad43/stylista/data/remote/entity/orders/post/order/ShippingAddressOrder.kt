@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ShippingAddressOrder(
     val address1: String?,
+    val address2 : String?,
     val phone: String?,
     val city: String?,
     val province: String?,

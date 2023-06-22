@@ -17,10 +17,10 @@ data class Orders(
     val current_total_price: String? = null,
     val discount_codes: List<DiscountCode>?,
     val email: String?,
+    val send_receipt : Boolean?= true,
     val fulfillment_status: String? = "fulfilled",
     val send_fulfillment_receipt: Boolean? =  true,
     val financial_status: String? = "paid",
-    val shipping_address : ShippingAddressOrder,
     val customer: CustomerOrder,
     val number: Int? = null,
     @SerializedName("name")

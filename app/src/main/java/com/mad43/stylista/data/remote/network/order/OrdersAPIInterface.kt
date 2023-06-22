@@ -21,5 +21,5 @@ interface OrdersAPIInterface {
     suspend fun postOrder(
         @Body order: PostOrderResponse,
         @Header("X-Shopify-Access-Token") passwordToken: String = Constants.PASSWORD,
-    ): Response<PostOrderResponse>
+    ): PostOrderResponse
 }

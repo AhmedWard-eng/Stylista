@@ -8,6 +8,7 @@ import com.mad43.stylista.data.remote.entity.orders.LineItems
 import com.mad43.stylista.data.remote.entity.orders.Orders
 import com.mad43.stylista.data.remote.entity.orders.post.order.PostOrderResponse
 import com.mad43.stylista.data.repo.order.OrdersRepo
+import com.mad43.stylista.data.repo.order.OrdersRepoInterface
 import com.mad43.stylista.data.sharedPreferences.CustomerManager
 import com.mad43.stylista.data.sharedPreferences.PreferencesData
 import com.mad43.stylista.domain.model.AddressItem
@@ -15,6 +16,8 @@ import com.mad43.stylista.domain.model.CartItem
 import com.mad43.stylista.domain.model.CouponItem
 import com.mad43.stylista.domain.remote.GetCouponsListUseCase
 import com.mad43.stylista.domain.remote.address.GetDefaultAddressUseCase
+import com.mad43.stylista.domain.remote.cart.ClearCartUseCase
+import com.mad43.stylista.domain.remote.postingOrder.PostingOrderUseCase
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +28,8 @@ class CompletingPurchasingViewModel(
     private val getDefaultAddressUseCase: GetDefaultAddressUseCase = GetDefaultAddressUseCase(),
     private val customerManager: CustomerManager = PreferencesData(),
     private val getCouponsListUseCase: GetCouponsListUseCase = GetCouponsListUseCase(),
-    private val ordersRepo: OrdersRepo = OrdersRepo()
+    private val postingOrderUseCase: PostingOrderUseCase = PostingOrderUseCase(),
+    private val clearCartUseCase: ClearCartUseCase = ClearCartUseCase()
 ) : ViewModel() {
 
     private val _defaultAddressState =
@@ -36,21 +40,36 @@ class CompletingPurchasingViewModel(
         MutableStateFlow<RemoteStatus<CouponItem>>(RemoteStatus.Loading)
     val validateCouponStatus = _validateCouponStatus.asStateFlow()
 
+    private val _postingOrderState = MutableStateFlow<RemoteStatus<Boolean>>(RemoteStatus.Loading)
+    val postingOrderState = _postingOrderState.asStateFlow()
+
     var paymentType = PaymentType.GOOGLE_PAY
     var cartList: List<CartItem> = listOf()
     var address: AddressItem? = null
     var discountAmount: Double = -0.0
     var discountType: String = ""
     var goingToAddNewAddress = false
-
+    var discountCode = ""
     var userId: Long? = null
+    var email: String? =  null
+    var cartId : Long? = null
 
     init {
-        if (customerManager.getCustomerData().isSuccess)
+        if (customerManager.getCustomerData().isSuccess){
             userId = customerManager.getCustomerData().getOrNull()?.customerId
+            cartId = customerManager.getCustomerData().getOrNull()?.cardID?.toLong()
+            email = customerManager.getCustomerData().getOrNull()?.email
+        }
+
         getDefaultAddress()
     }
 
+
+    fun clearCart(){
+        viewModelScope.launch {
+            clearCartUseCase(cartId = cartId ?: 0)
+        }
+    }
 
     fun isUserAuth(): Boolean {
         return customerManager.getCustomerData().isSuccess
@@ -104,11 +123,7 @@ class CompletingPurchasingViewModel(
 
     fun postOrder(orderPost : PostOrderResponse) {
         viewModelScope.launch {
-            try {
-                ordersRepo.postOrder(orderPost)
-            }catch (e:Exception){
-                Log.i("OrdersPost",e.message.toString())
-            }
+            _postingOrderState.emit(postingOrderUseCase(orderPost))
         }
     }
 }
