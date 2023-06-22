@@ -7,10 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
+
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentRegistrationBinding
@@ -18,8 +16,7 @@ import com.mad43.stylista.ui.registration.viewModel.SignUpViewModel
 import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.RemoteStatus
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+
 
 
 class SignUpFragment : Fragment() {
@@ -61,7 +58,6 @@ class SignUpFragment : Fragment() {
             }
 
         }
-
         binding?.progressBarSignUp?.visibility = View.GONE
 
         registerViewModel.signUpStateLiveData.observe(viewLifecycleOwner){
