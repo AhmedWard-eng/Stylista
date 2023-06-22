@@ -76,7 +76,6 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
                                authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email,
                                    state = true, userName = data.customers[0].first_name, cardID = data.customers[0].last_name,
                                    favouriteID = data.customers[0].note))
-                               Log.d(TAG, "///////////login: //////////////////////////////////")
 
                            }else{
                                _loginState.value = RemoteStatus.Valied(R.string.verfid)
@@ -138,6 +137,12 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
                     }
                 }
             }
+        }
+    }
+
+    fun insertAll(){
+        viewModelScope.launch {
+            insertAllProductDB()
         }
     }
 

@@ -70,9 +70,7 @@ class LogInFragment : Fragment() {
             when (it) {
                 is RemoteStatus.Success -> {
                     navController.navigate(R.id.navigation_home)
-                    lifecycleScope.launch {
-                        signInViewModel.insertAllProductDB()
-                    }
+                    signInViewModel.insertAll()
                     binding?.progressBarSignIn?.visibility = View.GONE
 
                 }
