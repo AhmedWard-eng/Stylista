@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 
 class LogInFragment : Fragment() {
 
-   private var _binding: FragmentLogInBinding? = null
-   private val binding get() = _binding!!
+    private var _binding: FragmentLogInBinding? = null
+    private val binding get() = _binding!!
 
     lateinit var signInViewModel: LoginViewModel
 
@@ -60,52 +60,60 @@ class LogInFragment : Fragment() {
         val favouriteLocalRepo = FavouriteLocalRepoImp(localSource)
 
         val AuthRepo = AuthRepositoryImp()
-        favFactory = LoginViewModelFactory(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
+        favFactory =
+            LoginViewModelFactory(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
         signInViewModel = ViewModelProvider(this, favFactory).get(LoginViewModel::class.java)
         binding?.progressBarSignIn?.visibility = View.GONE
 
-        signInViewModel.signInStateLiveData.observe(viewLifecycleOwner){
+        signInViewModel.signInStateLiveData.observe(viewLifecycleOwner) {
             val navController = Navigation.findNavController(view)
-                when (it) {
-                    is RemoteStatus.Success -> {
-                        navController.navigate(R.id.navigation_home)
-                        lifecycleScope.launch {
-                            signInViewModel.insertAllProductDB()
-                        }
-                        binding?.progressBarSignIn?.visibility = View.GONE
+            when (it) {
+                is RemoteStatus.Success -> {
+                    navController.navigate(R.id.navigation_home)
+                    lifecycleScope.launch {
+                        signInViewModel.insertAllProductDB()
+                    }
+                    binding?.progressBarSignIn?.visibility = View.GONE
 
-                    }
-                    is RemoteStatus.Valied -> {
-                        dialog.showAlertDialog(getString(it.message), requireContext())
-                        binding?.progressBarSignIn?.visibility = View.GONE
-                    }
-                    is RemoteStatus.Failure -> {
-                        dialog.showAlertDialog("Fail", requireContext())
-                        binding?.progressBarSignIn?.visibility = View.GONE
-                    }
-                    is RemoteStatus.Loading ->{
+                }
 
-                    }
-                    else -> {
-                        binding?.progressBarSignIn?.visibility = View.GONE
-                    }
+                is RemoteStatus.Valied -> {
+                    dialog.showAlertDialog(getString(it.message), requireContext())
+                    binding?.progressBarSignIn?.visibility = View.GONE
+                }
+
+                is RemoteStatus.Failure -> {
+                    dialog.showAlertDialog("Fail", requireContext())
+                    binding?.progressBarSignIn?.visibility = View.GONE
+                }
+
+                is RemoteStatus.Loading -> {
+
+                }
+
+                else -> {
+                    binding?.progressBarSignIn?.visibility = View.GONE
                 }
             }
+        }
 
 
         binding.buttonSignIn.setOnClickListener {
-            if (NetwarkInternet().isNetworkAvailable(requireContext())){
+            if (NetwarkInternet().isNetworkAvailable(requireContext())) {
                 binding?.progressBarSignIn?.visibility = View.VISIBLE
                 val email = binding.editTextEmailSignIn.text.toString()
                 val password = binding.textPasswordSignIn.text.toString()
                 if (email.isEmpty()) {
                     dialog.showAlertDialog(getString(R.string.login_empty_email), requireContext())
                 } else if (password.isEmpty()) {
-                    dialog.showAlertDialog(getString(R.string.login_empty_password), requireContext())
+                    dialog.showAlertDialog(
+                        getString(R.string.login_empty_password),
+                        requireContext()
+                    )
                 } else {
                     signInViewModel.login(email, password)
                 }
-            }else{
+            } else {
                 NetwarkInternet().displayNetworkDialog(requireContext())
             }
 
@@ -132,7 +140,7 @@ class LogInFragment : Fragment() {
                 if (userExists) {
                     navController.navigate(R.id.navigation_home)
                 } else {
-                   // dialog.showAlertDialog(getString(R.string.check_login), requireContext())
+                    // dialog.showAlertDialog(getString(R.string.check_login), requireContext())
                 }
             }
         }

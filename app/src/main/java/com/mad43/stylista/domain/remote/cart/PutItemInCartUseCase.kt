@@ -11,9 +11,13 @@ import com.mad43.stylista.data.repo.cart.CartRepoImp
 import com.mad43.stylista.domain.model.CartItem
 import com.mad43.stylista.domain.model.PuttingCartItem
 import com.mad43.stylista.domain.model.toCartItemList
+import com.mad43.stylista.ui.cart.CantUpdateException
 import com.mad43.stylista.util.RemoteStatus
 
-class PutItemInCartUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
+class PutItemInCartUseCase(
+    private val cartRepo: CartRepo = CartRepoImp(),
+    private val checkTheAbilityOfIncreasingVariantInUseCase: CheckTheAbilityOfIncreasingVariantInUseCase = CheckTheAbilityOfIncreasingVariantInUseCase()
+) {
 
     suspend operator fun invoke(puttingCartItem: PuttingCartItem): RemoteStatus<List<CartItem>> {
         val remoteStatus = cartRepo.getCartUsingId(puttingCartItem.cartId.toString())
@@ -25,8 +29,17 @@ class PutItemInCartUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
         }
         val lineItems = draftOrder?.line_items
 
+        val isExisted = lineItems?.find { it.variant_id == puttingCartItem.variantId } != null
+
+        if (isExisted){
+            return RemoteStatus.Failure(AlreadyAddedToCartException())
+        }
+
         val updatingList =
-            updateThisListWithNewItem(lineItems!!.toListOfPutLineItems(), puttingCartItem)
+            updateThisListWithNewItem(
+                lineItems!!.toListOfPutLineItems(),
+                puttingCartItem
+            )
 
         val draftOrderPutBody = DraftOrderPutBody(
             DraftOrderPuttingRequestBody(
@@ -52,16 +65,29 @@ class PutItemInCartUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
         lineItems: MutableList<InsertingLineItem>,
         puttingCartItem: PuttingCartItem
     ): List<InsertingLineItem> {
-        lineItems.add(
-            InsertingLineItem(
-                properties = listOf(Property(value = puttingCartItem.imageUrl)),
-                variant_id = puttingCartItem.variantId,
-                quantity = puttingCartItem.quantity
+//        if (existed) {
+//            val item = lineItems.find { it.variant_id == puttingCartItem.variantId }
+//            if (item != null) {
+//                lineItems[lineItems.indexOf(item)] = item.copy(
+//                    quantity = item.quantity?.plus(1) ?: 1
+//                )
+//            }
+//
+//        } else {
+            lineItems.add(
+                InsertingLineItem(
+                    properties = listOf(Property(value = puttingCartItem.imageUrl)),
+                    variant_id = puttingCartItem.variantId,
+                    quantity = puttingCartItem.quantity
+                )
             )
-        )
+//        }
+
         return lineItems.toList()
     }
 }
+
+class AlreadyAddedToCartException : Exception()
 
 fun List<LineItem?>.toListOfPutLineItems(): MutableList<InsertingLineItem> {
     return filterNotNull().map {

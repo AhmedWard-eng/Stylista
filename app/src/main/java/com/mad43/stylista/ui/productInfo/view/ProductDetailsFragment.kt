@@ -8,12 +8,16 @@ import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -25,6 +29,7 @@ import com.mad43.stylista.data.remote.entity.draftOrders.Property
 import com.mad43.stylista.data.repo.favourite.FavouriteLocalRepoImp
 import com.mad43.stylista.databinding.FragmentProductDetailsBinding
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
+import com.mad43.stylista.domain.remote.cart.AlreadyAddedToCartException
 import com.mad43.stylista.domain.remote.productDetails.ProductInfo
 import com.mad43.stylista.ui.favourite.OnClickFavourite
 import com.mad43.stylista.ui.productInfo.model.ApiState
@@ -32,6 +37,7 @@ import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
 import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.RemoteStatus
+import com.mad43.stylista.util.showDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -80,7 +86,53 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
         addToCart(productInfo.idVariansSelect, productInfo.selectedSize)
 
+        addedToCartObserver()
 
+
+    }
+
+    private fun addedToCartObserver() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                productInfo.addedToCart.collectLatest {
+                    when (it) {
+                        is RemoteStatus.Success -> {
+                            MyDialog().showAlertDialog(
+                                getString(R.string.added_to_cart_successfully),
+                                requireContext()
+                            )
+
+                            binding.progressBar.visibility = GONE
+                            productInfo.resetAddingToCart()
+                        }
+
+                        is RemoteStatus.Failure -> {
+
+                            if (it.msg is AlreadyAddedToCartException) {
+                                showDialog(
+                                    getString(R.string.product_is_already_added_to_cart), getString(
+                                        R.string.go_to_cart
+                                    ), getString(R.string.dismiss)
+                                ) {
+                                    Navigation.findNavController(requireView()).navigate(R.id.action_productDetailsFragment_to_cartFragment2)
+                                }
+                            }else{
+                                MyDialog().showAlertDialog(
+                                    getString(R.string.something_went_wrong),
+                                    requireContext()
+                                )
+                            }
+                            binding.progressBar.visibility = GONE
+                            productInfo.resetAddingToCart()
+                        }
+
+                        else -> {
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun displayInfo() {
@@ -180,7 +232,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
             if (isLogin) {
                 if (variantId != null) {
-                    //idVarians
+                    //idVariants
                     showConfirmationDialog(variantId, nameItem)
                 } else {
                     MyDialog().showAlertDialog(getString(R.string.select_size), requireContext())
@@ -301,11 +353,8 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
             "${getString(R.string.added_to_cart_confirm)} ${nameItem} ${getString(R.string.addedd_countinue_cart)}"
         builder.setMessage(message)
             .setPositiveButton(getString(R.string.yes)) { dialog, which ->
-                val action =
-                    ProductDetailsFragmentDirections.actionProductDetailsFragmentToCartFragment2(
-                        variantId
-                    )
-                binding.root.findNavController().navigate(action)
+                productInfo.putItemInCart(variantId, "")
+                binding.progressBar.visibility = VISIBLE
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
         builder.show()
