@@ -50,8 +50,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
     lateinit var productInfo: ProductInfoViewModel
     lateinit var favFactory: ProductInfoViewModelFactory
-    var isFavourite: Boolean = false
-    var isLogin: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -137,8 +135,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
     private fun displayInfo() {
         lifecycleScope.launch {
-
-
             productInfo.favID = productInfo.getIDForFavourite().toString()
             // Get all favorites
             var customDraftOrder = productInfo.getLineItems(productInfo.favID)
@@ -151,6 +147,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                         val productPrice = uiState.data.product.variants[0].price
                         val productID = uiState.data.product.id
                         val productImage = uiState.data.product.images[0].src
+                        productInfo.urlImageProduct = productImage
                         val variantID = uiState.data.product.variants[0].id
                         binding.textViewProductName.text = productTitle
                         binding.textViewDescriptionScroll.text = uiState.data.product.body_html
@@ -171,12 +168,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
                             productInfo.sizeIdPairs =
                                 productInfo.availableSizesTitle.zip(productInfo.availableSizesID)
-                            Log.d(
-                                TAG,
-                                "displayInfo: ${productInfo.sizeIdPairs.size},,${
-                                    productInfo.sizeIdPairs[0].first
-                                },,${productInfo.sizeIdPairs[0].second}"
-                            )
                         }
 
                         displayMenuAvailableSize()
@@ -201,11 +192,10 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                                 price = productPrice,
                                 title = productTitle
                             )
-                            if (isLogin) {
+                            if (productInfo.isLogin) {
                                 onClick(productFavourite)
                             } else {
                                 showConfirmationDialog()
-                                Log.d(TAG, "PPPPPPPlease LLLOgin :) ::::: ")
                             }
 
 
@@ -219,7 +209,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                     }
 
                     else -> {
-                        Log.d(TAG, "onViewCreated: ${uiState}")
                     }
 
                 }
@@ -230,7 +219,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     private fun addToCart(variantId: Long?, nameItem: String) {
         binding.buttonAddToCart.setOnClickListener {
 
-            if (isLogin) {
+            if (productInfo.isLogin) {
                 if (variantId != null) {
                     //idVariants
                     showConfirmationDialog(variantId, nameItem)
@@ -250,7 +239,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
         binding.buttonAvailableSize.setOnClickListener(View.OnClickListener {
             popupMenu.menu.clear()
             for (size in productInfo.availableSizesTitle) {
-                Log.d(TAG, "/////uniqueSizes: ${productInfo.availableSizesTitle.size}")
                 popupMenu.menu.add(size)
             }
             popupMenu.show()
@@ -264,7 +252,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                 productInfo.sizeIdPairs.find { it.first == productInfo.selectedSize }?.second
             productInfo.idVariansSelect?.let {
                 addToCart(it, productInfo.selectedSize)
-                Log.d(TAG, "////////////idVariansSelect:::: ${productInfo.idVariansSelect}")
             }
             true
 
@@ -290,14 +277,14 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     }
 
     override fun onClick(product: Favourite) {
-        val message = if (isFavourite) {
+        val message = if (productInfo.isFavourite) {
             getString(R.string.is_remove_favourite)
         } else {
             getString(R.string.is_add_favourite)
         }
         MyDialog().showAlertDialog(message, requireContext()) {
             if (it) {
-                if (isFavourite) {
+                if (productInfo.isFavourite) {
                     productInfo.deleteProduct(product)
                     productInfo.removeProductFromFavourite()
                     Toast.makeText(
@@ -325,10 +312,10 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                     is RemoteStatus.Success -> {
                         if (uiState.data) {
                             binding.imageViewFavourite.setImageResource(R.drawable.baseline_favorite_24)
-                            isFavourite = true
+                            productInfo.isFavourite = true
                         } else {
                             binding.imageViewFavourite.setImageResource(R.drawable.baseline_favorite_border_24)
-                            isFavourite = false
+                            productInfo.isFavourite = false
                         }
                     }
 
@@ -353,7 +340,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
             "${getString(R.string.added_to_cart_confirm)} ${nameItem} ${getString(R.string.addedd_countinue_cart)}"
         builder.setMessage(message)
             .setPositiveButton(getString(R.string.yes)) { dialog, which ->
-                productInfo.putItemInCart(variantId, "")
+                productInfo.putItemInCart(variantId, productInfo.urlImageProduct)
                 binding.progressBar.visibility = VISIBLE
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which -> dialog.dismiss() }
@@ -375,11 +362,9 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     private fun observeLogin() {
         lifecycleScope.launch {
             productInfo.userExists.collect { userExists ->
-                isLogin = if (userExists) {
-                    Log.d(TAG, "observeLogin: HHHHhhi login ${userExists}")
+                productInfo.isLogin = if (userExists) {
                     true
                 } else {
-                    Log.d(TAG, "observeLogin: please, login:))))  ${userExists}")
                     false
                 }
             }

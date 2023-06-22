@@ -51,6 +51,8 @@ class ProductInfoViewModel(
     lateinit var requestBody: DraftOrderPuttingRequestBody
     lateinit var lineItem1: InsertingLineItem
     lateinit var favID: String
+    var isFavourite: Boolean = false
+    var isLogin: Boolean = false
 
 
     var availableSizesTitle = mutableSetOf<String>()
@@ -58,6 +60,8 @@ class ProductInfoViewModel(
     lateinit var sizeIdPairs: List<Pair<String, Long>>
     var selectedSize: String = ""
     var idVariansSelect: Long? = null
+
+    lateinit var urlImageProduct : String
 
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
