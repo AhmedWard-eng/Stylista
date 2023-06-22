@@ -1,7 +1,7 @@
 package com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse
 
 data class Customer(
-    val accepts_marketing: Boolean?,
+    val accepts_marketing: Boolean? ,
     val accepts_marketing_updated_at: String?,
     val admin_graphql_api_id: String?,
     val created_at: String?,

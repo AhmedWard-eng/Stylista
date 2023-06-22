@@ -8,6 +8,6 @@ import retrofit2.Response
 interface OrdersRepoInterface {
     suspend fun getAllOrders() : Flow<List<Orders>>
 
-    suspend fun postOrder(postOrder : PostOrderResponse) : Response<PostOrderResponse>
+    suspend fun postOrder(postOrder : PostOrderResponse) : PostOrderResponse
 
 }

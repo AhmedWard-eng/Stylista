@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_cartFragment2_to_completingPurchasingFragment"
             app:destination="@id/completingPurchasingFragment" />
+        <action
+            android:id="@+id/action_cartFragment2_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
     </fragment>
 
   <fragment
@@ -181,6 +184,11 @@
         <action
             android:id="@+id/action_completingPurchasingFragment_to_addressListFragment"
             app:destination="@id/addressListFragment" />
+        <action
+            android:id="@+id/action_completingPurchasingFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
