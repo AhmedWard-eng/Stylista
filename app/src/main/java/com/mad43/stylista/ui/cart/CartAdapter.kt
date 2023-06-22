@@ -52,6 +52,9 @@ class CartAdapter(private val clickListener: ClickListener) : ListAdapter<CartIt
 
             clickListener.setQuantity(item.variant_id,item.quantity - 1,false)
         }
+        holder.binding.root.setOnClickListener {
+            clickListener.select(item.product_id)
+        }
         holder.binding.textViewVariantTitle.text = item.variant_title
     }
 
@@ -66,10 +69,11 @@ class CartAdapter(private val clickListener: ClickListener) : ListAdapter<CartIt
         }
     }
 
-    class ClickListener(private val setQuantityListener : (Long,Int,Boolean) -> Unit ,private val deleteListener : (Long) -> Unit){
+    class ClickListener(private val setQuantityListener : (Long,Int,Boolean) -> Unit ,private val deleteListener : (Long) -> Unit,private val selectListener : (Long) -> Unit){
         fun setQuantity(variantId: Long , quantity: Int,isIncreasing : Boolean) = setQuantityListener(variantId,quantity,isIncreasing)
 
         fun delete(variantId: Long) = deleteListener(variantId)
+        fun select(productId: Long) = selectListener(productId)
     }
 
 

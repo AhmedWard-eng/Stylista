@@ -12,7 +12,7 @@ class RemoteOrdersDataSourceImp(private val ordersAPIInterface: OrdersAPIInterfa
         return ordersAPIInterface.getAllOrders(customerId = id.toString())
     }
 
-    override suspend fun postOrder(postOrder : PostOrderResponse): Response<PostOrderResponse> {
+    override suspend fun postOrder(postOrder : PostOrderResponse): PostOrderResponse {
         return ordersAPIInterface.postOrder(postOrder)
     }
 
