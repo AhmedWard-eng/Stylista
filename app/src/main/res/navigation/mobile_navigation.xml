@@ -90,7 +90,9 @@
             app:destination="@id/registrationFragment" />
         <action
             android:id="@+id/action_logInFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/logInFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/searchProductFragment"
@@ -117,6 +119,9 @@
         <action
             android:id="@+id/action_cartFragment2_to_completingPurchasingFragment"
             app:destination="@id/completingPurchasingFragment" />
+        <action
+            android:id="@+id/action_cartFragment2_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
     </fragment>
 
   <fragment
@@ -181,6 +186,11 @@
         <action
             android:id="@+id/action_completingPurchasingFragment_to_addressListFragment"
             app:destination="@id/addressListFragment" />
+        <action
+            android:id="@+id/action_completingPurchasingFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/completingPurchasingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

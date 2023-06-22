@@ -69,7 +69,7 @@ class LogInFragment : Fragment() {
             val navController = Navigation.findNavController(view)
             when (it) {
                 is RemoteStatus.Success -> {
-                    navController.navigate(R.id.navigation_home)
+                    navController.navigate(R.id.action_logInFragment_to_navigation_home)
                     signInViewModel.insertAll()
                     binding.progressBarSignIn.visibility = View.GONE
 
@@ -122,11 +122,11 @@ class LogInFragment : Fragment() {
         binding.tabSignUp.setOnClickListener {
             navController.navigate(R.id.action_logInFragment_to_registrationFragment)
         }
-        binding.tabSignIn.setOnClickListener {
-            navController
-                .navigate(R.id.logInFragment)
-        }
+
         binding.textViewSkip.setOnClickListener {
+            navController.navigate(R.id.action_logInFragment_to_navigation_home)
+        }
+        binding.imageView3.setOnClickListener {
             navController.navigate(R.id.action_logInFragment_to_navigation_home)
         }
         signInViewModel.checkUserIsLogin()
@@ -136,12 +136,13 @@ class LogInFragment : Fragment() {
             val navController = Navigation.findNavController(view)
             signInViewModel.userExists.collect { userExists ->
                 if (userExists) {
-                    navController.navigate(R.id.navigation_home)
+                    navController.navigate(R.id.action_logInFragment_to_navigation_home)
                 } else {
                     // dialog.showAlertDialog(getString(R.string.check_login), requireContext())
                 }
             }
         }
+
 
     }
 

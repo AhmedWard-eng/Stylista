@@ -56,6 +56,12 @@ fun List<LineItem?>.toCartItemList(): List<CartItem> {
     }
 }
 
+fun List<CartItem>.toOrderLineItems() : List<com.mad43.stylista.data.remote.entity.orders.LineItems>{
+    return map{
+        com.mad43.stylista.data.remote.entity.orders.LineItems(variantId = it.variant_id, quantity = it.quantity, properties = listOf(Property(value = it.imageUrl)),)
+    }
+}
+
 fun getTaxesFromList(taxLines: List<TaxLine>?): Double {
     return if (taxLines.isNullOrEmpty()) 0.0
     else {

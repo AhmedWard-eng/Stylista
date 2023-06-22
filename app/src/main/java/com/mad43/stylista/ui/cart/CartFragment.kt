@@ -49,7 +49,7 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = CartAdapter(CartAdapter.ClickListener(::setQuantity, ::delete))
+        adapter = CartAdapter(CartAdapter.ClickListener(::setQuantity, ::delete, ::select))
         binding.recyclerView.adapter = adapter
 
         binding.buttonCheckout.setOnClickListener {
@@ -60,6 +60,8 @@ class CartFragment : Fragment() {
                 Navigation.findNavController(requireView()).navigate(action)
             }
         }
+
+
 
         handleScrollingBehavior()
 
@@ -150,6 +152,11 @@ class CartFragment : Fragment() {
                 binding.blockingView.visibility = VISIBLE
             }
         }
+    }
+
+    private fun select(productId: Long) {
+        val action = CartFragmentDirections.actionCartFragment2ToProductDetailsFragment(productId)
+        Navigation.findNavController(requireView()).navigate(action)
     }
 
 

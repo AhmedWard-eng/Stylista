@@ -24,7 +24,7 @@ class OrdersRepo(
         return flowOf(remoteOrdersDataSource.getAllOrders(customerId ?: 0L).orders) as Flow<List<Orders>>
     }
 
-    override suspend fun postOrder(postOrder: PostOrderResponse): Response<PostOrderResponse> {
+    override suspend fun postOrder(postOrder: PostOrderResponse): PostOrderResponse {
         return remoteOrdersDataSource.postOrder(postOrder)
     }
 }
