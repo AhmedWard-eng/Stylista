@@ -59,6 +59,8 @@ class ProductInfoViewModel(
     var selectedSize: String = ""
     var idVariansSelect: Long? = null
 
+    lateinit var urlImageProduct : String
+
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
     fun getProductDetails(id: Long) {
