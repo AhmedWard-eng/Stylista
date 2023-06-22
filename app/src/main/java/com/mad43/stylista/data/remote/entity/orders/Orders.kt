@@ -2,6 +2,9 @@ package com.mad43.stylista.data.remote.entity.orders
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.Customer
+import com.mad43.stylista.data.remote.entity.orders.post.order.CustomerOrder
+import com.mad43.stylista.data.remote.entity.orders.post.order.ShippingAddressOrder
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -14,6 +17,11 @@ data class Orders(
     val current_total_price: String? = null,
     val discount_codes: List<DiscountCode>?,
     val email: String?,
+    val fulfillment_status: String? = "fulfilled",
+    val send_fulfillment_receipt: Boolean? =  true,
+    val financial_status: String? = "paid",
+    val shipping_address : ShippingAddressOrder,
+    val customer: CustomerOrder,
     val number: Int? = null,
     @SerializedName("name")
     val name: String? = null,

@@ -115,6 +115,7 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
                 }
             }
         }
+
         binding.textViewDiscountPrice.setPrice(viewModel.discountAmount)
 
         binding.textViewSummaryPrice.setPrice(viewModel.getOrderTotalPrice() - viewModel.getDiscount())

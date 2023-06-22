@@ -1,7 +1,13 @@
 package com.mad43.stylista.ui.cart.completingPurchase
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mad43.stylista.data.remote.entity.orders.DiscountCode
+import com.mad43.stylista.data.remote.entity.orders.LineItems
+import com.mad43.stylista.data.remote.entity.orders.Orders
+import com.mad43.stylista.data.remote.entity.orders.post.order.PostOrderResponse
+import com.mad43.stylista.data.repo.order.OrdersRepo
 import com.mad43.stylista.data.sharedPreferences.CustomerManager
 import com.mad43.stylista.data.sharedPreferences.PreferencesData
 import com.mad43.stylista.domain.model.AddressItem
@@ -18,7 +24,8 @@ import java.lang.Exception
 class CompletingPurchasingViewModel(
     private val getDefaultAddressUseCase: GetDefaultAddressUseCase = GetDefaultAddressUseCase(),
     private val customerManager: CustomerManager = PreferencesData(),
-    private val getCouponsListUseCase: GetCouponsListUseCase = GetCouponsListUseCase()
+    private val getCouponsListUseCase: GetCouponsListUseCase = GetCouponsListUseCase(),
+    private val ordersRepo: OrdersRepo = OrdersRepo()
 ) : ViewModel() {
 
     private val _defaultAddressState =
@@ -27,7 +34,7 @@ class CompletingPurchasingViewModel(
 
     private val _validateCouponStatus =
         MutableStateFlow<RemoteStatus<CouponItem>>(RemoteStatus.Loading)
-    val validateCouponStatus= _validateCouponStatus.asStateFlow()
+    val validateCouponStatus = _validateCouponStatus.asStateFlow()
 
     var paymentType = PaymentType.GOOGLE_PAY
     var cartList: List<CartItem> = listOf()
@@ -59,39 +66,49 @@ class CompletingPurchasingViewModel(
         return cartList.sumOf { it.price * it.quantity }
     }
 
-    fun applyCoupon(coupon : String){
+    fun applyCoupon(coupon: String) {
         viewModelScope.launch {
-           val status =  getCouponsListUseCase()
-            if(status is RemoteStatus.Success){
-               val myCoupon =  status.data.find { it.code == coupon }
-                if(myCoupon == null){
+            val status = getCouponsListUseCase()
+            if (status is RemoteStatus.Success) {
+                val myCoupon = status.data.find { it.code == coupon }
+                if (myCoupon == null) {
                     _validateCouponStatus.emit(RemoteStatus.Failure(NotExistedException()))
-                }else{
-                    if(myCoupon.isNotExpired){
+                } else {
+                    if (myCoupon.isNotExpired) {
                         _validateCouponStatus.emit(RemoteStatus.Success(myCoupon))
-                    }else{
+                    } else {
                         _validateCouponStatus.emit(RemoteStatus.Failure(CouponExpiredException()))
                     }
                 }
-            }else if (status is RemoteStatus.Failure){
+            } else if (status is RemoteStatus.Failure) {
                 _validateCouponStatus.emit(RemoteStatus.Failure(status.msg))
             }
         }
     }
 
 
-    fun getDiscount() : Double{
-        return if(discountType == "fixed_amount"){
-            if(getOrderTotalPrice() >= 2 * discountAmount){
+    fun getDiscount(): Double {
+        return if (discountType == "fixed_amount") {
+            if (getOrderTotalPrice() >= 2 * discountAmount) {
                 discountAmount
-            }else{
+            } else {
                 _validateCouponStatus.value = RemoteStatus.Failure(CantApplyDiscountException())
                 0.0
             }
-        }else if(discountType =="percentage"){
+        } else if (discountType == "percentage") {
             getOrderTotalPrice() * discountAmount
-        }else{
+        } else {
             0.0
+        }
+    }
+
+    fun postOrder(orderPost : PostOrderResponse) {
+        viewModelScope.launch {
+            try {
+                ordersRepo.postOrder(orderPost)
+            }catch (e:Exception){
+                Log.i("OrdersPost",e.message.toString())
+            }
         }
     }
 }
