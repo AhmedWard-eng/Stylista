@@ -50,8 +50,6 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
     lateinit var productInfo: ProductInfoViewModel
     lateinit var favFactory: ProductInfoViewModelFactory
-    var isFavourite: Boolean = false
-    var isLogin: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -194,7 +192,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                                 price = productPrice,
                                 title = productTitle
                             )
-                            if (isLogin) {
+                            if (productInfo.isLogin) {
                                 onClick(productFavourite)
                             } else {
                                 showConfirmationDialog()
@@ -221,7 +219,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     private fun addToCart(variantId: Long?, nameItem: String) {
         binding.buttonAddToCart.setOnClickListener {
 
-            if (isLogin) {
+            if (productInfo.isLogin) {
                 if (variantId != null) {
                     //idVariants
                     showConfirmationDialog(variantId, nameItem)
@@ -279,14 +277,14 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     }
 
     override fun onClick(product: Favourite) {
-        val message = if (isFavourite) {
+        val message = if (productInfo.isFavourite) {
             getString(R.string.is_remove_favourite)
         } else {
             getString(R.string.is_add_favourite)
         }
         MyDialog().showAlertDialog(message, requireContext()) {
             if (it) {
-                if (isFavourite) {
+                if (productInfo.isFavourite) {
                     productInfo.deleteProduct(product)
                     productInfo.removeProductFromFavourite()
                     Toast.makeText(
@@ -314,10 +312,10 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                     is RemoteStatus.Success -> {
                         if (uiState.data) {
                             binding.imageViewFavourite.setImageResource(R.drawable.baseline_favorite_24)
-                            isFavourite = true
+                            productInfo.isFavourite = true
                         } else {
                             binding.imageViewFavourite.setImageResource(R.drawable.baseline_favorite_border_24)
-                            isFavourite = false
+                            productInfo.isFavourite = false
                         }
                     }
 
@@ -364,7 +362,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     private fun observeLogin() {
         lifecycleScope.launch {
             productInfo.userExists.collect { userExists ->
-                isLogin = if (userExists) {
+                productInfo.isLogin = if (userExists) {
                     true
                 } else {
                     false

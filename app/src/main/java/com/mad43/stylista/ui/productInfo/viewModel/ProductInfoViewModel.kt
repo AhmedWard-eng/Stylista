@@ -51,6 +51,8 @@ class ProductInfoViewModel(
     lateinit var requestBody: DraftOrderPuttingRequestBody
     lateinit var lineItem1: InsertingLineItem
     lateinit var favID: String
+    var isFavourite: Boolean = false
+    var isLogin: Boolean = false
 
 
     var availableSizesTitle = mutableSetOf<String>()
