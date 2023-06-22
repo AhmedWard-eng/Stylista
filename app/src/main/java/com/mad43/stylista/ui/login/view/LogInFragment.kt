@@ -99,8 +99,8 @@ class LogInFragment : Fragment() {
         binding.buttonSignIn.setOnClickListener {
             if (NetwarkInternet().isNetworkAvailable(requireContext())) {
                 binding.progressBarSignIn.visibility = View.VISIBLE
-                val email = binding.editTextEmailSignIn.text.toString()
-                val password = binding.textPasswordSignIn.text.toString()
+                val email = binding.editTextEmailSignIn.text.toString().trim()
+                val password = binding.textPasswordSignIn.text.toString().trim()
                 if (email.isEmpty()) {
                     dialog.showAlertDialog(getString(R.string.login_empty_email), requireContext())
                 } else if (password.isEmpty()) {

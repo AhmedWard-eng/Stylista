@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.data.remote.entity.auth.LoginResponse
@@ -81,26 +83,28 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
                                _loginState.value = RemoteStatus.Valied(R.string.verfid)
                                _signInStateLiveData.value = RemoteStatus.Valied(R.string.verfid)
                            }
-
-                        }else{
-                            _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
-                            _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
                         }
-                    }else {
-                        _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
-                        _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
-                        Log.d(TAG, "login: NULLLLLLLLLLLLLLLLLLLLLLLLLLL")
+                        else if(data.customers[0].tags != password){
+                            _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
+                            Log.d(TAG, "/////////////////////login password not match...: ")
+                        }
                     }
                 }else{
-                    _loginState.value = RemoteStatus.Valied(R.string.login_faild)
                     _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_faild)
-                    Log.d(TAG, "ERRRRRRROOOOORRRRR login: ${user.errorBody()}")
+                    Log.d(TAG, "///////ERRRRRRROOOOORRRRR login: ${user.errorBody()}")
                 }
 
-            } catch (e: Exception) {
-                _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
+            } catch (e: IndexOutOfBoundsException) {
                 _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
-                Log.d(TAG, "Exception:  ${e.message}")
+                Log.d(TAG, "/////// API Exception:  ${e.message}.. ${e.localizedMessage},, $e")
+            }
+            catch (e: FirebaseAuthInvalidCredentialsException){
+                _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
+                Log.d(TAG, "///////Firbase Exception:  ${e.message}.. ${e.localizedMessage},, $e")
+            }
+            catch (e : FirebaseTooManyRequestsException){
+                _signInStateLiveData.value = RemoteStatus.Valied(R.string.firbase_signin_try_agin)
+                Log.d(TAG, "///////FirebaseTooManyRequestsException Exception:  ${e.message}.. ${e.localizedMessage},, $e")
             }
         }
     }

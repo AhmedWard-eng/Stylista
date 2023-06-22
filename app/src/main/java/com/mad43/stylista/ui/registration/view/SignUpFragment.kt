@@ -51,10 +51,10 @@ class SignUpFragment : Fragment() {
         binding?.buttonSignUp?.setOnClickListener {
             if(NetwarkInternet().isNetworkAvailable(requireContext())){
                 binding?.progressBarSignUp?.visibility = View.VISIBLE
-                registerViewModel.userName = binding?.editTextUserNameSignUp?.text.toString()
+                registerViewModel.userName = binding?.editTextUserNameSignUp?.text.toString().trim()
                 registerViewModel.email = binding?.editTextEmailSignUp?.text.toString().trim()
-                registerViewModel.password = binding?.textPasswordSignUp?.text.toString()
-                registerViewModel.confirmPassword = binding?.editTextTextConfirmPasswordSignUp?.text.toString()
+                registerViewModel.password = binding?.textPasswordSignUp?.text.toString().trim()
+                registerViewModel.confirmPassword = binding?.editTextTextConfirmPasswordSignUp?.text.toString().trim()
                 registerViewModel.validateInputs(registerViewModel.userName,registerViewModel.email, registerViewModel.password,registerViewModel.confirmPassword)
             }else{
                 NetwarkInternet().displayNetworkDialog(requireContext())

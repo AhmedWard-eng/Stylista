@@ -1,9 +1,7 @@
 package com.mad43.stylista.data.remote.dataSource.auth
 
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import com.mad43.stylista.data.remote.entity.auth.FirebaseCustumer
 import kotlinx.coroutines.tasks.await
 
@@ -20,15 +18,22 @@ class AuthFirebaseImp(private val auth: FirebaseAuth = FirebaseAuth.getInstance(
         auth.signOut()
     }
 
-    override suspend fun signUp(email: String, password: String) : Boolean {
-        try {
-            auth.createUserWithEmailAndPassword(email, password).await()
-            return true
-        } catch (e: Exception) {
-            throw e
-            return false
-        }
+    override suspend fun signUp(email: String, password: String) : AuthResult? {
+//        try {
+//            auth.createUserWithEmailAndPassword(email, password).await()
+//            return true
+//        } catch (e: Exception) {
+//            throw e
+//            return false
+//        }
+    try {
+        val authResult = FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).await()
+        return authResult
+    } catch (e: FirebaseAuthUserCollisionException) {
+        return null
     }
+}
+
 
     override suspend fun isEmailVerified(email: String): Boolean {
         return try {

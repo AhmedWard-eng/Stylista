@@ -1,5 +1,6 @@
 package com.mad43.stylista.domain.remote.auth
 
+import com.google.firebase.auth.AuthResult
 import com.mad43.stylista.data.remote.entity.auth.*
 import com.mad43.stylista.data.repo.auth.AuthRepository
 import com.mad43.stylista.data.repo.auth.AuthRepositoryImp
@@ -15,7 +16,7 @@ import kotlin.time.Duration.Companion.days
 
 
 class AuthUseCase(val authRepository: AuthRepository = AuthRepositoryImp()) {
-    suspend fun signUp(userName: String,email: String, password: String) : Boolean {
+    suspend fun signUp(userName: String,email: String, password: String) : AuthResult? {
      return authRepository.signUp(userName,email,password)
     }
     suspend fun loginCustomer(email:String): Response<LoginResponse> {
