@@ -1,5 +1,6 @@
 package com.mad43.stylista.ui.profile.view
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -149,11 +150,11 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
 
         }
     }
+    @SuppressLint("SetTextI18n")
     private fun displayUserName(){
-
-        var userName = profileViewModel.getUserName()
-        var message = getString(R.string.welcome)
-        binding.textViewHelloUserName.text = "${message} , $userName"
+        val userName = profileViewModel.getUserName()
+        val message = getString(R.string.welcome)
+        binding.textViewHelloUserName.text = "$message , $userName"
 
     }
 
