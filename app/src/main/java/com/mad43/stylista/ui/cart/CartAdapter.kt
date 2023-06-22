@@ -52,6 +52,7 @@ class CartAdapter(private val clickListener: ClickListener) : ListAdapter<CartIt
 
             clickListener.setQuantity(item.variant_id,item.quantity - 1,false)
         }
+        holder.binding.textViewVariantTitle.text = item.variant_title
     }
 
 

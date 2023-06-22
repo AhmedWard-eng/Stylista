@@ -15,3 +15,15 @@ fun Fragment.showConfirmationDialog(message: String,operation : ()-> Unit) {
     val dialog = builder.create()
     dialog.show()
 }
+
+fun Fragment.showDialog(message: String,positiveButtonText :String,negativeButtonText :String,positiveOperation : ()-> Unit) {
+    val builder = AlertDialog.Builder(requireContext())
+    builder.setMessage(message)
+        .setPositiveButton(positiveButtonText) { _, _ ->
+            positiveOperation()
+        }.setNegativeButton(negativeButtonText){ dialog, _ ->
+            dialog.dismiss()
+        }
+    val dialog = builder.create()
+    dialog.show()
+}

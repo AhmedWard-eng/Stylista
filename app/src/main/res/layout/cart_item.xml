@@ -27,7 +27,7 @@
             android:id="@+id/textViewQuantity"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:text="10"
+            tools:text="10"
             android:background="@drawable/text_checkout_background_center"
             android:paddingHorizontal="16dp"
             android:gravity="center"
@@ -71,7 +71,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="CONVERSE | CHUCK TAYLOR ALL STAR LO"
+            tools:text="CONVERSE | CHUCK TAYLOR ALL STAR LO"
             android:textColor="@color/primary_color"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -83,13 +83,14 @@
             android:id="@+id/textViewProductPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 EGP"
+            android:layout_marginTop="8dp"
+            tools:text="10 EGP"
             android:textColor="@color/primary_color"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textViewQuantity"
             app:layout_constraintStart_toStartOf="@+id/textViewProductTitle"
-            app:layout_constraintTop_toBottomOf="@+id/textViewProductTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewVariantTitle" />
 
         <ImageButton
             android:id="@+id/buttonRemoveFromCart"
@@ -101,6 +102,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_delete_forever_24" />
+
+        <TextView
+            android:id="@+id/textViewVariantTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="TextView"
+            android:textColor="@color/primary_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textViewProductTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewProductTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

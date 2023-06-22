@@ -5,7 +5,7 @@ import com.mad43.stylista.data.repo.cart.CartRepoImp
 import com.mad43.stylista.util.RemoteStatus
 import kotlin.Exception
 
-class GetAvailableQuantityOfVariantUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
+class CheckTheAbilityOfIncreasingVariantInUseCase(private val cartRepo: CartRepo = CartRepoImp()) {
 
     suspend operator fun invoke(variantId : Long,requiredQuantity : Int) : RemoteStatus<Boolean>{
         return try {
