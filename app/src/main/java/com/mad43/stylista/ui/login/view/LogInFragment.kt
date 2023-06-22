@@ -63,28 +63,26 @@ class LogInFragment : Fragment() {
         favFactory =
             LoginViewModelFactory(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
         signInViewModel = ViewModelProvider(this, favFactory).get(LoginViewModel::class.java)
-        binding?.progressBarSignIn?.visibility = View.GONE
+        binding.progressBarSignIn.visibility = View.GONE
 
         signInViewModel.signInStateLiveData.observe(viewLifecycleOwner) {
             val navController = Navigation.findNavController(view)
             when (it) {
                 is RemoteStatus.Success -> {
                     navController.navigate(R.id.navigation_home)
-                    lifecycleScope.launch {
-                        signInViewModel.insertAllProductDB()
-                    }
-                    binding?.progressBarSignIn?.visibility = View.GONE
+                    signInViewModel.insertAll()
+                    binding.progressBarSignIn.visibility = View.GONE
 
                 }
 
                 is RemoteStatus.Valied -> {
                     dialog.showAlertDialog(getString(it.message), requireContext())
-                    binding?.progressBarSignIn?.visibility = View.GONE
+                    binding.progressBarSignIn.visibility = View.GONE
                 }
 
                 is RemoteStatus.Failure -> {
                     dialog.showAlertDialog("Fail", requireContext())
-                    binding?.progressBarSignIn?.visibility = View.GONE
+                    binding.progressBarSignIn.visibility = View.GONE
                 }
 
                 is RemoteStatus.Loading -> {
@@ -92,7 +90,7 @@ class LogInFragment : Fragment() {
                 }
 
                 else -> {
-                    binding?.progressBarSignIn?.visibility = View.GONE
+                    binding.progressBarSignIn.visibility = View.GONE
                 }
             }
         }
@@ -100,7 +98,7 @@ class LogInFragment : Fragment() {
 
         binding.buttonSignIn.setOnClickListener {
             if (NetwarkInternet().isNetworkAvailable(requireContext())) {
-                binding?.progressBarSignIn?.visibility = View.VISIBLE
+                binding.progressBarSignIn.visibility = View.VISIBLE
                 val email = binding.editTextEmailSignIn.text.toString()
                 val password = binding.textPasswordSignIn.text.toString()
                 if (email.isEmpty()) {
@@ -124,7 +122,7 @@ class LogInFragment : Fragment() {
         binding.tabSignUp.setOnClickListener {
             navController.navigate(R.id.action_logInFragment_to_registrationFragment)
         }
-        binding?.tabSignIn?.setOnClickListener {
+        binding.tabSignIn.setOnClickListener {
             navController
                 .navigate(R.id.logInFragment)
         }
