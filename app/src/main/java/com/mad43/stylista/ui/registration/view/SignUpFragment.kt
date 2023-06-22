@@ -85,10 +85,7 @@ class SignUpFragment : Fragment() {
                 }
             }
         }
-        binding?.tabSignUp?.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.registrationFragment)
-        }
+
         binding?.tabSignIn?.setOnClickListener {
             Navigation.findNavController(requireView())
                 .navigate(R.id.action_registrationFragment_to_logInFragment)
