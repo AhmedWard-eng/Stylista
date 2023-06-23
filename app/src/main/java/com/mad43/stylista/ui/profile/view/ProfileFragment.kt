@@ -179,12 +179,12 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
 
                     if(uiState.data.size <= 4){
                         brandAdapter.setData(uiState.data)
-                        binding.textViewMoreWishList.visibility = View.GONE
+                       // binding.textViewMoreWishList.visibility = View.GONE
                     }
                     else{
                         val firstFourFavourite = uiState.data.take(4)
                         brandAdapter.setData(firstFourFavourite)
-                        binding.textViewMoreWishList.visibility = View.VISIBLE
+                      //  binding.textViewMoreWishList.visibility = View.VISIBLE
                     }
                 }
 

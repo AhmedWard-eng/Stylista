@@ -148,7 +148,9 @@
             app:destination="@id/logInFragment" />
         <action
             android:id="@+id/action_favouriteFragment_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/favouriteFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
