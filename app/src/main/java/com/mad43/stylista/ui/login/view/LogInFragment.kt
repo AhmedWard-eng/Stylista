@@ -50,7 +50,6 @@ class LogInFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -121,22 +120,17 @@ class LogInFragment : Fragment() {
             }
 
         }
-
-
         val navController = Navigation.findNavController(view)
         binding.tabSignUp.setOnClickListener {
             navController.navigate(R.id.action_logInFragment_to_registrationFragment)
         }
-
         binding.textViewSkip.setOnClickListener {
             navController.navigate(R.id.action_logInFragment_to_navigation_home)
         }
         binding.imageView3.setOnClickListener {
             navController.navigate(R.id.action_logInFragment_to_navigation_home)
         }
-
         signInViewModel.checkUserIsLogin()
-
         lifecycleScope.launch {
             val navController = Navigation.findNavController(view)
             signInViewModel.userExists.collect { userExists ->
@@ -147,7 +141,6 @@ class LogInFragment : Fragment() {
                 }
             }
         }
-
 
     }
 

@@ -28,10 +28,6 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
 
-    private var _signInStateLiveData: MutableLiveData<RemoteStatus<LoginResponse>>  = MutableLiveData(RemoteStatus.Loading)
-    var signInStateLiveData: LiveData<RemoteStatus<LoginResponse>>  = _signInStateLiveData
-
-
     private var draftOrderList : DraftOrder ?= null
 
     private val _draftOrder = MutableStateFlow<DraftOrderState>(DraftOrderState.Loading)
@@ -68,41 +64,34 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
                            if (checkEmail){
 
                                _loginState.value = RemoteStatus.Success(data)
-                               _signInStateLiveData.value = RemoteStatus.Success(data)
                                authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email,
                                    state = true, userName = data.customers[0].first_name, cardID = data.customers[0].last_name,
                                    favouriteID = data.customers[0].note))
 
                            }else{
                                _loginState.value = RemoteStatus.Valied(R.string.verfid)
-                               _signInStateLiveData.value = RemoteStatus.Valied(R.string.verfid)
                            }
                         }
                         else if(data.customers[0].tags != password){
                             _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
-                            _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
                             Log.d(TAG, "/////////////////////login password not match...: ")
                         }
                     }
                 }else{
                     _loginState.value = RemoteStatus.Valied(R.string.login_faild)
-                    _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_faild)
                     Log.d(TAG, "///////ERRRRRRROOOOORRRRR login: ${user.errorBody()}")
                 }
 
             } catch (e: IndexOutOfBoundsException) {
                 _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
-                _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
                 Log.d(TAG, "/////// API Exception:  ${e.message}.. ${e.localizedMessage},, $e")
             }
             catch (e: FirebaseAuthInvalidCredentialsException){
                 _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
-                _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
                 Log.d(TAG, "///////Firbase Exception:  ${e.message}.. ${e.localizedMessage},, $e")
             }
             catch (e : FirebaseTooManyRequestsException){
                 _loginState.value = RemoteStatus.Valied(R.string.firbase_signin_try_agin)
-                _signInStateLiveData.value = RemoteStatus.Valied(R.string.firbase_signin_try_agin)
                 Log.d(TAG, "///////FirebaseTooManyRequestsException Exception:  ${e.message}.. ${e.localizedMessage},, $e")
             }
         }
