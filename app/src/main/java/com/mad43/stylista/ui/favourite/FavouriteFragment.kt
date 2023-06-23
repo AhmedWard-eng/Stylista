@@ -93,6 +93,9 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                             binding.RecyclerViewFavourite.visibility = View.VISIBLE
                         }
                     }
+                is RemoteStatus.Loading -> {
+                    binding.textViewMyFavourite.visibility = View.VISIBLE
+                }
 
                 else -> {}
                 }
@@ -139,6 +142,9 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                     binding.imageView.visibility = View.GONE
                     binding.textView7.visibility = View.GONE
                     showConfirmationDialog()
+                }
+                is RemoteStatus.Loading -> {
+                    binding.textViewMyFavourite.visibility = View.VISIBLE
                 }
 
                 else -> {
