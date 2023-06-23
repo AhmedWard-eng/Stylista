@@ -206,6 +206,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
                         var price = uiState.data.draft_order?.line_items?.get(i)?.price
                         if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
                             var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
+                            Log.d(TAG, "DDDDDDDDDDDDDDDDDdisplayWishList: ${title}")
                             favouriteSet += favourite
                         }
                     }
@@ -233,7 +234,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
     private fun displayAllFavourite(){
         binding.textViewMoreWishList.setOnClickListener {
             Navigation.findNavController(requireView())
-                .navigate(R.id.favouriteFragment)
+                .navigate(R.id.action_navigation_profile_to_logInFragment)
         }
     }
 

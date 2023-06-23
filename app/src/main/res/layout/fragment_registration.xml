@@ -53,70 +53,107 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="356dp" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutUserNameSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline17"
+        app:layout_constraintTop_toBottomOf="@+id/tab_signUp"
+
+        >
     <EditText
         android:id="@+id/editTextUserNameSignUp"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/edit_text_style"
         android:drawableStart="@drawable/baseline_person_24"
         android:drawablePadding="5dp"
-        android:ems="10"
+        android:padding="17dp"
         android:hint="@string/user_name"
-        android:paddingStart="20dp"
+        android:ems="10"
+        android:inputType="text"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutEmailSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toBottomOf="@+id/tab_signUp" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUserNameSignUp"
 
-    <EditText
-        android:id="@+id/editTextEmailSignUp"
+        >
+        <EditText
+            android:id="@+id/editTextEmailSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_style"
+            android:drawableStart="@drawable/baseline_email"
+            android:drawablePadding="5dp"
+            android:padding="17dp"
+            android:hint="@string/email_address"
+            android:ems="10"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutPassword"
         android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/edit_text_style"
-        android:drawableStart="@drawable/baseline_email"
-        android:drawablePadding="5dp"
-        android:ems="10"
-        android:hint="@string/email_address"
-        android:paddingStart="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline17"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmailSignUp"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/primary_color"
+        >
+        <EditText
+            android:id="@+id/textPasswordSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_style"
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:padding="17dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+             />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutConfirmPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toBottomOf="@+id/editTextUserNameSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/primary_color">
 
-    <EditText
-        android:id="@+id/textPasswordSignUp"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/edit_text_style"
-        android:drawableStart="@drawable/baseline_lock_24"
-        android:drawablePadding="5dp"
-        android:ems="10"
-        android:hint="@string/password"
-        android:paddingStart="20dp"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toStartOf="@+id/guideline16"
-        app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmailSignUp" />
+        <EditText
+            android:id="@+id/editTextTextConfirmPasswordSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_style"
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:padding="17dp"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"
+             />
 
-    <EditText
-        android:id="@+id/editTextTextConfirmPasswordSignUp"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/edit_text_style"
-        android:drawableStart="@drawable/baseline_lock_24"
-        android:drawablePadding="5dp"
-        android:ems="10"
-        android:hint="@string/confirm_password"
-        android:inputType="textPassword"
-        android:paddingStart="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline16"
-        app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toBottomOf="@+id/textPasswordSignUp" />
-
+    </com.google.android.material.textfield.TextInputLayout>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSignUp"
         android:layout_width="0dp"
@@ -130,7 +167,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextConfirmPasswordSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutConfirmPassword" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

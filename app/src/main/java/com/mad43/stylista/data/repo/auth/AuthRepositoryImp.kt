@@ -1,5 +1,6 @@
 package com.mad43.stylista.data.repo.auth
 
+import com.google.firebase.auth.AuthResult
 import com.mad43.stylista.data.remote.dataSource.auth.AuthFirbase
 import com.mad43.stylista.data.remote.dataSource.auth.AuthFirebaseImp
 import com.mad43.stylista.data.remote.dataSource.auth.AuthRemoteSource
@@ -21,7 +22,7 @@ class AuthRepositoryImp(private val authRemoteSource: AuthRemoteSource = AuthRem
         return authRemoteSource.registerUserInApi(userName,email,password)
     }
 
-    override suspend fun signUp(userName: String,email: String, password: String) : Boolean {
+    override suspend fun signUp(userName: String,email: String, password: String) : AuthResult? {
         return authFirbase.signUp(email,password)
     }
 
