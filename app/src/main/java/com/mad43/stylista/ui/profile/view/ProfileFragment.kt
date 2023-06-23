@@ -213,6 +213,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
                         brandAdapter.setData(firstFourFavourite)
                       //  binding.textViewMoreWishList.visibility = View.VISIBLE
 
+                        }
                     }
 
                     else -> {}
