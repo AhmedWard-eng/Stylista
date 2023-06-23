@@ -191,6 +191,9 @@
             app:destination="@id/navigation_home"
             app:popUpTo="@id/completingPurchasingFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_completingPurchasingFragment_to_addressListFragment2"
+            app:destination="@id/addressListFragment" />
     </fragment>
 
     <fragment

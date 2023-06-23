@@ -23,6 +23,8 @@ android {
 
         buildConfigField("String", "CURRENCY_API_KEY", CURRENCY_API_KEY)
 
+        buildConfigField("String", "googleKey",googleKey)
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -122,6 +124,8 @@ dependencies {
     // to collect device data
     implementation 'com.braintreepayments.api:data-collector:4.29.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+
+    implementation 'com.google.android.libraries.places:places:3.1.0'
     /***Ahmed***/
 
 }

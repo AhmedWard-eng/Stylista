@@ -7,9 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.address.edit.AddressDetailsEditFragment">
 
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/address_1"
+        android:id="@+id/address_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -33,10 +42,10 @@
         android:hint="@string/address_2"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/address_city"
-        app:layout_constraintEnd_toEndOf="@+id/address_1"
+        app:layout_constraintEnd_toEndOf="@+id/address_title"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/address_1"
-        app:layout_constraintTop_toBottomOf="@+id/address_1" />
+        app:layout_constraintStart_toStartOf="@+id/address_title"
+        app:layout_constraintTop_toBottomOf="@+id/address_title" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/address_city"
@@ -75,6 +84,7 @@
         android:ems="10"
         android:hint="@string/province"
         android:inputType="text"
+        android:foregroundTint="@color/primary_color"
         app:layout_constraintEnd_toEndOf="@+id/address_city"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/address_city"
@@ -109,14 +119,14 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="5dp"
         android:text="@string/address"
         android:textColor="@color/primary_color"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
 
     <CheckBox
         android:id="@+id/checkBox"
