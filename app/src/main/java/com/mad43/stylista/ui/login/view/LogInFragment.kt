@@ -145,8 +145,13 @@ class LogInFragment : Fragment() {
     }
 
     fun getDraftOrder(){
-        var favID = signInViewModel.getIDForFavourite()
-        signInViewModel.getDraftOrder(favID.toString())
+        try{
+            var favID = signInViewModel.getIDForFavourite()
+            signInViewModel.getDraftOrder(favID.toString())
+        }catch (e : Exception){
+            Log.e("5555", "getDraftOrder: ",e )
+        }
+
     }
     fun observeDraftOrder(){
         val navController = view?.let { Navigation.findNavController(it) }
@@ -167,7 +172,7 @@ class LogInFragment : Fragment() {
                                 }
                             }
                         }
-                        navController?.navigate(R.id.navigation_home)
+                        navController?.navigate(R.id.action_logInFragment_to_navigation_home)
                     }
                     is DraftOrderState.OnFail ->{
                         Log.e("999", "FFFFFFFFFFFFFFFFFFFFFFFFff: ${it}", )

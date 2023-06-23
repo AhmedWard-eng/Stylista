@@ -105,10 +105,14 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                         }
                         val favouriteList1 = favouriteSet.toList()
                         brandAdapter.setData(favouriteList1)
+                        binding.imageView.visibility = View.GONE
+                        binding.textView7.visibility = View.GONE
                     }
                 is RemoteStatus.Failure ->{
                     Log.d(TAG, "failllllllllllllll:::;: ")
                     binding.textViewMyFavourite.visibility = View.GONE
+                    binding.imageView.visibility = View.GONE
+                    binding.textView7.visibility = View.GONE
                     showConfirmationDialog()
                 }
                 else -> {
@@ -131,11 +135,11 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
         builder.setMessage(message)
             .setPositiveButton(getString(R.string.yes)) { dialog, which ->
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.logInFragment)
+                    .navigate(R.id.action_favouriteFragment_to_logInFragment)
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.navigation_home)
+                    .navigate(R.id.action_favouriteFragment_to_navigation_home)
             }
         builder.show()
     }
