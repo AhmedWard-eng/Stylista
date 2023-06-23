@@ -26,11 +26,7 @@ import kotlinx.coroutines.launch
 
 class CartFragment : Fragment() {
 
-
     private var _binding: FragmentCartBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
 
     private val binding get() = _binding!!
     private lateinit var viewModel: CartViewModel
@@ -61,8 +57,6 @@ class CartFragment : Fragment() {
             }
         }
 
-
-
         handleScrollingBehavior()
 
         lifecycleScope.launch {
@@ -75,6 +69,10 @@ class CartFragment : Fragment() {
                             binding.progressBar2.visibility = GONE
                             binding.blockingView.visibility = GONE
                             binding.shimmerFrameLayout.stopShimmerAnimation()
+                            if (it.data.isEmpty()){
+                                binding.emptyCart.visibility = View.VISIBLE
+                                binding.noEmptyCart.visibility = View.GONE
+                            }
                             adapter.submitList(it.data)
                             viewModel.list = it.data
                             binding.textViewTotalPrice.setPrice(viewModel.getTotalPrice())

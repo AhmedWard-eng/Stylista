@@ -110,7 +110,7 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
     }
 
 
-    private fun getOrders() {
+    fun getOrders() {
         viewModelScope.launch {
             try {
                 ordersRepo.getAllOrders().catch { e ->
