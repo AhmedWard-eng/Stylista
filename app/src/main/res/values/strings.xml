@@ -57,7 +57,7 @@
     <string name="login_valid_password">password is not match</string>
     <string name="login_valid_email">email is not found, can you register First. </string>
     <string name="email_isExist">Email is already exist</string>
-    <string name="verfid">please, verified email</string>
+    <string name="verfid">please, verify your email</string>
     <string name="check_login">Please Login First</string>
     <string name="skip">Skip</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -87,6 +87,8 @@
     <string name="yes"> Yes</string>
     <string name="cancel"> Cancel</string>
     <string name="welcome">Welcome! </string>
+    <string name="firbase_signin_try_agin"> Access to this account has been temporarily disabled due to many failed login attempts</string>
+    <string name="no_favourite">No items in favourite</string>
     /***Marina***/
 
     /***Ahmed***/

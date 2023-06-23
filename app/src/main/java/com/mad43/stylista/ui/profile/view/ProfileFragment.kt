@@ -219,32 +219,22 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
             }
         }
         lifecycleScope.launch {
+
             profileViewModel.uiStateNetwork.collectLatest { uiState ->
-                when (uiState) {
-                    is RemoteStatus.Success -> {
-                        val favouriteSet = mutableSetOf<Favourite>()
-                        for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1)
-                            ?: 1)) {
-                            var title = uiState.data.draft_order?.line_items?.get(i)?.title
-                            var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
-                            var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
-                            var image = uiState.data.draft_order?.line_items?.get(i)?.properties
-                            val urlImage = image?.find { it.name == "url_image" }?.value
-                            var price = uiState.data.draft_order?.line_items?.get(i)?.price
-                            if (idProduct != null && title != null && price != null && urlImage != null && idVarians != null) {
-                                var favourite =
-                                    Favourite(idProduct, title, price, urlImage, idVarians)
-                                favouriteSet += favourite
-                            }
-                        }
-                        val favouriteList1 = favouriteSet.toList()
-                        if (favouriteList1.size <= 4) {
-                            brandAdapter.setData(favouriteList1)
-                            binding.textViewMoreWishList.visibility = View.GONE
-                        } else {
-                            val firstFourFavourite = favouriteList1.take(4)
-                            brandAdapter.setData(firstFourFavourite)
-                            binding.textViewMoreWishList.visibility = View.VISIBLE
+              when (uiState) {
+                is RemoteStatus.Success -> {
+                    val favouriteSet = mutableSetOf<Favourite>()
+                    for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
+                        var title = uiState.data.draft_order?.line_items?.get(i)?.title
+                        var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
+                        var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
+                        var image = uiState.data.draft_order?.line_items?.get(i)?.properties
+                        val urlImage = image?.find { it.name == "url_image" }?.value
+                        var price = uiState.data.draft_order?.line_items?.get(i)?.price
+                        if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
+                            var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
+                            Log.d(TAG, "DDDDDDDDDDDDDDDDDdisplayWishList: ${title}")
+                            favouriteSet += favourite
                         }
                     }
 
@@ -263,7 +253,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
     private fun displayAllFavourite() {
         binding.textViewMoreWishList.setOnClickListener {
             Navigation.findNavController(requireView())
-                .navigate(R.id.favouriteFragment)
+                .navigate(R.id.action_navigation_profile_to_logInFragment)
         }
     }
 
