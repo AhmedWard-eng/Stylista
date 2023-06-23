@@ -237,7 +237,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
                             favouriteSet += favourite
                         }
                     }
-
+                }
                     is RemoteStatus.Failure -> {
                         Log.d(ContentValues.TAG, "Plaese Login,,,,failllllllllllllll:::;: ")
                     }
@@ -253,7 +253,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
     private fun displayAllFavourite() {
         binding.textViewMoreWishList.setOnClickListener {
             Navigation.findNavController(requireView())
-                .navigate(R.id.action_navigation_profile_to_logInFragment)
+                .navigate(R.id.action_navigation_profile_to_favouriteFragment)
         }
     }
 
