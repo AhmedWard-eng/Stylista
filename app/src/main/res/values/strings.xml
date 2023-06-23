@@ -27,6 +27,9 @@
     <string name="title">Title:</string>
     <string name="more">show more</string>
     <string name="orders">Orders</string>
+    <string name="noInternet">No internet</string>
+    <string name="cartIsEmpty">Cart is empty</string>
+    <string name="favoriteIsEmpty">Favorite is empty</string>
 
     /***Fatma***/
 

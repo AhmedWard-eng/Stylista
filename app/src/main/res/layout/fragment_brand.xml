@@ -6,184 +6,243 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.brand.BrandFragment" >
+    tools:context=".ui.brand.BrandFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/filter"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresher"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        app:cardCornerRadius="20dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/light_green"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/priceFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/price"
-                android:layout_weight="1"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:textColor="@color/primary_color"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/categoryFilter"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/categoryFilter"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:text="@string/category"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:textColor="@color/primary_color"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/filter"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="25dp"
+                android:backgroundTint="@color/light_green"
+                app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/priceFilter" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-    </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/priceFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/price"
+                        android:textColor="@color/primary_color"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/categoryFilter"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/filterValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/filter"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/categoryFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/category"
+                        android:textColor="@color/primary_color"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/priceFilter" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="5">
-        <TextView
-            android:id="@+id/priceDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/price"
-            android:textColor="@color/primary_color"
-            android:textSize="20sp"/>
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp" />
+                </LinearLayout>
 
-        </LinearLayout>
-        <RadioGroup
-            android:id="@+id/categoryGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:weightSum="3"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp">
+            </androidx.cardview.widget.CardView>
 
-            <RadioButton
-                android:id="@+id/shoes"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/filterValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@id/recyclerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filter">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="5">
+
+                    <TextView
+                        android:id="@+id/priceDisplay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/price"
+                        android:textColor="@color/primary_color"
+                        android:textSize="20sp" />
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="4" />
+
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/categoryGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <RadioButton
+                        android:id="@+id/shoes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/primary_color"
+                        android:text="@string/shoes"
+                        android:textColorHint="@color/primary_color"
+                        android:textColorLink="@color/primary_color" />
+
+                    <RadioButton
+                        android:id="@+id/accessories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/primary_color"
+                        android:text="@string/accessories"
+                        android:textColorHint="@color/primary_color"
+                        android:textColorLink="@color/primary_color" />
+
+                    <RadioButton
+                        android:id="@+id/shirt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:buttonTint="@color/primary_color"
+                        android:text="@string/shirt"
+                        android:textColorHint="@color/primary_color"
+                        android:textColorLink="@color/primary_color" />
+
+                </RadioGroup>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerFrameLayoutBrand"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterValue">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                    <include layout="@layout/home_brand_shimmer_placeholder" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filterValue" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/networkLottie"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="200dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/nointernet" />
+
+            <TextView
+                android:id="@+id/noInternet"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:buttonTint="@color/primary_color"
-                android:text="@string/shoes"
-                android:textColorLink="@color/primary_color"
-                android:textColorHint="@color/primary_color" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/noInternet"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/networkLottie" />
 
-            <RadioButton
-                android:id="@+id/accessories"
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/connectivity"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:buttonTint="@color/primary_color"
-                android:text="@string/accessories"
-                android:textColorLink="@color/primary_color"
-                android:textColorHint="@color/primary_color" />
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="filter,filterValue,shimmerFrameLayoutBrand, recyclerView" />
 
-            <RadioButton
-                android:id="@+id/shirt"
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/noConnectivity"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:buttonTint="@color/primary_color"
-                android:textColorLink="@color/primary_color"
-                android:text="@string/shirt"
-                android:textColorHint="@color/primary_color" />
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="noInternet,networkLottie" />
 
-        </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerFrameLayoutBrand"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterValue">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-            <include layout="@layout/home_brand_shimmer_placeholder" />
-
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterValue" />
 </androidx.constraintlayout.widget.ConstraintLayout>

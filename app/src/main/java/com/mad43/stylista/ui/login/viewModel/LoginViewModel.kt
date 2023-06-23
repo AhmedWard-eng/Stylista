@@ -52,13 +52,10 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
         viewModelScope.launch {
             try {
                 val user = authUseCase.loginCustomer(email)
-
                 if (user.isSuccessful){
                     val data = user.body()
                     if (data != null) {
-
                         if(data.customers[0].tags == password){
-
                             authUseCase.signIn(email,password)
                             var checkEmail = authUseCase.isEmailVerified(email)
                            if (checkEmail){

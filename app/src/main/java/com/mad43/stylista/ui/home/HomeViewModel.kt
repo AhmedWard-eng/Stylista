@@ -29,7 +29,7 @@ class HomeViewModel(private val repoInterface: ProductsRepoInterface = ProductsR
         getBrand()
     }
 
-    private fun getBrand() {
+    fun getBrand() {
         viewModelScope.launch {
             try {
                 repoInterface.getAllBrand().catch { e ->

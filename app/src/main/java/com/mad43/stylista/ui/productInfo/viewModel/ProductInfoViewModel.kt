@@ -271,6 +271,5 @@ class ProductInfoViewModel(
             }
         }
 
-
     }
 }

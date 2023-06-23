@@ -71,7 +71,7 @@ class LogInFragment : Fragment() {
         favFactory =
             LoginViewModelFactory(AuthUseCase(AuthRepo), FavouriteLocal(favouriteLocalRepo))
         signInViewModel = ViewModelProvider(this, favFactory).get(LoginViewModel::class.java)
-        binding.progressBarSignIn.visibility = View.GONE
+        binding?.progressBarSignIn?.visibility = View.GONE
 
         lifecycleScope.launch {
             signInViewModel.loginState.collect {
@@ -98,7 +98,6 @@ class LogInFragment : Fragment() {
 
             }
         }
-
 
         binding.buttonSignIn.setOnClickListener {
             if (NetwarkInternet().isNetworkAvailable(requireContext())) {
