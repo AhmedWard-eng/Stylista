@@ -1,6 +1,7 @@
 package com.mad43.stylista.domain.local.favourite
 
 
+import android.util.Log
 import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
 import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.DraftOrder
@@ -50,6 +51,7 @@ class FavouriteLocal (val favouriteRepositoryLocal: FavouriteLocalRepo , val fav
     }
 
     suspend fun getFavouriteUsingId(idFavourite: String): RemoteStatus<CustomDraftOrderResponse>{
+        Log.e("Favourite Domain Layer", "getFavouriteUsingId: ${favouriteRepositoryRemote.getFavouriteUsingId(idFavourite)} ", )
         return favouriteRepositoryRemote.getFavouriteUsingId(id = idFavourite )
     }
 

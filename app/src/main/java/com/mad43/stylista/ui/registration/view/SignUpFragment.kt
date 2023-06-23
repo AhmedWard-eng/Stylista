@@ -47,8 +47,7 @@ class SignUpFragment : Fragment() {
 
 
         registerViewModel=ViewModelProvider(this)[SignUpViewModel::class.java]
-
-        binding?.buttonSignUp?.setOnClickListener {
+                binding?.buttonSignUp?.setOnClickListener {
             if(NetwarkInternet().isNetworkAvailable(requireContext())){
                 binding?.progressBarSignUp?.visibility = View.VISIBLE
                 registerViewModel.userName = binding?.editTextUserNameSignUp?.text.toString().trim()
