@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_orderDetailsFragment2"
             app:destination="@id/orderDetailsFragment2" />
+        <action
+            android:id="@+id/action_navigation_profile_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
