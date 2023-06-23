@@ -204,14 +204,15 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
                 when (uiState) {
                     is RemoteStatus.Success -> {
 
-                        if (uiState.data.size <= 4) {
-                            brandAdapter.setData(uiState.data)
-                            binding.textViewMoreWishList.visibility = View.GONE
-                        } else {
-                            val firstFourFavourite = uiState.data.take(4)
-                            brandAdapter.setData(firstFourFavourite)
-                            binding.textViewMoreWishList.visibility = View.VISIBLE
-                        }
+                    if(uiState.data.size <= 4){
+                        brandAdapter.setData(uiState.data)
+                       // binding.textViewMoreWishList.visibility = View.GONE
+                    }
+                    else{
+                        val firstFourFavourite = uiState.data.take(4)
+                        brandAdapter.setData(firstFourFavourite)
+                      //  binding.textViewMoreWishList.visibility = View.VISIBLE
+
                     }
 
                     else -> {}
