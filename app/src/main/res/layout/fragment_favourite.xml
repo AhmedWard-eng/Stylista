@@ -61,7 +61,7 @@
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:fontFamily="sans-serif-medium"
-        android:text="No Product in Favourite"
+        android:text="No item in favourite"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
