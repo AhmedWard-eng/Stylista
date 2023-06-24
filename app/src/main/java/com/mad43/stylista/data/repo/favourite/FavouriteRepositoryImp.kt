@@ -1,5 +1,6 @@
 package com.mad43.stylista.data.repo.favourite
 
+import android.util.Log
 import com.mad43.stylista.data.remote.dataSource.draftOrders.RemoteDraftOrdersDataSource
 import com.mad43.stylista.data.remote.dataSource.draftOrders.RemoteDraftOrdersDataSourceImp
 import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
@@ -53,8 +54,10 @@ class FavouriteRepositoryImp (private val remoteDraftOrdersDataSource: RemoteDra
     override suspend fun getFavouriteUsingId(id: String):RemoteStatus<CustomDraftOrderResponse> {
         return try {
             val customDraftOrderResponse = remoteDraftOrdersDataSource.getDraftOrderById(id)
+            Log.e("FavouriteRepo", "getFavouriteUsingId: ${customDraftOrderResponse.draft_order?.line_items}")
             RemoteStatus.Success(customDraftOrderResponse)
         } catch (e: Exception) {
+            Log.e("FavouriteRepo", "getFavouriteUsingId: ${e.localizedMessage}", )
             RemoteStatus.Failure(e)
         }
     }

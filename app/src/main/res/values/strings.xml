@@ -27,6 +27,9 @@
     <string name="title">Title:</string>
     <string name="more">show more</string>
     <string name="orders">Orders</string>
+    <string name="noInternet">No internet</string>
+    <string name="cartIsEmpty">Cart is empty</string>
+    <string name="favoriteIsEmpty">Favorite is empty</string>
 
     /***Fatma***/
 
@@ -54,9 +57,9 @@
     <string name="login_valid_password">password is not match</string>
     <string name="login_valid_email">email is not found, can you register First. </string>
     <string name="email_isExist">Email is already exist</string>
-    <string name="verfid">please, verified email</string>
+    <string name="verfid">please, verify your email</string>
     <string name="check_login">Please Login First</string>
-    <string name="skip">Skip</string>
+    <string name="skip">Guest</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="reviews">View reviews</string>
     <string name="add_to_cart">Add to cart</string>
@@ -84,6 +87,8 @@
     <string name="yes"> Yes</string>
     <string name="cancel"> Cancel</string>
     <string name="welcome">Welcome! </string>
+    <string name="firbase_signin_try_agin"> Access to this account has been temporarily disabled due to many failed login attempts</string>
+    <string name="no_favourite">No items in favourite</string>
     /***Marina***/
 
     /***Ahmed***/
@@ -129,12 +134,15 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="total">Total</string>
     <string name="try_again">Try Again</string>
     <string name="your_order_is_confirmed">your order is confirmed</string>
     <string name="something_went_wrong_while_completing_your_order">Something went wrong while completing your order</string>
     <string name="proceed_to_buy">Proceed to buy</string>
+    <string name="please_add_new_address_first">Please Add new address first</string>
+    <string name="address_details">address details</string>
+    <string name="search_for_your_address">Search for your address: </string>
+    <string name="no_available_coupons">No Available coupons</string>
 
     /***Ahmed***/
 </resources>

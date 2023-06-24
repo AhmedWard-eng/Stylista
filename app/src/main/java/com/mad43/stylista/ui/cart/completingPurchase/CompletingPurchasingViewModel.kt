@@ -40,7 +40,7 @@ class CompletingPurchasingViewModel(
         MutableStateFlow<RemoteStatus<CouponItem>>(RemoteStatus.Loading)
     val validateCouponStatus = _validateCouponStatus.asStateFlow()
 
-    private val _postingOrderState = MutableStateFlow<RemoteStatus<Boolean>>(RemoteStatus.Loading)
+    private val _postingOrderState = MutableStateFlow<RemoteStatus<Boolean>?>(RemoteStatus.Loading)
     val postingOrderState = _postingOrderState.asStateFlow()
 
     var paymentType = PaymentType.GOOGLE_PAY
@@ -60,11 +60,15 @@ class CompletingPurchasingViewModel(
             cartId = customerManager.getCustomerData().getOrNull()?.cardID?.toLong()
             email = customerManager.getCustomerData().getOrNull()?.email
         }
-
         getDefaultAddress()
     }
 
 
+    fun resetPosting(){
+        viewModelScope.launch {
+            _postingOrderState.emit(null)
+        }
+    }
     fun clearCart(){
         viewModelScope.launch {
             clearCartUseCase(cartId = cartId ?: 0)
@@ -78,6 +82,14 @@ class CompletingPurchasingViewModel(
     fun getDefaultAddress() {
         viewModelScope.launch {
             _defaultAddressState.emit(getDefaultAddressUseCase(customerId = userId.toString()))
+        }
+    }
+
+    fun setNewAddress(addressItem: AddressItem){
+        viewModelScope.launch {
+            if (address != null){
+                _defaultAddressState.emit(RemoteStatus.Success(addressItem))
+            }
         }
     }
 
@@ -108,7 +120,8 @@ class CompletingPurchasingViewModel(
 
     fun getDiscount(): Double {
         return if (discountType == "fixed_amount") {
-            if (getOrderTotalPrice() >= 2 * discountAmount) {
+            val totalPrice =getOrderTotalPrice()
+            if (totalPrice >= (-2 * discountAmount)) {
                 discountAmount
             } else {
                 _validateCouponStatus.value = RemoteStatus.Failure(CantApplyDiscountException())

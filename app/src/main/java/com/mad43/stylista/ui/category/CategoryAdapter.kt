@@ -13,6 +13,7 @@ import com.mad43.stylista.domain.model.DisplayProduct
 import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.setImageFromUrl
+import com.mad43.stylista.util.title
 
 
 class CategoryAdapter(
@@ -34,7 +35,7 @@ class CategoryAdapter(
 
         holder.binding.imageProduct.setImageFromUrl(getItem(position).image)
 
-        holder.binding.nameProduct.text = getItem(position).title
+        holder.binding.nameProduct.title(getItem(position).title)
 
         holder.binding.priceProduct.setPrice(getItem(position).price.toDouble())
 

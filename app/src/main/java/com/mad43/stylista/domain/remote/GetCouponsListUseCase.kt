@@ -13,9 +13,9 @@ import java.util.Calendar
 class GetCouponsListUseCase(private val couponRepo: CouponRepo = CouponRepoImp()) {
 
     suspend operator fun invoke(): RemoteStatus<List<CouponItem>> {
-        val priceRules = couponRepo.getAllPriceRules().price_rules
-        val couponItems = mutableListOf<CouponItem>()
         return try {
+            val priceRules = couponRepo.getAllPriceRules().price_rules
+            val couponItems = mutableListOf<CouponItem>()
             if (priceRules != null) {
                 priceRules.forEach { priceRule ->
                     couponRepo.getCouponWithPriceRuleId(priceRule?.id.toString()).discount_codes?.forEach { discountCode ->

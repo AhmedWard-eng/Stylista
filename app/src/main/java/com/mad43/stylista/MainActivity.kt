@@ -34,12 +34,10 @@ class MainActivity : AppCompatActivity() {
 
         navView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_activity_main)
-
         navView.setupWithNavController(navController)
 
         setBottomBarVisibility()
         setActionBarVisibility()
-//        setLabelInActionBar()
 
         setActionHint()
         binding.searchView.setOnClickListener {
@@ -54,12 +52,10 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.favouriteFragment)
         }
 
-
         binding.imageCart.setOnClickListener {
             navController.navigate(R.id.cartFragment2)
         }
     }
-
 
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->

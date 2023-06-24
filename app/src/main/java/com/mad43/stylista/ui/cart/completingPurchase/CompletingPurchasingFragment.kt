@@ -35,11 +35,9 @@ import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.setPrice
 import kotlinx.coroutines.launch
-import okhttp3.internal.notifyAll
 import java.lang.Exception
-import javax.annotation.meta.When
 
-class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
+class CompletingPurchasingFragment : Fragment(), GooglePayListener {
 
     private var _binding: FragmentCompletingPurchasingBinding? = null
 
@@ -49,7 +47,7 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
     private val binding get() = _binding!!
     private lateinit var viewModel: CompletingPurchasingViewModel
 
-    private lateinit var googlePayClient : GooglePayClient
+    private lateinit var googlePayClient: GooglePayClient
     private lateinit var braintreeClient: BraintreeClient
 
 
@@ -58,13 +56,16 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
         savedInstanceState: Bundle?
     ): View {
         val args = CompletingPurchasingFragmentArgs.fromBundle(requireArguments())
-        viewModel = ViewModelProvider(this)[CompletingPurchasingViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[CompletingPurchasingViewModel::class.java]
         viewModel.cartList = args.cartArray.toList()
         _binding = FragmentCompletingPurchasingBinding.inflate(inflater, container, false)
-        braintreeClient =  BraintreeClient(requireContext().applicationContext, "sandbox_5r42nmbk_b7dn3gbb5qtxmw2w")
-        googlePayClient = GooglePayClient(this,braintreeClient)
+        braintreeClient = BraintreeClient(
+            requireContext().applicationContext,
+            "sandbox_5r42nmbk_b7dn3gbb5qtxmw2w"
+        )
+        googlePayClient = GooglePayClient(this, braintreeClient)
         googlePayClient.setListener(this)
-        if (viewModel.goingToAddNewAddress){
+        if (viewModel.goingToAddNewAddress) {
             viewModel.getDefaultAddress()
         }
         return binding.root
@@ -72,21 +73,26 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.defaultAddressState.collect{
-                    when(it){
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.defaultAddressState.collect {
+                    when (it) {
                         is RemoteStatus.Success -> {
                             setAddressInView(it.data)
                             viewModel.address = it.data
                         }
-                        is RemoteStatus.Failure ->{
-                            if (it.msg is HasNoAddressException){
+
+                        is RemoteStatus.Failure -> {
+                            if (it.msg is HasNoAddressException) {
                                 binding.groupAddress.visibility = GONE
                                 binding.group.visibility = VISIBLE
                             }
                         }
-                        else ->{
+
+                        else -> {
 
                         }
                     }
@@ -95,19 +101,21 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
         }
 
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.validateCouponStatus.collect{
-                    when(it){
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.validateCouponStatus.collect {
+                    when (it) {
                         is RemoteStatus.Success -> {
                             viewModel.discountCode = it.data.code
                             viewModel.discountAmount = it.data.value
                             viewModel.discountType = it.data.value_type
                             setDiscountInText()
-                            binding.textViewDiscountMessage.text = getString(R.string.discount_applied)
+                            binding.textViewDiscountMessage.text =
+                                getString(R.string.discount_applied)
 
                             binding.groupLoading.visibility = GONE
                         }
-                        is RemoteStatus.Failure ->{
+
+                        is RemoteStatus.Failure -> {
 
                             viewModel.discountCode = ""
                             viewModel.discountAmount = -0.0
@@ -117,24 +125,28 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
                             when (it.msg) {
                                 is CouponExpiredException -> {
                                     binding.textViewDiscountMessage.visibility = VISIBLE
-                                    binding.textViewDiscountMessage.text = getString(R.string.coupon_is_expired)
+                                    binding.textViewDiscountMessage.text =
+                                        getString(R.string.coupon_is_expired)
 
                                 }
 
                                 is NotExistedException -> {
                                     binding.textViewDiscountMessage.visibility = VISIBLE
-                                    binding.textViewDiscountMessage.text = getString(R.string.coupon_is_not_found)
+                                    binding.textViewDiscountMessage.text =
+                                        getString(R.string.coupon_is_not_found)
                                 }
 
                                 is CantApplyDiscountException -> {
                                     binding.textViewDiscountMessage.visibility = VISIBLE
-                                    binding.textViewDiscountMessage.text = getString(R.string.can_t_apply_that_coupon_to_that_pilling)
+                                    binding.textViewDiscountMessage.text =
+                                        getString(R.string.can_t_apply_that_coupon_to_that_pilling)
                                 }
                             }
 
                             binding.groupLoading.visibility = GONE
                         }
-                        else ->{
+
+                        else -> {
 
                         }
                     }
@@ -142,21 +154,28 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
             }
         }
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.postingOrderState.collect{
-                    when (it){
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.postingOrderState.collect {
+                    when (it) {
                         is RemoteStatus.Success -> {
                             binding.groupLoading.visibility = GONE
-                            Navigation.findNavController(requireView()).navigate(R.id.action_completingPurchasingFragment_to_navigation_home)
+                            Navigation.findNavController(requireView())
+                                .navigate(R.id.action_completingPurchasingFragment_to_navigation_home)
                             viewModel.clearCart()
                             binding.groupLoading.visibility = GONE
-
-                            MyDialog().showAlertDialog(getString(R.string.your_order_is_confirmed), requireContext())
-
+                            MyDialog().showAlertDialog(
+                                getString(R.string.your_order_is_confirmed),
+                                requireContext()
+                            )
+                            viewModel.resetPosting()
                         }
-                        is RemoteStatus.Failure ->{
+                        is RemoteStatus.Failure -> {
                             binding.groupLoading.visibility = GONE
-                            MyDialog().showAlertDialog(getString(R.string.something_went_wrong_while_completing_your_order),requireContext())
+                            MyDialog().showAlertDialog(
+                                getString(R.string.something_went_wrong_while_completing_your_order),
+                                requireContext()
+                            )
+                            viewModel.resetPosting()
                         }
                         else -> {
 
@@ -173,47 +192,68 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
         binding.radioGroup.setOnCheckedChangeListener { _, checked ->
             when (checked) {
                 R.id.radioButtonCOD -> viewModel.paymentType = PaymentType.COD
-                R.id.radioButtonGP-> viewModel.paymentType = PaymentType.GOOGLE_PAY
+                R.id.radioButtonGP -> viewModel.paymentType = PaymentType.GOOGLE_PAY
             }
+        }
+        binding.textViewChangeAddress.setOnClickListener {
+            val action = CompletingPurchasingFragmentDirections.actionCompletingPurchasingFragmentToAddressListFragment()
+            action.chooseAddress = true
+            Navigation.findNavController(requireView()).navigate(action)
         }
 
         binding.buttonAddNewAddress.setOnClickListener {
             viewModel.goingToAddNewAddress = true
-            val action = CompletingPurchasingFragmentDirections.actionCompletingPurchasingFragmentToAddressDetailsEditFragment(AddressItem(viewModel.userId!!,))
+            val action =
+                CompletingPurchasingFragmentDirections.actionCompletingPurchasingFragmentToAddressDetailsEditFragment(
+                    AddressItem(viewModel.userId!!)
+                )
             Navigation.findNavController(requireView()).navigate(action)
         }
         binding.textViewOrderPrice.setPrice(viewModel.getOrderTotalPrice())
 
         binding.buttonPurchase.setOnClickListener {
-            when(viewModel.paymentType){
-                PaymentType.COD -> {
-                    val discountCode = if(viewModel.discountCode.isNotBlank()){
-                        listOf(DiscountCode(type = viewModel.discountType, amount = (viewModel.getDiscount() * -1).toString(), code = viewModel.discountCode))
-                    }else{
-                        null
-                    }
-                    viewModel.postOrder(PostOrderResponse(
-                        order = Orders(
-                            lineItems = viewModel.cartList.toOrderLineItems(),
-                            discount_codes = discountCode,
-                            email = viewModel.email,
-                            customer = CustomerOrder(viewModel.userId)
+            if (viewModel.address == null) {
+                MyDialog().showAlertDialog(getString(R.string.please_add_new_address_first),requireContext())
+            } else {
+                when (viewModel.paymentType) {
+                    PaymentType.COD -> {
+                        val discountCode = if (viewModel.discountCode.isNotBlank()) {
+                            listOf(
+                                DiscountCode(
+                                    type = viewModel.discountType,
+                                    amount = (viewModel.getDiscount() * -1).toString(),
+                                    code = viewModel.discountCode
+                                )
+                            )
+                        } else {
+                            null
+                        }
+                        viewModel.postOrder(
+                            PostOrderResponse(
+                                order = Orders(
+                                    lineItems = viewModel.cartList.toOrderLineItems(),
+                                    discount_codes = discountCode,
+                                    email = viewModel.email,
+                                    customer = CustomerOrder(viewModel.userId)
+                                )
+                            )
                         )
-                    ))
-                }
-                PaymentType.GOOGLE_PAY -> {
-                    val googlePayRequest = GooglePayRequest()
+                    }
 
-                    googlePayRequest.transactionInfo = TransactionInfo.newBuilder()
-                        .setTotalPrice("${viewModel.getOrderTotalPrice() - viewModel.discountAmount}")
-                        .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
-                        .setCurrencyCode(CurrencyManager().getCurrencyPair().first)
-                        .build()
-                    googlePayRequest.isBillingAddressRequired = true
+                    PaymentType.GOOGLE_PAY -> {
+                        val googlePayRequest = GooglePayRequest()
 
-                    googlePayClient.requestPayment(requireActivity(), googlePayRequest)
+                        googlePayRequest.transactionInfo = TransactionInfo.newBuilder()
+                            .setTotalPrice("${viewModel.getOrderTotalPrice() - viewModel.discountAmount}")
+                            .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+                            .setCurrencyCode(CurrencyManager().getCurrencyPair().first)
+                            .build()
+                        googlePayRequest.isBillingAddressRequired = true
 
-                    binding.groupLoading.visibility = VISIBLE
+                        googlePayClient.requestPayment(requireActivity(), googlePayRequest)
+
+                        binding.groupLoading.visibility = VISIBLE
+                    }
                 }
             }
         }
@@ -224,6 +264,7 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
         }
 
     }
+
 
     private fun setDiscountInText() {
         binding.textViewDiscountPrice.setPrice(viewModel.getDiscount())
@@ -252,19 +293,27 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
     }
 
     override fun onGooglePaySuccess(paymentMethodNonce: PaymentMethodNonce) {
-        val discountCode = if(viewModel.discountCode.isNotBlank()){
-            listOf(DiscountCode(type = viewModel.discountType, amount = (viewModel.getDiscount() * -1).toString(), code = viewModel.discountCode))
-        }else{
+        val discountCode = if (viewModel.discountCode.isNotBlank()) {
+            listOf(
+                DiscountCode(
+                    type = viewModel.discountType,
+                    amount = (viewModel.getDiscount() * -1).toString(),
+                    code = viewModel.discountCode
+                )
+            )
+        } else {
             null
         }
-        viewModel.postOrder(PostOrderResponse(
-            order = Orders(
-                lineItems = viewModel.cartList.toOrderLineItems(),
-                discount_codes = discountCode,
-                email = viewModel.email,
-                customer = CustomerOrder(viewModel.userId)
+        viewModel.postOrder(
+            PostOrderResponse(
+                order = Orders(
+                    lineItems = viewModel.cartList.toOrderLineItems(),
+                    discount_codes = discountCode,
+                    email = viewModel.email,
+                    customer = CustomerOrder(viewModel.userId)
+                )
             )
-        ))
+        )
         binding.groupLoading.visibility = VISIBLE
     }
 
@@ -272,7 +321,7 @@ class CompletingPurchasingFragment : Fragment() ,GooglePayListener{
         if (error is UserCanceledException) {
             Log.d("TAG", "userCancel: $error")
         } else {
-            MyDialog().showAlertDialog(getString(R.string.try_again),requireContext())
+            MyDialog().showAlertDialog(getString(R.string.try_again), requireContext())
             Log.d("TAG", "onGooglePayFailure: $error")
         }
         binding.groupLoading.visibility = GONE

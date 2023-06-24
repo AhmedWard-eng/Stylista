@@ -33,7 +33,9 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_navigation_profile_to_logInFragment"
-            app:destination="@id/logInFragment" />
+            app:destination="@id/logInFragment"
+            app:popUpTo="@id/navigation_profile"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_navigation_profile_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
@@ -46,6 +48,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_orderDetailsFragment2"
             app:destination="@id/orderDetailsFragment2" />
+        <action
+            android:id="@+id/action_navigation_profile_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -78,7 +83,9 @@
         tools:layout="@layout/fragment_registration" >
         <action
             android:id="@+id/action_registrationFragment_to_logInFragment"
-            app:destination="@id/logInFragment" />
+            app:destination="@id/logInFragment"
+            app:popUpTo="@id/registrationFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/logInFragment"
@@ -143,6 +150,14 @@
         <action
             android:id="@+id/action_favouriteFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_favouriteFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_favouriteFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/favouriteFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/currencyFragment"
@@ -191,6 +206,9 @@
             app:destination="@id/navigation_home"
             app:popUpTo="@id/completingPurchasingFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_completingPurchasingFragment_to_addressListFragment2"
+            app:destination="@id/addressListFragment" />
     </fragment>
 
     <fragment

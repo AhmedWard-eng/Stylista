@@ -29,20 +29,14 @@ class AddressAdapter(private val clickListener: ClickListener) :
 
         binding.textViewFullAddress.text = buildString {
             append(item.address2)
-            append(", ")
-            append(item.city)
-            append(", ")
-            append(item.province)
-            append(", ")
-            append(item.country)
         }
 
         binding.textViewPhoneNumber.text = item.phone
 
-        if(item.isDefault){
+        if (item.isDefault) {
             binding.checkBoxIsDefault.isChecked = true
             binding.checkBoxIsDefault.isEnabled = false
-        }else{
+        } else {
             binding.checkBoxIsDefault.isEnabled = true
             binding.checkBoxIsDefault.isChecked = false
         }
@@ -58,6 +52,9 @@ class AddressAdapter(private val clickListener: ClickListener) :
             clickListener.delete(item)
             true
         }
+        binding.root.setOnClickListener {
+            clickListener.select(item)
+        }
     }
 
 
@@ -71,10 +68,17 @@ class AddressAdapter(private val clickListener: ClickListener) :
         }
     }
 
-    class ClickListener(private val editListener: (addressItem: AddressItem) -> Unit,private val deleteListener: (addressItem: AddressItem) -> Unit,private val setDefaultListener: (addressItem: AddressItem) -> Unit) {
+    class ClickListener(
+        private val editListener: (addressItem: AddressItem) -> Unit,
+        private val deleteListener: (addressItem: AddressItem) -> Unit,
+        private val setDefaultListener: (addressItem: AddressItem) -> Unit,
+        private val selectListener: (addressItem: AddressItem) -> Unit
+    ) {
         fun edit(addressItem: AddressItem) = editListener(addressItem)
         fun delete(addressItem: AddressItem) = deleteListener(addressItem)
         fun setDefault(addressItem: AddressItem) = setDefaultListener(addressItem)
+
+        fun select(addressItem: AddressItem) = selectListener(addressItem)
     }
 
 

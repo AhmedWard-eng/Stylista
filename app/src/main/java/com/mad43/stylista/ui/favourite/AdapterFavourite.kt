@@ -12,6 +12,7 @@ import com.mad43.stylista.databinding.RowFavouriteBinding
 import com.mad43.stylista.ui.brand.OnItemProductClicked
 import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.setImageFromUrl
+import com.mad43.stylista.util.title
 
 class AdapterFavourite (private var favouriteList: List<Favourite>,private val onClick:OnItemProductClicked) :
     RecyclerView.Adapter<AdapterFavourite.ViewHolder>() {
@@ -34,7 +35,7 @@ class AdapterFavourite (private var favouriteList: List<Favourite>,private val o
 
     class ViewHolder(private val binding: RowFavouriteBinding, private val listener: OnItemProductClicked): RecyclerView.ViewHolder(binding.root) {
         fun bind(favourite: Favourite) {
-            binding.nameProduct.text = favourite.title
+            binding.nameProduct.title(favourite.title)
             binding.priceProduct.text = favourite.price
             binding.imageProduct.setImageFromUrl(favourite.image)
             val context = itemView.context

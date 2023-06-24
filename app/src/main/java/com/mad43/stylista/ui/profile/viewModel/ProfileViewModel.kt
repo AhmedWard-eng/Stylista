@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.profile.viewModel
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -110,7 +111,7 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
     }
 
 
-    private fun getOrders() {
+    fun getOrders() {
         viewModelScope.launch {
             try {
                 ordersRepo.getAllOrders().catch { e ->
@@ -129,6 +130,9 @@ class ProfileViewModel (private val authUseCase : AuthUseCase = AuthUseCase(), v
             try {
                 val customDraftOrderResponse = favourite.getFavouriteUsingId(idFavourite)
                 _uiStateNetwork.value = customDraftOrderResponse
+
+                Log.d(ContentValues.TAG, "WISHLLLLIST Fragmentttttttt: ${customDraftOrderResponse.toString()} ")
+                Log.d(TAG, "WISHLLLLIST: ${_uiStateNetwork.value.toString().get(0).toString()}")
                 Log.d(ContentValues.TAG, "getFavouriteUsingId: ${_uiStateNetwork.value}")
             } catch (e: Exception) {
                 _uiStateNetwork.value = RemoteStatus.Failure(e)

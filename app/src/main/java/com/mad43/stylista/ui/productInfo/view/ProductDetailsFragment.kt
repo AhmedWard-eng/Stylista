@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.db.ConcreteLocalSource
@@ -36,12 +35,14 @@ import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
 import com.mad43.stylista.util.MyDialog
+import com.mad43.stylista.util.NetworkConnectivity
 import com.mad43.stylista.util.RemoteStatus
+import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.showDialog
+import com.mad43.stylista.util.title
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.random.Random
-
 
 class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
@@ -50,6 +51,12 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
 
     lateinit var productInfo: ProductInfoViewModel
     lateinit var favFactory: ProductInfoViewModelFactory
+
+    private val networkConnectivity by lazy {
+        NetworkConnectivity.getInstance(requireActivity().application)
+    }
+
+    var id: Long? = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +70,11 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val id = arguments?.getLong("id")
+        id = arguments?.getLong("id")
+
+        binding.swipeRefresher.setOnRefreshListener {
+            refresh()
+        }
 
         val context = requireContext().applicationContext
         val localSource = ConcreteLocalSource(context)
@@ -72,8 +83,8 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
         productInfo = ViewModelProvider(this, favFactory)[ProductInfoViewModel::class.java]
 
         if (id != null) {
-            productInfo.getProductDetails(id)
-            productInfo.isFavourite(id)
+            productInfo.getProductDetails(id ?: 0L)
+            productInfo.isFavourite(id ?: 0L)
         }
 
         displayInfo()
@@ -112,13 +123,15 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                                         R.string.go_to_cart
                                     ), getString(R.string.dismiss)
                                 ) {
-                                    Navigation.findNavController(requireView()).navigate(R.id.action_productDetailsFragment_to_cartFragment2)
+                                    Navigation.findNavController(requireView())
+                                        .navigate(R.id.action_productDetailsFragment_to_cartFragment2)
                                 }
-                            }else{
+                            } else {
                                 MyDialog().showAlertDialog(
                                     getString(R.string.something_went_wrong),
                                     requireContext()
                                 )
+                                Log.i("CAT", it.msg.toString())
                             }
                             binding.progressBar.visibility = GONE
                             productInfo.resetAddingToCart()
@@ -149,12 +162,12 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                         val productImage = uiState.data.product.images[0].src
                         productInfo.urlImageProduct = productImage
                         val variantID = uiState.data.product.variants[0].id
-                        binding.textViewProductName.text = productTitle
+                        binding.textViewProductName.title(productTitle)
                         binding.textViewDescriptionScroll.text = uiState.data.product.body_html
                         binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
                         binding.imageSlider.setImageList(productInfo.imagesArray, ScaleTypes.FIT)
                         binding.imageSlider.startSliding(2000)
-                        binding.textViewPrice.text = productPrice
+                        binding.textViewPrice.setPrice(productPrice.toDouble())
                         val randomFloat = Random.nextFloat() * 4.0f + 1.0f
                         binding.ratingBar.rating = randomFloat
 
@@ -209,6 +222,10 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                     }
 
                     else -> {
+                        if (!networkConnectivity.isOnline()) {
+                            binding.connectivity.visibility = View.GONE
+                            binding.noConnectivity.visibility = View.VISIBLE
+                        }
                     }
 
                 }
@@ -268,12 +285,19 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     }
 
     private fun isDataLoading() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.ratingBar.visibility = View.GONE
-        binding.buttonAvailableSize.visibility = View.GONE
-        binding.buttonAddToCart.visibility = View.GONE
-        binding.textViewReviews.visibility = View.GONE
-        binding.textViewDescriptionScroll.visibility = View.GONE
+        if (networkConnectivity.isOnline()) {
+            binding.noConnectivity.visibility = View.GONE
+            binding.connectivity.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
+            binding.ratingBar.visibility = View.GONE
+            binding.buttonAvailableSize.visibility = View.GONE
+            binding.buttonAddToCart.visibility = View.GONE
+            binding.textViewReviews.visibility = View.GONE
+            binding.textViewDescriptionScroll.visibility = View.GONE
+        }else{
+            binding.noConnectivity.visibility = View.VISIBLE
+            binding.connectivity.visibility = View.GONE
+        }
     }
 
     override fun onClick(product: Favourite) {
@@ -374,6 +398,21 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun refresh() {
+        if (networkConnectivity.isOnline()) {
+            binding.connectivity.visibility = View.VISIBLE
+            binding.noConnectivity.visibility = View.GONE
+
+            productInfo.getProductDetails(id ?: 0L)
+
+        } else {
+            binding.connectivity.visibility = View.GONE
+            binding.noConnectivity.visibility = View.VISIBLE
+        }
+
+        binding.swipeRefresher.isRefreshing = false
     }
 
 }

@@ -12,6 +12,7 @@ import com.mad43.stylista.databinding.ProductItemBinding
 import com.mad43.stylista.domain.model.DisplayProduct
 import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.setImageFromUrl
+import com.mad43.stylista.util.title
 
 
 class BrandAdapter(
@@ -33,7 +34,7 @@ class BrandAdapter(
 
         holder.binding.imageProduct.setImageFromUrl(getItem(position).image)
 
-        holder.binding.nameProduct.text = getItem(position).title
+        holder.binding.nameProduct.title(getItem(position).title)
 
         holder.binding.priceProduct.setPrice(getItem(position).price.toDouble())
 
