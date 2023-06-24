@@ -48,14 +48,12 @@ class LogInFragment : Fragment() {
     var dialog = MyDialog()
     lateinit var favFactory: LoginViewModelFactory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLogInBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -31,6 +31,7 @@ class AddressListViewModel(
 
 
     var customerId : Long? = null
+    var chooseAddress = false
     val result = customerManager.getCustomerData()
     init {
         if(result.isSuccess){

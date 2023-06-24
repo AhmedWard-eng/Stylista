@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentAddressListBinding
 import com.mad43.stylista.domain.model.AddressItem
+import com.mad43.stylista.ui.cart.completingPurchase.CompletingPurchasingViewModel
 import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.RemoteStatus
 import com.mad43.stylista.util.showConfirmationDialog
@@ -30,13 +31,15 @@ class AddressListFragment : Fragment() {
 
     private lateinit var adapter : AddressAdapter
     private lateinit var viewModel: AddressListViewModel
+    private lateinit var completePurchasingViewModel: CompletingPurchasingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        adapter = AddressAdapter(AddressAdapter.ClickListener(::editAddress, ::deleteAddress,::setDefault))
+        adapter = AddressAdapter(AddressAdapter.ClickListener(::editAddress, ::deleteAddress,::setDefault,::select))
         viewModel = ViewModelProvider(this)[AddressListViewModel::class.java]
+        completePurchasingViewModel = ViewModelProvider(requireActivity())[CompletingPurchasingViewModel::class.java]
         viewModel.getAddressList()
         _binding = FragmentAddressListBinding.inflate(inflater, container, false)
         return binding.root
@@ -68,6 +71,8 @@ class AddressListFragment : Fragment() {
                 }
             }
         }
+        val args = AddressListFragmentArgs.fromBundle(requireArguments())
+        viewModel.chooseAddress = args.chooseAddress
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -120,6 +125,13 @@ class AddressListFragment : Fragment() {
         showConfirmationDialog(getString(R.string.are_you_sure_you_want_to_make_this_address_your_default_address)){
             binding.progressBar.visibility = View.VISIBLE
             viewModel.setAddressDefault(addressItem.addressId)
+        }
+    }
+
+    private fun select(addressItem: AddressItem){
+        if(viewModel.chooseAddress){
+            completePurchasingViewModel.setNewAddress(addressItem)
+            Navigation.findNavController(requireView()).navigateUp()
         }
     }
 
