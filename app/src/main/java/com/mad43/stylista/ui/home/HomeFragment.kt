@@ -23,7 +23,6 @@ import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentHomeBinding
 import com.mad43.stylista.util.MyDialog
-import com.mad43.stylista.R
 import com.mad43.stylista.util.NetworkConnectivity
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
