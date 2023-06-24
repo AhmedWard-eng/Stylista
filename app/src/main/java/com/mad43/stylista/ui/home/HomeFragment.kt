@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.interfaces.ItemClickListener
+import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentHomeBinding
 import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.R
@@ -60,13 +61,18 @@ class HomeFragment : Fragment(), OnItemBrandClicked {
         binding.imageSliderHome.startSliding(2000)
         binding.imageSliderHome.setItemClickListener(object  : ItemClickListener{
             override fun doubleClick(position: Int) {
+                if(homeViewModel.couponCode.isNotBlank()){
+                    copyToClipBoard()
+                }else{
+                    MyDialog().showAlertDialog(getString(R.string.no_available_coupons),requireContext())
+                }
             }
 
             override fun onItemSelected(position: Int) {
                 if(homeViewModel.couponCode.isNotBlank()){
                     copyToClipBoard()
                 }else{
-                    Log.d("TAG", "onViewCreated: hello hello")
+                    MyDialog().showAlertDialog(getString(R.string.no_available_coupons),requireContext())
                 }
             }
 

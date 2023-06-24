@@ -134,7 +134,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="total">Total</string>
     <string name="try_again">Try Again</string>
     <string name="your_order_is_confirmed">your order is confirmed</string>
@@ -142,6 +141,8 @@
     <string name="proceed_to_buy">Proceed to buy</string>
     <string name="please_add_new_address_first">Please Add new address first</string>
     <string name="address_details">address details</string>
+    <string name="search_for_your_address">Search for your address: </string>
+    <string name="no_available_coupons">No Available coupons</string>
 
     /***Ahmed***/
 </resources>
