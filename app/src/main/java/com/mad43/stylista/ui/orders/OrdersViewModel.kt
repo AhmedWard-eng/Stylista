@@ -21,7 +21,7 @@ class OrdersViewModel(
         getOrders()
     }
 
-    private fun getOrders() {
+    fun getOrders() {
         viewModelScope.launch {
             Log.i("DDDDDD","Enterrrrrrrr")
             try {

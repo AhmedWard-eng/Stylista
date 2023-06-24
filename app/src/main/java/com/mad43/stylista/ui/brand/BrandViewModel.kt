@@ -15,8 +15,8 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
     ViewModel() {
 
     var products = MutableStateFlow<RemoteStatus<List<DisplayProduct>>>(RemoteStatus.Loading)
-    lateinit var dataFiltered: List<DisplayProduct>
-    lateinit var allData: List<DisplayProduct>
+    var dataFiltered: List<DisplayProduct> = listOf()
+    var allData: List<DisplayProduct> = listOf()
     var filter = false
     var maxPrice = 0
 
@@ -31,7 +31,6 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
             } catch (e: Exception) {
                 products.value = RemoteStatus.Failure(e)
             }
-
         }
     }
 
@@ -44,11 +43,8 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
     }
 
     fun filterByPrice(price: String) {
-
         if (filter) {
-
             dataFiltered = allData.filter {
-
                 (0.00 <= it.price.toFloat() && it.price.toFloat() <= price.toFloat())
             }
             if (price == "") {
@@ -56,8 +52,6 @@ class BrandViewModel(private val repoInterface: ProductsRepoInterface = Products
             } else {
                 products.value = RemoteStatus.Success(dataFiltered)
             }
-
-
         } else {
             products.value = RemoteStatus.Success(allData)
         }

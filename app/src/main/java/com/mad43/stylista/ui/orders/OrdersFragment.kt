@@ -21,9 +21,12 @@ import com.mad43.stylista.ui.brand.BrandViewModel
 import com.mad43.stylista.ui.category.CategoryAdapter
 import com.mad43.stylista.ui.category.CategoryViewModel
 import com.mad43.stylista.ui.home.HomeFragmentDirections
+import com.mad43.stylista.util.MyDialog
+import com.mad43.stylista.util.NetworkConnectivity
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newCoroutineContext
 
 class OrdersFragment : Fragment(), OnItemOrderClicked {
 
@@ -32,6 +35,9 @@ class OrdersFragment : Fragment(), OnItemOrderClicked {
     private val binding get() = _binding!!
     private lateinit var ordersAdapter: OrdersAdapter
 
+    private val networkConnectivity by lazy {
+        NetworkConnectivity.getInstance(requireActivity().application)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -47,12 +53,33 @@ class OrdersFragment : Fragment(), OnItemOrderClicked {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.swipeRefresher.setColorSchemeResources(R.color.primary_color)
+
+        if (networkConnectivity.isOnline()) {
+            binding.connectivity.visibility = View.VISIBLE
+            binding.noConnectivity.visibility = View.GONE
+        } else {
+            binding.connectivity.visibility = View.GONE
+            binding.noConnectivity.visibility = View.VISIBLE
+        }
+
+        binding.swipeRefresher.setOnRefreshListener {
+            refresh()
+        }
+
         lifecycleScope.launch {
             ordersViewModel.orders.collectLatest {
                 when (it) {
                     is RemoteStatus.Loading -> {
-                        binding.recycleOrders.visibility = View.GONE
-                        binding.shimmerFrameLayoutOrders.startShimmerAnimation()
+                        if (networkConnectivity.isOnline()) {
+                            binding.connectivity.visibility = View.VISIBLE
+                            binding.noConnectivity.visibility = View.GONE
+                            binding.recycleOrders.visibility = View.GONE
+                            binding.shimmerFrameLayoutOrders.startShimmerAnimation()
+                        }else{
+                            binding.connectivity.visibility = View.GONE
+                            binding.noConnectivity.visibility = View.VISIBLE
+                        }
                     }
 
                     is RemoteStatus.Success -> {
@@ -70,15 +97,43 @@ class OrdersFragment : Fragment(), OnItemOrderClicked {
                         }
                     }
 
-                    else -> {}
+                    else -> {
+                        if (!networkConnectivity.isOnline()) {
+                            binding.noConnectivity.visibility = View.GONE
+                            binding.connectivity.visibility = View.GONE
+                        }
+                    }
                 }
             }
         }
     }
 
     override fun orderClicked(orders: Orders) {
-        val action = OrdersFragmentDirections.actionOrdersFragmentToOrderDetailsFragment2(orders)
-        binding.root.findNavController().navigate(action)
+        if (networkConnectivity.isOnline()) {
+            val action =
+                OrdersFragmentDirections.actionOrdersFragmentToOrderDetailsFragment2(orders)
+            binding.root.findNavController().navigate(action)
+        }else{
+            val dialog = MyDialog()
+            dialog.showAlertDialog("Please, check your connection", requireContext())
+        }
     }
+
+    private fun refresh() {
+        if (networkConnectivity.isOnline()) {
+            binding.connectivity.visibility = View.VISIBLE
+            binding.noConnectivity.visibility = View.GONE
+
+            ordersViewModel.getOrders()
+        } else {
+            binding.connectivity.visibility = View.GONE
+            binding.noConnectivity.visibility = View.VISIBLE
+        }
+
+        binding.swipeRefresher.isRefreshing = false
+    }
+
+
+
 
 }

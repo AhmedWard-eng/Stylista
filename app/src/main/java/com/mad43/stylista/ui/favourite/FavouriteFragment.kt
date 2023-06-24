@@ -79,12 +79,29 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
             productInfo.favouriteList.collectLatest { uiState ->when (uiState) {
                     is RemoteStatus.Success -> {
                         brandAdapter.setData(uiState.data)
+
+                        if (uiState.data.isEmpty() ){
+                            binding.imageView.visibility = View.VISIBLE
+                            binding.textView7.visibility = View.VISIBLE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.GONE
+                        }
+                        else{
+                            binding.imageView.visibility = View.GONE
+                            binding.textView7.visibility = View.GONE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.VISIBLE
+                        }
                     }
+                is RemoteStatus.Loading -> {
+                    binding.textViewMyFavourite.visibility = View.VISIBLE
+                }
 
                 else -> {}
                 }
             }
         }
+
         lifecycleScope.launch {
             productInfo.uiStateNetwork.collectLatest {
                     uiState ->when (uiState) {
@@ -105,12 +122,31 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
                         }
                         val favouriteList1 = favouriteSet.toList()
                         brandAdapter.setData(favouriteList1)
+                        if (favouriteList1.isEmpty() ){
+                            binding.imageView.visibility = View.VISIBLE
+                            binding.textView7.visibility = View.VISIBLE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.GONE
+                        }
+                        else{
+                            binding.imageView.visibility = View.GONE
+                            binding.textView7.visibility = View.GONE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.VISIBLE
+                        }
+
                     }
                 is RemoteStatus.Failure ->{
                     Log.d(TAG, "failllllllllllllll:::;: ")
                     binding.textViewMyFavourite.visibility = View.GONE
+                    binding.imageView.visibility = View.GONE
+                    binding.textView7.visibility = View.GONE
                     showConfirmationDialog()
                 }
+                is RemoteStatus.Loading -> {
+                    binding.textViewMyFavourite.visibility = View.VISIBLE
+                }
+
                 else -> {
                     Log.d(TAG, "elllllllllllse:::;: ")
                 }
@@ -131,11 +167,11 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
         builder.setMessage(message)
             .setPositiveButton(getString(R.string.yes)) { dialog, which ->
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.logInFragment)
+                    .navigate(R.id.action_favouriteFragment_to_logInFragment)
             }
             .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.navigation_home)
+                    .navigate(R.id.action_favouriteFragment_to_navigation_home)
             }
         builder.show()
     }

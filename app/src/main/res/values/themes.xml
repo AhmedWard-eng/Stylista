@@ -15,6 +15,7 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="fontFamily">@font/andika</item>
 
     </style>
     <style name="Theme.Stylista.NoActionBar">
@@ -23,6 +24,5 @@
     </style>
     <style name="Theme.Stylista.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.Stylista.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 </resources>

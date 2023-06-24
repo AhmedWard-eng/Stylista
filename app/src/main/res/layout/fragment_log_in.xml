@@ -54,39 +54,55 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="368dp" />
 
-    <EditText
-        android:id="@+id/editTextEmailSignIn"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutUserNameSignUp"
         android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/edit_text_style"
-        android:drawableStart="@drawable/baseline_email"
-        android:drawablePadding="5dp"
-        android:ems="10"
-
-        android:hint="@string/email_address"
-        android:paddingStart="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toBottomOf="@+id/tab_signIn" />
+        app:layout_constraintTop_toBottomOf="@+id/tab_signUp"
+        >
 
     <EditText
-        android:id="@+id/textPasswordSignIn"
+        android:id="@+id/editTextEmailSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_style"
+        android:drawableStart="@drawable/baseline_person_24"
+        android:drawablePadding="5dp"
+        android:padding="20dp"
+        android:hint="@string/email_address"
+        android:ems="10"
+        android:inputType="text"
+      />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutPassword"
         android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline17"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUserNameSignUp"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/primary_color"
+        >
+    <EditText
+        android:id="@+id/textPasswordSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/edit_text_style"
         android:drawableStart="@drawable/baseline_lock_24"
         android:drawablePadding="5dp"
         android:ems="10"
+        android:padding="20dp"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:paddingStart="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline16"
-        app:layout_constraintStart_toStartOf="@+id/guideline17"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmailSignIn" />
-
+        />
+    </com.google.android.material.textfield.TextInputLayout>
     <TextView
         android:id="@+id/tab_signUp"
         android:layout_width="wrap_content"
@@ -126,7 +142,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textPasswordSignIn" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

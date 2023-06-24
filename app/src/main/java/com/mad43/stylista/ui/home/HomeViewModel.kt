@@ -38,7 +38,7 @@ class HomeViewModel(
         getBrand()
     }
 
-    private fun getBrand() {
+    fun getBrand() {
         viewModelScope.launch {
             try {
                 repoInterface.getAllBrand().catch { e ->
@@ -60,6 +60,7 @@ class HomeViewModel(
                 is RemoteStatus.Success -> {
                     if (status.data.isNotEmpty())
                         _couponState.emit(RemoteStatus.Success(status.data.random()))
+
                 }
 
                 is RemoteStatus.Failure -> {

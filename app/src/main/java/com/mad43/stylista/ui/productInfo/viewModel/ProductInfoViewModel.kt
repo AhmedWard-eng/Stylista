@@ -131,16 +131,18 @@ class ProductInfoViewModel(
 
     suspend fun getLineItems(idFav: String): MutableList<CustomDraftOrderResponse> {
         var getProduct = favourite.getFavouriteUsingId(idFav)
-
+        Log.d(TAG, "Favourite Fragmentttttttt: ")
         return when (getProduct) {
-            is RemoteStatus.Success -> mutableListOf(getProduct.data)
+            is RemoteStatus.Success -> {
+                Log.d(TAG, "Favourite Fragmentttttttt: ${getProduct.data.draft_order?.line_items?.size} ")
+                mutableListOf(getProduct.data)
+            }
             else -> mutableListOf()
         }
     }
 
     fun getIDForFavourite(): Long {
         val customerData = favourite.getIDFavouriteForCustumer()
-
         return try {
             if (customerData.isSuccess) {
                 val localCustomer = customerData.getOrNull()
@@ -268,7 +270,6 @@ class ProductInfoViewModel(
                 _addedToCart.emit(RemoteStatus.Failure(e))
             }
         }
-
 
     }
 }
