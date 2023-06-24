@@ -6,24 +6,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.mad43.stylista.R
 import com.mad43.stylista.data.local.entity.Favourite
 import com.mad43.stylista.data.remote.entity.auth.LoginResponse
-import com.mad43.stylista.data.remote.entity.auth.SignupResponse
-import com.mad43.stylista.data.remote.entity.auth.UpdateCustumer
-import com.mad43.stylista.data.remote.entity.auth.UpdateCustumerModel
-import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.CustomDraftOrderResponse
+import com.mad43.stylista.data.remote.entity.draftOrders.oneOrderResponse.DraftOrder
 import com.mad43.stylista.data.sharedPreferences.LocalCustomer
 import com.mad43.stylista.domain.local.favourite.FavouriteLocal
 import com.mad43.stylista.domain.remote.auth.AuthUseCase
-import com.mad43.stylista.domain.remote.cart.CreateCartUseCase
-import com.mad43.stylista.domain.remote.favourite.CreateFavouriteUseCase
-import com.mad43.stylista.ui.productInfo.model.ApiState
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val favourite : FavouriteLocal) : ViewModel() {
 
@@ -33,12 +28,10 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
     private val _userExists = MutableStateFlow(false)
     val userExists: StateFlow<Boolean> = _userExists.asStateFlow()
 
-    private var _signInStateLiveData: MutableLiveData<RemoteStatus<LoginResponse>>  = MutableLiveData(RemoteStatus.Loading)
-    var signInStateLiveData: LiveData<RemoteStatus<LoginResponse>>  = _signInStateLiveData
+    private var draftOrderList : DraftOrder ?= null
 
-    var checkLogin = authUseCase.isUserLoggedIn()
-
-
+    private val _draftOrder = MutableStateFlow<DraftOrderState>(DraftOrderState.Loading)
+    val draftOrder: StateFlow<DraftOrderState> = _draftOrder
 
     fun getIDForFavourite(): Long {
         val customerData = favourite.getIDFavouriteForCustumer()
@@ -55,52 +48,48 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
             throw Exception("Customer data not found")
         }
     }
-
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
                 val user = authUseCase.loginCustomer(email)
-
                 if (user.isSuccessful){
                     val data = user.body()
                     if (data != null) {
-
                         if(data.customers[0].tags == password){
-
                             authUseCase.signIn(email,password)
                             var checkEmail = authUseCase.isEmailVerified(email)
                            if (checkEmail){
 
                                _loginState.value = RemoteStatus.Success(data)
-                               _signInStateLiveData.value = RemoteStatus.Success(data)
                                authUseCase.saveLoggedInData(LocalCustomer(customerId = data.customers[0].id,email= email,
                                    state = true, userName = data.customers[0].first_name, cardID = data.customers[0].last_name,
                                    favouriteID = data.customers[0].note))
 
                            }else{
                                _loginState.value = RemoteStatus.Valied(R.string.verfid)
-                               _signInStateLiveData.value = RemoteStatus.Valied(R.string.verfid)
                            }
-
-                        }else{
-                            _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
-                            _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_password)
                         }
-                    }else {
-                        _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
-                        _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
-                        Log.d(TAG, "login: NULLLLLLLLLLLLLLLLLLLLLLLLLLL")
+                        else if(data.customers[0].tags != password){
+                            _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
+                            Log.d(TAG, "/////////////////////login password not match...: ")
+                        }
                     }
                 }else{
                     _loginState.value = RemoteStatus.Valied(R.string.login_faild)
-                    _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_faild)
-                    Log.d(TAG, "ERRRRRRROOOOORRRRR login: ${user.errorBody()}")
+                    Log.d(TAG, "///////ERRRRRRROOOOORRRRR login: ${user.errorBody()}")
                 }
 
-            } catch (e: Exception) {
+            } catch (e: IndexOutOfBoundsException) {
                 _loginState.value = RemoteStatus.Valied(R.string.login_valid_email)
-                _signInStateLiveData.value = RemoteStatus.Valied(R.string.login_valid_email)
-                Log.d(TAG, "Exception:  ${e.message}")
+                Log.d(TAG, "/////// API Exception:  ${e.message}.. ${e.localizedMessage},, $e")
+            }
+            catch (e: FirebaseAuthInvalidCredentialsException){
+                _loginState.value = RemoteStatus.Valied(R.string.login_valid_password)
+                Log.d(TAG, "///////Firbase Exception:  ${e.message}.. ${e.localizedMessage},, $e")
+            }
+            catch (e : FirebaseTooManyRequestsException){
+                _loginState.value = RemoteStatus.Valied(R.string.firbase_signin_try_agin)
+                Log.d(TAG, "///////FirebaseTooManyRequestsException Exception:  ${e.message}.. ${e.localizedMessage},, $e")
             }
         }
     }
@@ -110,40 +99,39 @@ class LoginViewModel (private val authUseCase : AuthUseCase = AuthUseCase(),val 
         _userExists.value = customerData.isSuccess
     }
 
-    suspend fun getLineItems(idFav: String): MutableList<CustomDraftOrderResponse>{
-        var getProduct = favourite.getFavouriteUsingId(idFav)
-
-        return when (getProduct) {
-            is RemoteStatus.Success -> mutableListOf(getProduct.data)
-            else -> mutableListOf()
-        }
+    fun returnReload(){
+        _loginState.value = RemoteStatus.Loading
     }
 
-    suspend fun insertAllProductDB(){
-        var faviuriteID = getIDForFavourite()
-        var draftOrder = getLineItems(idFav = faviuriteID.toString() )
-        for (response in draftOrder) {
-            val draftOrder = response.draft_order
-            if (draftOrder != null && draftOrder.line_items != null) {
-                for (lineItem in draftOrder.line_items) {
-                    var properties = lineItem.properties
-                    val urlImage = properties?.find { it.name == "url_image" }?.value
-                    if (lineItem.title!= null && lineItem.price!=null && lineItem.product_id!=null&& urlImage!=null && lineItem.variant_id!=null){
-                        var favouriteProduct = Favourite(lineItem.product_id,lineItem.title,lineItem.price, image = urlImage,lineItem.variant_id)
-                        viewModelScope.launch(Dispatchers.IO){
-                            favourite.insertProduct(favouriteProduct)
-                        }
+    fun getDraftOrder(idFav : String){
+         viewModelScope.launch(Dispatchers.IO) {
+            val remote = favourite.getFavouriteUsingId(idFav)
+            when(remote){
+                is RemoteStatus.Success ->{
+                    val data = remote.data
+                    draftOrderList = data.draft_order
+                    _draftOrder.value = draftOrderList?.let { DraftOrderState.OnSuccess(it) }!!
 
-                    }
+                    Log.e("7777", "getDraftOrder: ${remote.data.draft_order}", )
+                }
+                is RemoteStatus.Failure -> {
+                    _draftOrder.value = DraftOrderState.OnFail(remote.msg)
+                    Log.e("7777", "FFFF: ${remote.msg.localizedMessage}", )
+                }
+                else ->{
+
                 }
             }
+
         }
+
+    }
+    fun insertDraftOrder(product : Favourite){
+        viewModelScope.launch(Dispatchers.IO) {
+            favourite.insertProduct(product)
+        }
+
     }
 
-    fun insertAll(){
-        viewModelScope.launch {
-            insertAllProductDB()
-        }
-    }
 
 }

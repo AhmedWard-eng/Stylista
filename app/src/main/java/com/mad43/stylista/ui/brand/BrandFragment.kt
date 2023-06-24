@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mad43.stylista.R
 import com.mad43.stylista.databinding.FragmentBrandBinding
+import com.mad43.stylista.util.MyDialog
+import com.mad43.stylista.util.NetworkConnectivity
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -28,6 +30,11 @@ class BrandFragment : Fragment(), OnItemProductClicked {
     private lateinit var brandViewModel: BrandViewModel
     var priceClicked = false
     var categoryClicked = false
+    var brand : String? = null
+
+    private val networkConnectivity by lazy {
+        NetworkConnectivity.getInstance(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +51,26 @@ class BrandFragment : Fragment(), OnItemProductClicked {
         brandViewModel =
             ViewModelProvider(this)[BrandViewModel::class.java]
 
-        val brand = arguments?.getString("brand")
+        brand = arguments?.getString("brand")
 
         binding.filterValue.visibility = View.GONE
 
+        binding.swipeRefresher.setColorSchemeResources(R.color.primary_color)
+
         seekBarConfigration()
+
+        if (networkConnectivity.isOnline()) {
+            binding.connectivity.visibility = View.VISIBLE
+            binding.filterValue.visibility = View.GONE
+            binding.noConnectivity.visibility = View.GONE
+        } else {
+            binding.connectivity.visibility = View.GONE
+            binding.noConnectivity.visibility = View.VISIBLE
+        }
+
+        binding.swipeRefresher.setOnRefreshListener {
+            refresh()
+        }
 
         binding.priceFilter.setOnClickListener {
             if (!priceClicked) {
@@ -160,8 +182,17 @@ class BrandFragment : Fragment(), OnItemProductClicked {
             brandViewModel.products.collectLatest {
                 when (it) {
                     is RemoteStatus.Loading -> {
-                        binding.recyclerView.visibility = View.GONE
-                        binding.shimmerFrameLayoutBrand.startShimmerAnimation()
+
+                        if (networkConnectivity.isOnline()) {
+                            binding.noConnectivity.visibility = View.GONE
+                            binding.recyclerView.visibility = View.GONE
+                            binding.shimmerFrameLayoutBrand.startShimmerAnimation()
+                        }else{
+                            binding.connectivity.visibility = View.GONE
+                            binding.noConnectivity.visibility = View.VISIBLE
+                        }
+
+
                     }
 
                     is RemoteStatus.Success -> {
@@ -181,15 +212,25 @@ class BrandFragment : Fragment(), OnItemProductClicked {
                         }
                     }
 
-                    else -> {}
+                    else -> {
+                        if (!networkConnectivity.isOnline()) {
+                            binding.connectivity.visibility = View.GONE
+                            binding.noConnectivity.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }
     }
 
     override fun productClicked(id: Long) {
-        val action = BrandFragmentDirections.actionBrandFragmentToProductDetailsFragment(id)
-        binding.root.findNavController().navigate(action)
+        if (networkConnectivity.isOnline()) {
+            val action = BrandFragmentDirections.actionBrandFragmentToProductDetailsFragment(id)
+            binding.root.findNavController().navigate(action)
+        }else{
+            val dialog = MyDialog()
+            dialog.showAlertDialog("Please, check your connection",requireContext())
+        }
     }
 
     private fun seekBarConfigration() {
@@ -203,6 +244,21 @@ class BrandFragment : Fragment(), OnItemProductClicked {
             PorterDuff.Mode.SRC_ATOP
         )
 
+    }
+
+    private fun refresh(){
+        if (networkConnectivity.isOnline()) {
+            binding.connectivity.visibility = View.VISIBLE
+            binding.noConnectivity.visibility = View.GONE
+            binding.filterValue.visibility = View.GONE
+            brandViewModel.getProductInBrand(brand ?: "")
+
+        } else {
+            binding.connectivity.visibility = View.GONE
+            binding.noConnectivity.visibility = View.VISIBLE
+        }
+
+        binding.swipeRefresher.isRefreshing = false
     }
 
 }
