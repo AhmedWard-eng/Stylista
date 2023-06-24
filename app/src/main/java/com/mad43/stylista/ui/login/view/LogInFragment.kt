@@ -146,7 +146,6 @@ class LogInFragment : Fragment() {
             var favID = signInViewModel.getIDForFavourite()
             signInViewModel.getDraftOrder(favID.toString())
         }catch (e : Exception){
-            Log.e("5555", "getDraftOrder: ",e )
         }
 
     }
@@ -161,7 +160,6 @@ class LogInFragment : Fragment() {
                             for (lineItem in data.line_items) {
                                 var properties = lineItem.properties
                                 val urlImage = properties?.find { it.name == "url_image" }?.value
-                                Log.d(TAG, "////////iiiiiiiiiiiiiiinsertAllProductDB: $urlImage ,, ${lineItem.title}")
                                 if (lineItem.title!= null && lineItem.price!=null && lineItem.product_id!=null&& urlImage!=null && lineItem.variant_id!=null){
                                     var favouriteProduct = Favourite(lineItem.product_id,lineItem.title,lineItem.price, image = urlImage,lineItem.variant_id)
                                     signInViewModel.insertDraftOrder(favouriteProduct)
@@ -172,7 +170,6 @@ class LogInFragment : Fragment() {
                         navController?.navigate(R.id.action_logInFragment_to_navigation_home)
                     }
                     is DraftOrderState.OnFail ->{
-                        Log.e("999", "FFFFFFFFFFFFFFFFFFFFFFFFff: ${it}", )
                     }
                     else ->{
 
