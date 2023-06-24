@@ -41,13 +41,13 @@ class AdapterWishList (private var favouriteList: List<Favourite>, private val o
             binding.priceProduct.text = favourite.price
             binding.imageProduct.setImageFromUrl(favourite.image)
             val context = itemView.context
-                binding.cardProduct.setOnClickListener {
-                    if (NetwarkInternet().isNetworkAvailable(context = context)){
-                        listener.productClicked(favourite.id)
-                    }else{
-                        NetwarkInternet().displayNetworkDialog(context)
-                    }
+            binding.cardProduct.setOnClickListener {
+                if (NetwarkInternet().isNetworkAvailable(context = context)){
+                    listener.productClicked(favourite.id)
+                }else{
+                    NetwarkInternet().displayNetworkDialog(context)
                 }
+            }
         }
     }
 }
