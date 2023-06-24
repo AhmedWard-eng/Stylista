@@ -6,6 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.address.edit.AddressDetailsEditFragment">
+<com.google.android.material.card.MaterialCardView
+
+    android:id="@+id/autocomplete_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <fragment
         android:id="@+id/autocomplete_fragment"
@@ -17,6 +25,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+</com.google.android.material.card.MaterialCardView>
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/address_title"
         android:layout_width="0dp"
@@ -25,7 +35,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="@string/address_1"
+        android:hint="@string/title"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/address_2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="@string/address_2"
+        android:hint="@string/address_details"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/address_city"
         app:layout_constraintEnd_toEndOf="@+id/address_title"
@@ -126,7 +136,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_card_view" />
 
     <CheckBox
         android:id="@+id/checkBox"

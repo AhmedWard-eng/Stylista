@@ -136,6 +136,7 @@
     <string name="something_went_wrong_while_completing_your_order">Something went wrong while completing your order</string>
     <string name="proceed_to_buy">Proceed to buy</string>
     <string name="please_add_new_address_first">Please Add new address first</string>
+    <string name="address_details">address details</string>
 
     /***Ahmed***/
 </resources>
