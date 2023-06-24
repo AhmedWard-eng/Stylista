@@ -29,12 +29,6 @@ class AddressAdapter(private val clickListener: ClickListener) :
 
         binding.textViewFullAddress.text = buildString {
             append(item.address2)
-            append(", ")
-            append(item.city)
-            append(", ")
-            append(item.province)
-            append(", ")
-            append(item.country)
         }
 
         binding.textViewPhoneNumber.text = item.phone

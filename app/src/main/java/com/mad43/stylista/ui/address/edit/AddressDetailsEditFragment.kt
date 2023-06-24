@@ -83,7 +83,10 @@ class AddressDetailsEditFragment : Fragment() {
                 Log.i("TAG", "Place: ${place.address}")
                 val latLng = place.latLng
                 if( latLng != null){
-                    getAddress(requireContext(), latLng,::fillEditText,::showError)
+                    place.address?.let {
+                        getAddress(requireContext(), latLng,
+                            it,::fillEditText,::showError)
+                    }
                 }else{
                     Log.d("TAG", "onPlaceSelected: $latLng")
                 }
@@ -139,21 +142,18 @@ class AddressDetailsEditFragment : Fragment() {
 
     }
 
-    private fun fillEditText(address: Address?) {
+    private fun fillEditText(address: Address?,addressDetails : String) {
 
         val provinceList = address?.adminArea?.trim()?.split("Gov")
 
         Log.d("TAG", "fillEditText: $provinceList")
         if (!provinceList.isNullOrEmpty()){
-            var governance = getGovernance(provinceList[0])
+            val governance = getGovernance(provinceList[0])
             binding.addressCity.setText(address.subAdminArea, TextView.BufferType.EDITABLE)
-//        binding.addressPhone.setText(address.phone, TextView.BufferType.EDITABLE)
             binding.editTextProvince.setText(governance, TextView.BufferType.EDITABLE)
             binding.editTextCountry.setText(address.countryName, TextView.BufferType.EDITABLE)
+            binding.address2.setText(addressDetails, TextView.BufferType.EDITABLE)
         }
-
-//        binding.addressTitle.setText(address., TextView.BufferType.EDITABLE)
-//        binding.address2.setText(address.address2, TextView.BufferType.EDITABLE)
 
     }
 
@@ -188,7 +188,7 @@ class AddressDetailsEditFragment : Fragment() {
 }
 
 fun getAddress(
-    context: Context, latLng: com.google.android.gms.maps.model.LatLng, onResult: (Address?) -> Unit,
+    context: Context, latLng: com.google.android.gms.maps.model.LatLng,addressDetails : String ,onResult: (Address?,String) -> Unit,
     onError:(Exception)-> Unit) {
 
     try {
@@ -201,11 +201,11 @@ fun getAddress(
                     latLng.latitude, latLng.longitude, 1
                 ) {
                     address = it[0]
-                    onResult(address)
+                    onResult(address,addressDetails)
                 }
         } else {
             address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)?.get(0)
-            onResult(address)
+            onResult(address,addressDetails)
         }
     }catch (e: Exception){
         onError(e)

@@ -37,6 +37,7 @@ import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModel
 import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
 import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.RemoteStatus
+import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.showDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -154,7 +155,7 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                         binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
                         binding.imageSlider.setImageList(productInfo.imagesArray, ScaleTypes.FIT)
                         binding.imageSlider.startSliding(2000)
-                        binding.textViewPrice.text = productPrice
+                        binding.textViewPrice.setPrice(productPrice.toDouble())
                         val randomFloat = Random.nextFloat() * 4.0f + 1.0f
                         binding.ratingBar.rating = randomFloat
 

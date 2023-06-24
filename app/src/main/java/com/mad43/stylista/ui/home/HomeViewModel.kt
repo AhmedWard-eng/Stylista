@@ -16,7 +16,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class HomeViewModel(private val repoInterface: ProductsRepoInterface = ProductsRepo(),private val getCouponsListUseCase: GetCouponsListUseCase = GetCouponsListUseCase()) :
+class HomeViewModel(
+    private val repoInterface: ProductsRepoInterface = ProductsRepo(),
+    private val getCouponsListUseCase: GetCouponsListUseCase = GetCouponsListUseCase()
+) :
     ViewModel() {
     val ads = ArrayList<SlideModel>()
     var brands = MutableStateFlow<RemoteStatus<List<DisplayBrand>>>(RemoteStatus.Loading)
@@ -24,13 +27,13 @@ class HomeViewModel(private val repoInterface: ProductsRepoInterface = ProductsR
     val couponState = _couponState.asStateFlow()
 
     var couponCode = ""
+
     init {
-        ads.add(SlideModel("https://picsum.photos/seed/picsum/200/300"))
-        ads.add(SlideModel("https://picsum.photos/200/300"))
-        ads.add(SlideModel("https://picsum.photos/id/237/200/300"))
-        ads.add(SlideModel("https://picsum.photos/200"))
-        ads.add(SlideModel("https://picsum.photos/200/300/?blur"))
-        ads.add(SlideModel("https://picsum.photos/200/300.jpg"))
+        ads.add(SlideModel("https://i.pinimg.com/564x/10/af/c9/10afc9456a581c807712bd778c71b36e.jpg"))
+        ads.add(SlideModel("https://st4.depositphotos.com/1001941/30071/v/1600/depositphotos_300718676-stock-illustration-creative-sale-poster-or-template.jpg"))
+        ads.add(SlideModel("https://i.pinimg.com/564x/2b/5e/66/2b5e6631ef74bdd017b2db9cdc2c0abb.jpg"))
+        ads.add(SlideModel("https://i.pinimg.com/564x/ae/29/88/ae29881c12bfc6edc409794a29c39743.jpg"))
+        ads.add(SlideModel("https://i.pinimg.com/564x/32/b4/e1/32b4e1726924c26ceaba6ae906cfcdd2.jpg"))
 
         getBrand()
     }
@@ -51,17 +54,19 @@ class HomeViewModel(private val repoInterface: ProductsRepoInterface = ProductsR
 
     }
 
-    fun getRandomCoupon(){
+    fun getRandomCoupon() {
         viewModelScope.launch {
-            when(val status = getCouponsListUseCase()){
-                is RemoteStatus.Success ->{
-                    _couponState.emit(RemoteStatus.Success(status.data.random()))
+            when (val status = getCouponsListUseCase()) {
+                is RemoteStatus.Success -> {
+                    if (status.data.isNotEmpty())
+                        _couponState.emit(RemoteStatus.Success(status.data.random()))
                 }
 
-                is RemoteStatus.Failure ->{
+                is RemoteStatus.Failure -> {
                     _couponState.emit(status)
                 }
-                else ->{
+
+                else -> {
 
                 }
             }
