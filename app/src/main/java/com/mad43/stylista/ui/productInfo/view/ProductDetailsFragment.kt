@@ -37,7 +37,9 @@ import com.mad43.stylista.ui.productInfo.viewModel.ProductInfoViewModelFactory
 import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.NetworkConnectivity
 import com.mad43.stylista.util.RemoteStatus
+import com.mad43.stylista.util.setPrice
 import com.mad43.stylista.util.showDialog
+import com.mad43.stylista.util.title
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -160,12 +162,12 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
                         val productImage = uiState.data.product.images[0].src
                         productInfo.urlImageProduct = productImage
                         val variantID = uiState.data.product.variants[0].id
-                        binding.textViewProductName.text = productTitle
+                        binding.textViewProductName.title(productTitle)
                         binding.textViewDescriptionScroll.text = uiState.data.product.body_html
                         binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
                         binding.imageSlider.setImageList(productInfo.imagesArray, ScaleTypes.FIT)
                         binding.imageSlider.startSliding(2000)
-                        binding.textViewPrice.text = productPrice
+                        binding.textViewPrice.setPrice(productPrice.toDouble())
                         val randomFloat = Random.nextFloat() * 4.0f + 1.0f
                         binding.ratingBar.rating = randomFloat
 

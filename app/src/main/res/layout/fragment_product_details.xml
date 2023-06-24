@@ -50,34 +50,35 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
 
-    <TextView
-        android:id="@+id/textViewProductName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="7"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:textColor="#737373"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/image_slider" />
+        <TextView
+            android:id="@+id/textViewProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="7"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textColor="#737373"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/ratingBar"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/image_slider" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:clickable="false"
-        android:indeterminate="false"
-        android:numStars="5"
-        android:progressTint="#FFE234"
-        android:secondaryProgressTint="#FFE234"
-        android:scrollbarSize="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewProductName"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/textViewProductName"
-        app:layout_constraintVertical_bias="0.0" />
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:clickable="false"
+            android:indeterminate="false"
+            android:numStars="5"
+            android:progressTint="#FFE234"
+            android:scrollbarSize="1dp"
+            android:secondaryProgressTint="#FFE234"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewProductName"
+            app:layout_constraintEnd_toStartOf="@+id/guideline6"
+            app:layout_constraintTop_toTopOf="@+id/textViewProductName"
+            app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewReviews"

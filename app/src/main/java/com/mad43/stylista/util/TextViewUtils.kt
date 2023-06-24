@@ -38,3 +38,18 @@ fun TextView.formatDate(date : String){
 
     }
 }
+
+fun TextView.title(titleProduct : String){
+    val titleList = titleProduct.split("|")
+
+    val title = if (titleList.size == 1) {
+        titleList[0]
+    }else {
+        titleList[1]
+    }
+
+    text = buildString {
+        append(title)
+    }
+
+}
