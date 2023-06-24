@@ -252,7 +252,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
             profileViewModel.userExists.collect { userExists ->
                 if (userExists) {
                     isLogin = true
-                //    binding.buttonLogOut.visibility = View.VISIBLE
+                    //    binding.buttonLogOut.visibility = View.VISIBLE
                     binding.buttonLogOut.text = getString(R.string.logout)
                     binding.textViewMoreWishList.visibility = View.VISIBLE
                     binding.recyclerViewWishList.visibility = View.VISIBLE
