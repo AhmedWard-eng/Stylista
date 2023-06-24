@@ -55,7 +55,9 @@ class HomeViewModel(private val repoInterface: ProductsRepoInterface = ProductsR
         viewModelScope.launch {
             when(val status = getCouponsListUseCase()){
                 is RemoteStatus.Success ->{
-                    _couponState.emit(RemoteStatus.Success(status.data.random()))
+                    if (status.data.isNotEmpty()) {
+                        _couponState.emit(RemoteStatus.Success(status.data.random()))
+                    }
                 }
 
                 is RemoteStatus.Failure ->{

@@ -12,6 +12,7 @@ import com.mad43.stylista.databinding.OrderDetailsItemBinding
 import com.mad43.stylista.ui.orders.OnItemOrderClicked
 import com.mad43.stylista.util.setImageFromUrl
 import com.mad43.stylista.util.setPrice
+import com.mad43.stylista.util.title
 
 class OrderDetailsAdapter(
     private val onItemProductOrderClicked: OnItemProductOrderClicked) :
@@ -36,7 +37,7 @@ class OrderDetailsAdapter(
             )
         }
 
-        holder.binding.productTitleValue.text = getItem(position).name.toString()
+        holder.binding.productTitleValue.title(getItem(position).name.toString())
 
         holder.binding.priceValue.setPrice((getItem(position).price ?: "0.00").toDouble())
 
