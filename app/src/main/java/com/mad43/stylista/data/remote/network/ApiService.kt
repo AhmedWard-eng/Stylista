@@ -39,11 +39,11 @@ object ApiService {
                     .setLevel(HttpLoggingInterceptor.Level.BODY)
             )
             .build()
+
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-
     }
 }

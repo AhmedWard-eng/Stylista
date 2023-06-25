@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_card_view" />
 
-    <TextView
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/address_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

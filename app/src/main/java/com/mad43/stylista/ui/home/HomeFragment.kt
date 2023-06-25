@@ -60,6 +60,7 @@ class HomeFragment : Fragment(), OnItemBrandClicked {
         binding.imageSliderHome.startSliding(2000)
         binding.imageSliderHome.setItemClickListener(object  : ItemClickListener{
             override fun doubleClick(position: Int) {
+                Log.d("TAG00", "doubleClick: ")
                 if(homeViewModel.couponCode.isNotBlank()){
                     copyToClipBoard()
                 }else{
@@ -68,6 +69,7 @@ class HomeFragment : Fragment(), OnItemBrandClicked {
             }
 
             override fun onItemSelected(position: Int) {
+                Log.d("TAG00", "onItemSelected: ")
                 if(homeViewModel.couponCode.isNotBlank()){
                     copyToClipBoard()
                 }else{
@@ -76,6 +78,14 @@ class HomeFragment : Fragment(), OnItemBrandClicked {
             }
 
         })
+
+        binding.buttonCoupon.setOnClickListener {
+            if(homeViewModel.couponCode.isNotBlank()){
+                copyToClipBoard()
+            }else{
+                MyDialog().showAlertDialog(getString(R.string.no_available_coupons),requireContext())
+            }
+        }
 
         binding.swipeRefresher.setColorSchemeResources(R.color.primary_color)
 
