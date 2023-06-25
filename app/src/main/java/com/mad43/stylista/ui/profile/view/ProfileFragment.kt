@@ -138,7 +138,6 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         binding.buttonLogOut.setOnClickListener {
             if (NetwarkInternet().isNetworkAvailable(requireContext())){
                 if (binding.buttonLogOut.text == getString(R.string.logout)){
-                    profileViewModel.logout()
                     showConfirmationDialog()
                 }
                 if (binding.buttonLogOut.text == getString(R.string.sign_in)){
@@ -288,6 +287,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         var message = "${getString(R.string.logout_confirm)}"
         builder.setMessage(message)
             .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                profileViewModel.logout()
                 Navigation.findNavController(requireView())
                     .navigate(R.id.action_navigation_profile_to_logInFragment)
             }
