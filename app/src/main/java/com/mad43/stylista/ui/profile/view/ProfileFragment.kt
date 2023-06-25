@@ -295,6 +295,20 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         binding.root.findNavController().navigate(action)
     }
 
+    private fun refresh() {
+        if (networkConnectivity.isOnline()) {
+            binding.recyclerViewOrders.visibility = View.VISIBLE
+            binding.textViewMoreOrders.visibility = View.VISIBLE
+
+            profileViewModel.getOrders()
+        } else {
+            binding.recyclerViewOrders.visibility = View.GONE
+            binding.textViewMoreOrders.visibility = View.GONE
+        }
+
+        binding.swipeRefresher.isRefreshing = false
+    }
+
     private fun showConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
         var message = "${getString(R.string.logout_confirm)}"
