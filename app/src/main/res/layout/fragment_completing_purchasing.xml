@@ -175,12 +175,12 @@
         app:layout_constraintStart_toStartOf="@+id/radioGroup"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonApplyCoupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary_color"
-        android:src="@drawable/baseline_arrow_forward_24"
+        android:text="@string/apply"
         app:layout_constraintBottom_toBottomOf="@+id/editTextcoupon"
         app:layout_constraintEnd_toEndOf="@+id/radioGroup"
         app:layout_constraintTop_toTopOf="@+id/editTextcoupon" />

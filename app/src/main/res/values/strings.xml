@@ -144,6 +144,7 @@
     <string name="address_details">address details</string>
     <string name="search_for_your_address">Search for your address: </string>
     <string name="no_available_coupons">No Available coupons</string>
+    <string name="apply">apply</string>
 
     /***Ahmed***/
 </resources>
