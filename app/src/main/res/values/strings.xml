@@ -89,6 +89,7 @@
     <string name="welcome">Welcome! </string>
     <string name="firbase_signin_try_agin"> Access to this account has been temporarily disabled due to many failed login attempts</string>
     <string name="no_favourite">No items in favourite</string>
+    <string name="logout_confirm">Are you sure you want to logout?</string>
     /***Marina***/
 
     /***Ahmed***/

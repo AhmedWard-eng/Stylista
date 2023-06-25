@@ -1,6 +1,7 @@
 package com.mad43.stylista.ui.profile.view
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,6 +34,7 @@ import com.mad43.stylista.ui.orders.OrdersAdapter
 import com.mad43.stylista.ui.orders.OrdersFragmentDirections
 import com.mad43.stylista.ui.profile.viewModel.ProfileFactoryViewModel
 import com.mad43.stylista.ui.profile.viewModel.ProfileViewModel
+import com.mad43.stylista.util.MyDialog
 import com.mad43.stylista.util.NetwarkInternet
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
@@ -136,8 +139,12 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
             if (NetwarkInternet().isNetworkAvailable(requireContext())){
                 if (binding.buttonLogOut.text == getString(R.string.logout)){
                     profileViewModel.logout()
-                    Navigation.findNavController(requireView())
-                        .navigate(R.id.action_navigation_profile_to_logInFragment)
+                    MyDialog().showAlertDialog(getString(R.string.logout_confirm),requireContext()){
+                        if (it) {
+                            Navigation.findNavController(requireView())
+                                .navigate(R.id.action_navigation_profile_to_logInFragment)
+                            }
+                    }
                 }
                 if (binding.buttonLogOut.text == getString(R.string.sign_in)){
                     Navigation.findNavController(requireView())

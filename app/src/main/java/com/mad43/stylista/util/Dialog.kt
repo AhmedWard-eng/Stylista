@@ -2,6 +2,8 @@ package com.mad43.stylista.util
 
 import android.app.AlertDialog
 import android.content.Context
+import androidx.navigation.Navigation
+import com.mad43.stylista.R
 
 class MyDialog {
      fun showAlertDialog(message: String,context: Context) {
@@ -28,4 +30,7 @@ class MyDialog {
         val dialog = builder.create()
         dialog.show()
     }
+
+
+
 }
