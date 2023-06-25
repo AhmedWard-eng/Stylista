@@ -169,6 +169,7 @@ class ProductInfoViewModel(
                 Log.d(TAG, "getFavouriteUsingId: ${_uiStateNetwork.value}")
             } catch (e: Exception) {
                 _uiStateNetwork.value = RemoteStatus.Failure(e)
+                Log.e(TAG, "getFavouriteUsingId0000: ",e )
             }
         }
     }
