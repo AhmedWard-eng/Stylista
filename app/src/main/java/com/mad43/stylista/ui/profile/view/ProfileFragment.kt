@@ -139,12 +139,7 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
             if (NetwarkInternet().isNetworkAvailable(requireContext())){
                 if (binding.buttonLogOut.text == getString(R.string.logout)){
                     profileViewModel.logout()
-                    MyDialog().showAlertDialog(getString(R.string.logout_confirm),requireContext()){
-                        if (it) {
-                            Navigation.findNavController(requireView())
-                                .navigate(R.id.action_navigation_profile_to_logInFragment)
-                            }
-                    }
+                    showConfirmationDialog()
                 }
                 if (binding.buttonLogOut.text == getString(R.string.sign_in)){
                     Navigation.findNavController(requireView())
@@ -286,6 +281,20 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
     override fun orderClicked(orders: Orders) {
         val action = ProfileFragmentDirections.actionNavigationProfileToOrderDetailsFragment2(orders)
         binding.root.findNavController().navigate(action)
+    }
+
+    private fun showConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        var message = "${getString(R.string.logout_confirm)}"
+        builder.setMessage(message)
+            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.action_navigation_profile_to_logInFragment)
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, which ->
+                dialog.dismiss()
+            }
+        builder.show()
     }
 
 }
