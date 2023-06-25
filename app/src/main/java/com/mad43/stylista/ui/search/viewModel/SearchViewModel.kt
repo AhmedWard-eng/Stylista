@@ -66,7 +66,7 @@ class SearchViewModel(private val repoInterface: ProductsRepoInterface = Product
             allPrpduct
         } else {
             allPrpduct.filter { product ->
-                product.title.startsWith(query, true)
+                product.title.contains(query, true)
             }
         }
     }
