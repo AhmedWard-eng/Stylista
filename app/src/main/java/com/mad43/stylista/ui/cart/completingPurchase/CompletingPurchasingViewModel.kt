@@ -128,7 +128,7 @@ class CompletingPurchasingViewModel(
                 0.0
             }
         } else if (discountType == "percentage") {
-            getOrderTotalPrice() * discountAmount
+            getOrderTotalPrice() * discountAmount *.01
         } else {
             0.0
         }
