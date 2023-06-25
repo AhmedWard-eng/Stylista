@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -179,43 +181,45 @@ class BrandFragment : Fragment(), OnItemProductClicked {
         brandViewModel.getProductInBrand(brand ?: "")
 
         lifecycleScope.launch {
-            brandViewModel.products.collectLatest {
-                when (it) {
-                    is RemoteStatus.Loading -> {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                brandViewModel.products.collectLatest {
+                    when (it) {
+                        is RemoteStatus.Loading -> {
 
-                        if (networkConnectivity.isOnline()) {
-                            binding.noConnectivity.visibility = View.GONE
-                            binding.recyclerView.visibility = View.GONE
-                            binding.shimmerFrameLayoutBrand.startShimmerAnimation()
-                        }else{
-                            binding.connectivity.visibility = View.GONE
-                            binding.noConnectivity.visibility = View.VISIBLE
+                            if (networkConnectivity.isOnline()) {
+                                binding.noConnectivity.visibility = View.GONE
+                                binding.recyclerView.visibility = View.GONE
+                                binding.shimmerFrameLayoutBrand.startShimmerAnimation()
+                            }else{
+                                binding.connectivity.visibility = View.GONE
+                                binding.noConnectivity.visibility = View.VISIBLE
+                            }
+
+
                         }
 
-
-                    }
-
-                    is RemoteStatus.Success -> {
-                        binding.recyclerView.visibility = View.VISIBLE
-                        binding.shimmerFrameLayoutBrand.visibility = View.GONE
-                        binding.shimmerFrameLayoutBrand.stopShimmerAnimation()
-                        if (!brandViewModel.filter) {
-                            brandViewModel.allData = it.data
-                        }
-                        brandAdapter = BrandAdapter(this@BrandFragment)
-                        binding.recyclerView.apply {
-                            adapter = brandAdapter
-                            brandAdapter.submitList(it.data)
-                            layoutManager = GridLayoutManager(context, 2).apply {
-                                orientation = RecyclerView.VERTICAL
+                        is RemoteStatus.Success -> {
+                            binding.recyclerView.visibility = View.VISIBLE
+                            binding.shimmerFrameLayoutBrand.visibility = View.GONE
+                            binding.shimmerFrameLayoutBrand.stopShimmerAnimation()
+                            if (!brandViewModel.filter) {
+                                brandViewModel.allData = it.data
+                            }
+                            brandAdapter = BrandAdapter(this@BrandFragment)
+                            binding.recyclerView.apply {
+                                adapter = brandAdapter
+                                brandAdapter.submitList(it.data)
+                                layoutManager = GridLayoutManager(context, 2).apply {
+                                    orientation = RecyclerView.VERTICAL
+                                }
                             }
                         }
-                    }
 
-                    else -> {
-                        if (!networkConnectivity.isOnline()) {
-                            binding.connectivity.visibility = View.GONE
-                            binding.noConnectivity.visibility = View.VISIBLE
+                        else -> {
+                            if (!networkConnectivity.isOnline()) {
+                                binding.connectivity.visibility = View.GONE
+                                binding.noConnectivity.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }

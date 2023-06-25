@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -171,50 +173,52 @@ class CategoryFragment : Fragment(), OnItemProductClicked {
         }
 
         lifecycleScope.launch {
-            categoryViewModel.products.collectLatest {
-                when (it) {
-                    is RemoteStatus.Loading -> {
-                        if (networkConnectivity.isOnline()) {
-                            binding.recyclerView.visibility = View.GONE
-                            binding.shimmerFrameLayout.startShimmerAnimation()
-                            binding.noConnectivity.visibility = View.GONE
-                        }else{
-                            binding.noConnectivity.visibility = View.VISIBLE
-                            binding.connectivity.visibility = View.GONE
-                        }
-                    }
-
-                    is RemoteStatus.Success -> {
-                        binding.recyclerView.visibility = View.VISIBLE
-                        binding.shimmerFrameLayout.visibility = View.GONE
-                        binding.shimmerFrameLayout.stopShimmerAnimation()
-                        if (!categoryViewModel.filterMainCategory) {
-                            if (it.data.isNotEmpty()) {
-                                categoryViewModel.allData = it.data
-                                categoryViewModel.filterMainCategory = true
-                                categoryViewModel.filterByMainCategory("SHOES")
-                                categoryViewModel.filterSubCategory = true
-                                subCategory = "kid"
-                                categoryViewModel.filterBySubCategory(subCategory)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                categoryViewModel.products.collectLatest {
+                    when (it) {
+                        is RemoteStatus.Loading -> {
+                            if (networkConnectivity.isOnline()) {
+                                binding.recyclerView.visibility = View.GONE
+                                binding.shimmerFrameLayout.startShimmerAnimation()
+                                binding.noConnectivity.visibility = View.GONE
                             }else{
-                                categoryViewModel.getProducts()
+                                binding.noConnectivity.visibility = View.VISIBLE
+                                binding.connectivity.visibility = View.GONE
                             }
                         }
 
-                        categoryAdapter = CategoryAdapter(this@CategoryFragment)
-                        binding.recyclerView.apply {
-                            adapter = categoryAdapter
-                            categoryAdapter.submitList(it.data)
-                            layoutManager = GridLayoutManager(context, 2).apply {
-                                orientation = RecyclerView.VERTICAL
+                        is RemoteStatus.Success -> {
+                            binding.recyclerView.visibility = View.VISIBLE
+                            binding.shimmerFrameLayout.visibility = View.GONE
+                            binding.shimmerFrameLayout.stopShimmerAnimation()
+                            if (!categoryViewModel.filterMainCategory) {
+                                if (it.data.isNotEmpty()) {
+                                    categoryViewModel.allData = it.data
+                                    categoryViewModel.filterMainCategory = true
+                                    categoryViewModel.filterByMainCategory("SHOES")
+                                    categoryViewModel.filterSubCategory = true
+                                    subCategory = "kid"
+                                    categoryViewModel.filterBySubCategory(subCategory)
+                                }else{
+                                    categoryViewModel.getProducts()
+                                }
+                            }
+
+                            categoryAdapter = CategoryAdapter(this@CategoryFragment)
+                            binding.recyclerView.apply {
+                                adapter = categoryAdapter
+                                categoryAdapter.submitList(it.data)
+                                layoutManager = GridLayoutManager(context, 2).apply {
+                                    orientation = RecyclerView.VERTICAL
+                                }
                             }
                         }
-                    }
 
-                    else -> {
-                        if (!networkConnectivity.isOnline()) {
-                            binding.connectivity.visibility = View.GONE
-                            binding.noConnectivity.visibility = View.VISIBLE
+                        else -> {
+                            if (!networkConnectivity.isOnline()) {
+                                binding.connectivity.visibility = View.GONE
+                                binding.noConnectivity.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }

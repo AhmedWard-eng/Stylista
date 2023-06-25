@@ -105,44 +105,47 @@ class HomeFragment : Fragment(), OnItemBrandClicked {
         }
 
         lifecycleScope.launch {
-            homeViewModel.brands.collectLatest {
-                when (it) {
-                    is RemoteStatus.Loading -> {
-                        if (networkConnectivity.isOnline()) {
-                            binding.brandRecycle.visibility = View.GONE
-                            binding.shimmerFrameLayout.visibility = View.VISIBLE
-                            binding.shimmerFrameLayout.startShimmerAnimation()
-                            binding.connectivity.visibility = View.VISIBLE
-                            binding.noConnectivity.visibility = View.GONE
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                homeViewModel.brands.collectLatest {
+                    when (it) {
+                        is RemoteStatus.Loading -> {
+                            if (networkConnectivity.isOnline()) {
+                                binding.brandRecycle.visibility = View.GONE
+                                binding.shimmerFrameLayout.visibility = View.VISIBLE
+                                binding.shimmerFrameLayout.startShimmerAnimation()
+                                binding.connectivity.visibility = View.VISIBLE
+                                binding.noConnectivity.visibility = View.GONE
 
-                        }else{
-                            binding.connectivity.visibility = View.GONE
-                            binding.noConnectivity.visibility = View.VISIBLE
+                            }else{
+                                binding.connectivity.visibility = View.GONE
+                                binding.noConnectivity.visibility = View.VISIBLE
+                            }
                         }
-                    }
 
-                    is RemoteStatus.Success -> {
-                        binding.brandRecycle.visibility = View.VISIBLE
-                        binding.shimmerFrameLayout.visibility = View.GONE
-                        binding.shimmerFrameLayout.stopShimmerAnimation()
-                        brandAdapter =
-                            HomeBrandAdapter(requireContext(),this@HomeFragment)
-                        binding.brandRecycle.apply {
-                            adapter = brandAdapter
-                            brandAdapter.submitList(it.data)
-                            layoutManager = GridLayoutManager(context,2).apply {
-                                orientation = RecyclerView.VERTICAL
+                        is RemoteStatus.Success -> {
+                            binding.brandRecycle.visibility = View.VISIBLE
+                            binding.shimmerFrameLayout.visibility = View.GONE
+                            binding.shimmerFrameLayout.stopShimmerAnimation()
+                            brandAdapter =
+                                HomeBrandAdapter(requireContext(),this@HomeFragment)
+                            binding.brandRecycle.apply {
+                                adapter = brandAdapter
+                                brandAdapter.submitList(it.data)
+                                layoutManager = GridLayoutManager(context,2).apply {
+                                    orientation = RecyclerView.VERTICAL
+                                }
+                            }
+                        }
+
+                        else -> {
+                            if (!networkConnectivity.isOnline()) {
+                                binding.connectivity.visibility = View.GONE
+                                binding.noConnectivity.visibility = View.VISIBLE
                             }
                         }
                     }
+            }
 
-                    else -> {
-                        if (!networkConnectivity.isOnline()) {
-                            binding.connectivity.visibility = View.GONE
-                            binding.noConnectivity.visibility = View.VISIBLE
-                        }
-                    }
-                }
             }
         }
 

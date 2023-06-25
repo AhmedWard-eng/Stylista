@@ -152,82 +152,84 @@ class ProductDetailsFragment : Fragment(), OnClickFavourite {
             // Get all favorites
             var customDraftOrder = productInfo.getLineItems(productInfo.favID)
             productInfo.customDraftOrderList = customDraftOrder
-            productInfo.uiState.collectLatest { uiState ->
-                when (uiState) {
-                    is ApiState.Success -> {
-                        isDataSuccess()
-                        val productTitle = uiState.data.product.title
-                        val productPrice = uiState.data.product.variants[0].price
-                        val productID = uiState.data.product.id
-                        val productImage = uiState.data.product.images[0].src
-                        productInfo.urlImageProduct = productImage
-                        val variantID = uiState.data.product.variants[0].id
-                        binding.textViewProductName.title(productTitle)
-                        binding.textViewDescriptionScroll.text = uiState.data.product.body_html
-                        binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
-                        binding.imageSlider.setImageList(productInfo.imagesArray, ScaleTypes.FIT)
-                        binding.imageSlider.startSliding(2000)
-                        binding.textViewPrice.setPrice(productPrice.toDouble())
-                        val randomFloat = Random.nextFloat() * 4.0f + 1.0f
-                        binding.ratingBar.rating = randomFloat
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                productInfo.uiState.collectLatest { uiState ->
+                    when (uiState) {
+                        is ApiState.Success -> {
+                            isDataSuccess()
+                            val productTitle = uiState.data.product.title
+                            val productPrice = uiState.data.product.variants[0].price
+                            val productID = uiState.data.product.id
+                            val productImage = uiState.data.product.images[0].src
+                            productInfo.urlImageProduct = productImage
+                            val variantID = uiState.data.product.variants[0].id
+                            binding.textViewProductName.title(productTitle)
+                            binding.textViewDescriptionScroll.text = uiState.data.product.body_html
+                            binding.textViewDescriptionScroll.movementMethod = ScrollingMovementMethod()
+                            binding.imageSlider.setImageList(productInfo.imagesArray, ScaleTypes.FIT)
+                            binding.imageSlider.startSliding(2000)
+                            binding.textViewPrice.setPrice(productPrice.toDouble())
+                            val randomFloat = Random.nextFloat() * 4.0f + 1.0f
+                            binding.ratingBar.rating = randomFloat
 
-                        uiState.data.product.variants.forEachIndexed { _, variant ->
-                            Log.d(TAG, "Size: ${variant.title}, ${variant.id}")
-                            binding.buttonAvailableSize.text = variant.title
-                            val idVariants = variant.id
-                            val size = variant.title
-                            productInfo.availableSizesTitle.add(size)
-                            productInfo.availableSizesID.add(idVariants)
+                            uiState.data.product.variants.forEachIndexed { _, variant ->
+                                Log.d(TAG, "Size: ${variant.title}, ${variant.id}")
+                                binding.buttonAvailableSize.text = variant.title
+                                val idVariants = variant.id
+                                val size = variant.title
+                                productInfo.availableSizesTitle.add(size)
+                                productInfo.availableSizesID.add(idVariants)
 
-                            productInfo.sizeIdPairs =
-                                productInfo.availableSizesTitle.zip(productInfo.availableSizesID)
-                        }
+                                productInfo.sizeIdPairs =
+                                    productInfo.availableSizesTitle.zip(productInfo.availableSizesID)
+                            }
 
-                        displayMenuAvailableSize()
-                        binding.imageViewFavourite.setOnClickListener {
+                            displayMenuAvailableSize()
+                            binding.imageViewFavourite.setOnClickListener {
 
 
-                            var productFavourite = Favourite(
-                                id = productID,
-                                title = productTitle,
-                                price = productPrice,
-                                image = productImage,
-                                variantID = variantID
-                            )
+                                var productFavourite = Favourite(
+                                    id = productID,
+                                    title = productTitle,
+                                    price = productPrice,
+                                    image = productImage,
+                                    variantID = variantID
+                                )
 
-                            val properties = listOf(
-                                Property(name = "url_image", value = productImage)
-                            )
-                            productInfo.lineItem1 = InsertingLineItem(
-                                properties = properties,
-                                variant_id = variantID,
-                                quantity = 1,
-                                price = productPrice,
-                                title = productTitle
-                            )
-                            if (productInfo.isLogin) {
-                                onClick(productFavourite)
-                            } else {
-                                showConfirmationDialog()
+                                val properties = listOf(
+                                    Property(name = "url_image", value = productImage)
+                                )
+                                productInfo.lineItem1 = InsertingLineItem(
+                                    properties = properties,
+                                    variant_id = variantID,
+                                    quantity = 1,
+                                    price = productPrice,
+                                    title = productTitle
+                                )
+                                if (productInfo.isLogin) {
+                                    onClick(productFavourite)
+                                } else {
+                                    showConfirmationDialog()
+                                }
+
+
                             }
 
 
                         }
 
-
-                    }
-
-                    is ApiState.Loading -> {
-                        isDataLoading()
-                    }
-
-                    else -> {
-                        if (!networkConnectivity.isOnline()) {
-                            binding.connectivity.visibility = View.GONE
-                            binding.noConnectivity.visibility = View.VISIBLE
+                        is ApiState.Loading -> {
+                            isDataLoading()
                         }
-                    }
 
+                        else -> {
+                            if (!networkConnectivity.isOnline()) {
+                                binding.connectivity.visibility = View.GONE
+                                binding.noConnectivity.visibility = View.VISIBLE
+                            }
+                        }
+
+                    }
                 }
             }
         }

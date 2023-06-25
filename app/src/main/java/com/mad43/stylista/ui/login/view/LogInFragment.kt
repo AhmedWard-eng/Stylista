@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.*
 import com.mad43.stylista.databinding.FragmentLogInBinding
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.mad43.stylista.R
@@ -72,29 +70,32 @@ class LogInFragment : Fragment() {
         binding?.progressBarSignIn?.visibility = View.GONE
 
         lifecycleScope.launch {
-            signInViewModel.loginState.collect {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                signInViewModel.loginState.collect {
 
-                uiState ->when (uiState) {
-                is RemoteStatus.Success -> {
-                    getDraftOrder()
-                    observeDraftOrder()
-                    binding.progressBarSignIn.visibility = View.GONE
+                        uiState ->when (uiState) {
+                    is RemoteStatus.Success -> {
+                        getDraftOrder()
+                        observeDraftOrder()
+                        binding.progressBarSignIn.visibility = View.GONE
                     }
-                is RemoteStatus.Valied -> {
-                    dialog.showAlertDialog(getString(uiState.message), requireContext())
-                    binding.progressBarSignIn.visibility = View.GONE
-                    signInViewModel.returnReload()
-                }
-                is RemoteStatus.Failure ->{
-                    dialog.showAlertDialog("Fail", requireContext())
-                    binding.progressBarSignIn.visibility = View.GONE
-                }
+                    is RemoteStatus.Valied -> {
+                        dialog.showAlertDialog(getString(uiState.message), requireContext())
+                        binding.progressBarSignIn.visibility = View.GONE
+                        signInViewModel.returnReload()
+                    }
+                    is RemoteStatus.Failure ->{
+                        dialog.showAlertDialog("Fail", requireContext())
+                        binding.progressBarSignIn.visibility = View.GONE
+                    }
                     else ->{
                         binding.progressBarSignIn.visibility = View.GONE
                     }
                 }
 
+                }
             }
+
         }
 
         binding.buttonSignIn.setOnClickListener {

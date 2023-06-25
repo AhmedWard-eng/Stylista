@@ -43,7 +43,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        registerViewModel=ViewModelProvider(this)[SignUpViewModel::class.java]
+        registerViewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
                 binding?.buttonSignUp?.setOnClickListener {
             if(NetwarkInternet().isNetworkAvailable(requireContext())){
                 binding?.progressBarSignUp?.visibility = View.VISIBLE

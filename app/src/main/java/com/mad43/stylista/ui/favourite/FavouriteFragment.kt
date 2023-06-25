@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -75,82 +77,87 @@ class FavouriteFragment : Fragment() , OnItemProductClicked {
         }
 
         lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                productInfo.favouriteList.collectLatest { uiState ->when (uiState) {
+                    is RemoteStatus.Success -> {
+                        brandAdapter.setData(uiState.data)
 
-            productInfo.favouriteList.collectLatest { uiState ->when (uiState) {
-                is RemoteStatus.Success -> {
-                    brandAdapter.setData(uiState.data)
-
-                    if (uiState.data.isEmpty() ){
-                        binding.imageView.visibility = View.VISIBLE
-                        binding.textView7.visibility = View.VISIBLE
-                        binding.textViewMyFavourite.visibility = View.VISIBLE
-                        binding.RecyclerViewFavourite.visibility = View.GONE
+                        if (uiState.data.isEmpty() ){
+                            binding.imageView.visibility = View.VISIBLE
+                            binding.textView7.visibility = View.VISIBLE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.GONE
+                        }
+                        else{
+                            binding.imageView.visibility = View.GONE
+                            binding.textView7.visibility = View.GONE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.VISIBLE
+                        }
                     }
-                    else{
-                        binding.imageView.visibility = View.GONE
-                        binding.textView7.visibility = View.GONE
+                    is RemoteStatus.Loading -> {
                         binding.textViewMyFavourite.visibility = View.VISIBLE
-                        binding.RecyclerViewFavourite.visibility = View.VISIBLE
                     }
-                }
-                is RemoteStatus.Loading -> {
-                    binding.textViewMyFavourite.visibility = View.VISIBLE
-                }
 
-                else -> {}
+                    else -> {}
+                }
+                }
             }
-            }
+
         }
 
         lifecycleScope.launch {
-            productInfo.uiStateNetwork.collectLatest {
-                    uiState ->when (uiState) {
-                is RemoteStatus.Success -> {
-                    binding.textViewMyFavourite.visibility = View.VISIBLE
-                    val favouriteSet = mutableSetOf<Favourite>()
-                    for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
-                        var title = uiState.data.draft_order?.line_items?.get(i)?.title
-                        var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
-                        var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
-                        var image = uiState.data.draft_order?.line_items?.get(i)?.properties
-                        val urlImage = image?.find { it.name == "url_image" }?.value
-                        var price = uiState.data.draft_order?.line_items?.get(i)?.price
-                        if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
-                            var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
-                            favouriteSet += favourite
-                        }
-                    }
-                    val favouriteList1 = favouriteSet.toList()
-                    brandAdapter.setData(favouriteList1)
-                    if (favouriteList1.isEmpty() ){
-                        binding.imageView.visibility = View.VISIBLE
-                        binding.textView7.visibility = View.VISIBLE
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                productInfo.uiStateNetwork.collectLatest {
+                        uiState ->when (uiState) {
+                    is RemoteStatus.Success -> {
                         binding.textViewMyFavourite.visibility = View.VISIBLE
-                        binding.RecyclerViewFavourite.visibility = View.GONE
+                        val favouriteSet = mutableSetOf<Favourite>()
+                        for (i in 0..((uiState.data.draft_order?.line_items?.size)?.minus(1) ?: 1)){
+                            var title = uiState.data.draft_order?.line_items?.get(i)?.title
+                            var idProduct = uiState.data.draft_order?.line_items?.get(i)?.product_id
+                            var idVarians = uiState.data.draft_order?.line_items?.get(i)?.variant_id
+                            var image = uiState.data.draft_order?.line_items?.get(i)?.properties
+                            val urlImage = image?.find { it.name == "url_image" }?.value
+                            var price = uiState.data.draft_order?.line_items?.get(i)?.price
+                            if(idProduct!=null && title!=null && price !=null && urlImage!= null && idVarians !=null){
+                                var favourite = Favourite(idProduct,title,price,urlImage,idVarians)
+                                favouriteSet += favourite
+                            }
+                        }
+                        val favouriteList1 = favouriteSet.toList()
+                        brandAdapter.setData(favouriteList1)
+                        if (favouriteList1.isEmpty() ){
+                            binding.imageView.visibility = View.VISIBLE
+                            binding.textView7.visibility = View.VISIBLE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.GONE
+                        }
+                        else{
+                            binding.imageView.visibility = View.GONE
+                            binding.textView7.visibility = View.GONE
+                            binding.textViewMyFavourite.visibility = View.VISIBLE
+                            binding.RecyclerViewFavourite.visibility = View.VISIBLE
+                        }
+
                     }
-                    else{
+                    is RemoteStatus.Failure ->{
+                        Log.d(TAG, "failllllllllllllll:::;: ")
+                        binding.textViewMyFavourite.visibility = View.GONE
                         binding.imageView.visibility = View.GONE
                         binding.textView7.visibility = View.GONE
+                        showConfirmationDialog()
+                    }
+                    is RemoteStatus.Loading -> {
                         binding.textViewMyFavourite.visibility = View.VISIBLE
-                        binding.RecyclerViewFavourite.visibility = View.VISIBLE
                     }
 
-                }
-                is RemoteStatus.Failure ->{
-                    Log.d(TAG, "failllllllllllllll:::;: ")
-                    binding.textViewMyFavourite.visibility = View.GONE
-                    binding.imageView.visibility = View.GONE
-                    binding.textView7.visibility = View.GONE
-                    showConfirmationDialog()
-                }
-                is RemoteStatus.Loading -> {
-                    binding.textViewMyFavourite.visibility = View.VISIBLE
-                }
-
-                else -> {
-                    Log.d(TAG, "elllllllllllse:::;: ")
+                    else -> {
+                        Log.d(TAG, "elllllllllllse:::;: ")
+                    }
                 }
             }
+
             }
         }
     }
