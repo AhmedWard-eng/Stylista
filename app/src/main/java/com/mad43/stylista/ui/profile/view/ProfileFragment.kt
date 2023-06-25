@@ -32,9 +32,14 @@ import com.mad43.stylista.ui.orders.OnItemOrderClicked
 import com.mad43.stylista.ui.profile.viewModel.ProfileFactoryViewModel
 import com.mad43.stylista.ui.profile.viewModel.ProfileViewModel
 import com.mad43.stylista.util.NetwarkInternet
+import com.mad43.stylista.util.NetworkConnectivity
 import com.mad43.stylista.util.RemoteStatus
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+
+
+
 
 class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
 
@@ -47,6 +52,10 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
     private lateinit var orderAdapter: OrdersProfileAdapter
     var favouriteList = mutableListOf<Favourite>()
     var isLogin = false
+
+    private val networkConnectivity by lazy {
+        NetworkConnectivity.getInstance(requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +85,12 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         displayLogout()
         displayWishList()
         displayAllFavourite()
+
+        binding.swipeRefresher.setColorSchemeResources(R.color.primary_color)
+
+        binding.swipeRefresher.setOnRefreshListener {
+            refresh()
+        }
 
         binding.textViewMoreOrders.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.ordersFragment)
@@ -293,6 +308,20 @@ class ProfileFragment : Fragment(), OnItemProductClicked, OnItemOrderClicked {
         val action =
             ProfileFragmentDirections.actionNavigationProfileToOrderDetailsFragment2(orders)
         binding.root.findNavController().navigate(action)
+    }
+
+    private fun refresh() {
+        if (networkConnectivity.isOnline()) {
+            binding.recyclerViewOrders.visibility = View.VISIBLE
+            binding.textViewMoreOrders.visibility = View.VISIBLE
+
+            profileViewModel.getOrders()
+        } else {
+            binding.recyclerViewOrders.visibility = View.GONE
+            binding.textViewMoreOrders.visibility = View.GONE
+        }
+
+        binding.swipeRefresher.isRefreshing = false
     }
 
     private fun showConfirmationDialog() {
